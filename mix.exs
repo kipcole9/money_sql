@@ -75,8 +75,7 @@ defmodule Money.Sql.Mixfile do
 
   defp deps do
     [
-      # {:ex_money, "~> 4.0"},
-      {:ex_money, path: "../money"},
+      {:ex_money, "~> 4.0"},
       {:jason, "~> 1.0"},
       {:dialyxir, "~> 1.0.0-rc.4", only: [:dev], runtime: false},
       {:ecto_sql, "~> 3.0", optional: true},
