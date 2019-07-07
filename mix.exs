@@ -38,8 +38,7 @@ defmodule Money.Sql.Mixfile do
       links: %{
         "GitHub" => "https://github.com/kipcole9/money_sql",
         "Readme" => "https://github.com/kipcole9/money_sql/blob/v#{@version}/README.md",
-        "Changelog" => "https://github.com/kipcole9/money_sql/blob/v#{@version}/CHANGELOG.md",
-        "Roadmap" => "https://github.com/kipcole9/money_sql/blob/v#{@version}/ROADMAP.md"
+        "Changelog" => "https://github.com/kipcole9/money_sql/blob/v#{@version}/CHANGELOG.md"
       },
       files: [
         "lib",
