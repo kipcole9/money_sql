@@ -1,4 +1,4 @@
-defmodule MoneyTest.Ecto do
+defmodule Money.Ecto.Test do
   use ExUnit.Case
 
   describe "Money.Ecto.Composite.Type specific tests" do
