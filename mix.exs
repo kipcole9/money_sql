@@ -21,7 +21,7 @@ defmodule Money.Sql.Mixfile do
       elixirc_paths: elixirc_paths(Mix.env()),
       dialyzer: [
         ignore_warnings: ".dialyzer_ignore_warnings",
-        plt_add_apps: ~w(inets jason mix phoenix_html ecto ecto_sql)a
+        plt_add_apps: ~w(inets jason mix ecto ecto_sql eex)a
       ],
       compilers: Mix.compilers()
     ]
