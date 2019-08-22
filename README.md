@@ -16,7 +16,7 @@ Money_SQL implements a set of functions to store and retrieve data structured as
 1. First generate the migration to create the custom type:
 
 ```elixir
-mix money.gen.postgres.migration
+mix money.gen.postgres.money_with_currency_migration
 * creating priv/repo/migrations
 * creating priv/repo/migrations/20161007234652_add_money_with_currency_type_to_postgres.exs
 ```
