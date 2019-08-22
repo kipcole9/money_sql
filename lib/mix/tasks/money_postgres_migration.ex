@@ -1,5 +1,5 @@
 if Code.ensure_loaded?(Ecto) do
-  defmodule Mix.Tasks.Money.Gen.Postgres.Migration do
+  defmodule Mix.Tasks.Money.Gen.Postgres.MoneyWithCurrencyMigration do
     use Mix.Task
 
     import Macro, only: [camelize: 1, underscore: 1]
@@ -22,7 +22,7 @@ if Code.ensure_loaded?(Ecto) do
     @dialyzer {:no_return, run: 1}
 
     def run(args) do
-      no_umbrella!("money.gen.migration")
+      no_umbrella!("money.gen.money_with_currency_migration")
       repos = parse_repo(args)
       name = "add_money_with_currency_type_to_postgres"
 

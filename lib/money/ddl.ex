@@ -136,7 +136,7 @@ defmodule Money.DDL do
   end
 
   defp base_dir(db_type) do
-    :code.priv_dir(:ex_money)
+    :code.priv_dir(:ex_money_sql)
     |> Path.join(["SQL", "/#{db_type}"])
   end
 end

@@ -1,13 +1,14 @@
-defmodule Money.Repo.Migrations.CreateMoneyTable do
+defmodule Money.SQL.Repo.Migrations.AddPostgresMoneyAggregateFunctions do
   use Ecto.Migration
 
-  def add do
-    execute """
-      CREATE OR REPLACE FUNCTION money_state_function(agg_state money_with_currency, money money_with_currency)
-      RETURNS money_with_currency
-      IMMUTABLE
-      LANGUAGE plpgsql
-      AS $$
+  def up do
+    execute("""
+    CREATE OR REPLACE FUNCTION money_state_function(agg_state money_with_currency, money money_with_currency)
+    RETURNS money_with_currency
+    IMMUTABLE
+    STRICT
+    LANGUAGE plpgsql
+    AS $$
       DECLARE
         expected_currency char(3);
         aggregate numeric(20, 8);
@@ -27,24 +28,27 @@ defmodule Money.Repo.Migrations.CreateMoneyTable do
         ELSE
           RAISE EXCEPTION
             'Incompatible currency codes. Expected all currency codes to be %', expected_currency
-            USING HINT = 'Please ensure all columns have the same currency code', ERRCODE = '22033';
+            USING HINT = 'Please ensure all columns have the same currency code',
+            ERRCODE = '22033';
         END IF;
       END;
     $$;
+    """)
 
+    execute("""
     CREATE AGGREGATE sum(money_with_currency)
     (
-        sfunc = money_state_function,
-        stype = money_with_currency
+      sfunc = money_state_function,
+      stype = money_with_currency
     );
-    """
+    """)
   end
 
   def down do
-    execute """
-    DROP AGGREGATE IF EXISTS sum(money_with_currency);
-    DROP FUNCTION IF EXISTS money_aggregate_final(agg_state money_with_currency);
-    DROP FUNCTION IF EXISTS money_state_function(agg_state money_with_currency, money money_with_currency);
-    """
+    execute("DROP AGGREGATE IF EXISTS sum(money_with_currency);")
+
+    execute(
+      "DROP FUNCTION IF EXISTS money_state_function(agg_state money_with_currency, money money_with_currency);"
+    )
   end
 end

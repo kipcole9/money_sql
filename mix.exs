@@ -68,8 +68,10 @@ defmodule Money.Sql.Mixfile do
     ]
   end
 
-  def aliases do
-    []
+  defp aliases do
+    [
+     test: ["ecto.drop --quiet", "ecto.create --quiet", "ecto.migrate", "test"]
+    ]
   end
 
   defp deps do
@@ -77,7 +79,8 @@ defmodule Money.Sql.Mixfile do
       {:ex_money, "~> 4.0"},
       {:jason, "~> 1.0"},
       {:dialyxir, "~> 1.0.0-rc.4", only: [:dev], runtime: false},
-      {:ecto_sql, "~> 3.0", optional: true},
+      {:ecto_sql, "~> 3.0"},
+      {:postgrex, "~> 0.15"},
       {:benchee, "~> 1.0", optional: true, only: :dev},
       {:exprof, "~> 0.2", only: :dev, runtime: false},
       ex_doc_version(System.version())
