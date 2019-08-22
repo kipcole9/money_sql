@@ -135,8 +135,9 @@ defmodule Money.DDL do
           "Database type #{db_type} does not have a SQL definition " <> "file #{inspect(file_name)}"
   end
 
+  @app Mix.Project.config[:app]
   defp base_dir(db_type) do
-    :code.priv_dir(:ex_money_sql)
+    :code.priv_dir(@app)
     |> Path.join(["SQL", "/#{db_type}"])
   end
 end
