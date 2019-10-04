@@ -26,14 +26,21 @@ if Code.ensure_loaded?(Ecto.Type) do
 
     def load(%{"currency" => currency, "amount" => amount}) when is_binary(amount) do
       with {:ok, amount} <- Decimal.parse(amount),
-           {:ok, currency} <- Money.validate_currency(currency) do
+           {:ok, currency} <- validate_currency_for_load(currency) do
         {:ok, Money.new(currency, amount)}
       end
     end
 
     def load(%{"currency" => currency, "amount" => amount}) when is_integer(amount) do
-      with {:ok, currency} <- Money.validate_currency(currency) do
+      with {:ok, currency} <- validate_currency_for_load(currency) do
         {:ok, Money.new(currency, amount)}
+      end
+    end
+
+    defp validate_currency_for_load(currency) do
+      case Money.validate_currency(currency) do
+        {:error, {_exception, _message}} -> :error
+        {:ok, currency} -> {:ok, currency}
       end
     end
 

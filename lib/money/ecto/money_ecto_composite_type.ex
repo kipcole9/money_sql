@@ -20,8 +20,15 @@ if Code.ensure_loaded?(Ecto.Type) do
 
     # When loading from the database
     def load({currency, amount}) do
-      with {:ok, currency_code} <- Money.validate_currency(currency) do
+      with {:ok, currency_code} <- validate_currency_for_load(currency) do
         {:ok, Money.new(currency_code, amount)}
+      end
+    end
+
+    defp validate_currency_for_load(currency) do
+      case Money.validate_currency(currency) do
+        {:error, {_exception, _message}} -> :error
+        {:ok, currency} -> {:ok, currency}
       end
     end
 
@@ -48,7 +55,7 @@ if Code.ensure_loaded?(Ecto.Type) do
     def cast(%{"currency" => currency, "amount" => amount})
         when (is_binary(currency) or is_atom(currency)) and is_integer(amount) do
       with decimal_amount <- Decimal.new(amount),
-           {:ok, currency_code} <- Money.validate_currency(currency) do
+           {:ok, currency_code} <- validate_currency_for_cast(currency) do
         {:ok, Money.new(currency_code, decimal_amount)}
       end
     end
@@ -56,14 +63,14 @@ if Code.ensure_loaded?(Ecto.Type) do
     def cast(%{"currency" => currency, "amount" => amount})
         when (is_binary(currency) or is_atom(currency)) and is_binary(amount) do
       with {:ok, amount} <- Decimal.parse(amount),
-           {:ok, currency_code} <- Money.validate_currency(currency) do
+           {:ok, currency_code} <- validate_currency_for_cast(currency) do
         {:ok, Money.new(currency_code, amount)}
       end
     end
 
     def cast(%{"currency" => currency, "amount" => %Decimal{} = amount})
         when is_binary(currency) or is_atom(currency) do
-      with {:ok, currency_code} <- Money.validate_currency(currency) do
+      with {:ok, currency_code} <- validate_currency_for_cast(currency) do
         {:ok, Money.new(currency_code, amount)}
       end
     end
@@ -81,6 +88,13 @@ if Code.ensure_loaded?(Ecto.Type) do
 
     def cast(_money) do
       :error
+    end
+
+    defp validate_currency_for_cast(currency) do
+      case Money.validate_currency(currency) do
+        {:error, {_exception, message}} -> {:error, [message: message]}
+        {:ok, currency} -> {:ok, currency}
+      end
     end
   end
 end
