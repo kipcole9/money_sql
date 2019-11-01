@@ -11,8 +11,8 @@ defmodule Money.SQL.Repo.Migrations.AddPostgresMoneyAggregateFunctions do
     AS $$
       DECLARE
         expected_currency char(3);
-        aggregate numeric(20, 8);
-        addition numeric(20,8);
+        aggregate numeric;
+        addition numeric;
       BEGIN
         if currency_code(agg_state) IS NULL then
           expected_currency := currency_code(money);

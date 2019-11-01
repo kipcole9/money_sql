@@ -82,5 +82,9 @@ if Code.ensure_loaded?(Ecto.Type) do
     def cast(_money) do
       :error
     end
+    
+    # New for ecto_sql 3.2
+    def embed_as(_), do: :self
+    def equal?(term1, term2), do: term1 == term2
   end
 end

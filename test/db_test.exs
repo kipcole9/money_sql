@@ -6,4 +6,5 @@ defmodule Money.DB.Test do
     assert {:ok, struct} = Repo.insert(%Organization{payroll: m})
     assert Money.cmp(m, struct.payroll) == :eq
   end
+
 end

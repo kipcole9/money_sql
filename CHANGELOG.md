@@ -1,3 +1,15 @@
+# Changelog for Money_SQL v1.2.0
+
+This is the changelog for Money_SQL v1.2.0 released on November 2nd, 2019.
+
+### Bug Fixes
+
+* Removes the precision specification from intermediate results of the `sum` aggregate function for Postgres.
+
+### Enhancements
+
+* Adds `equal?/2` callbacks to the `Money.Ecto.Composite.Type` and `Money.Ecto.Map.Type` for `ecto_sql` version 3.2
+
 # Changelog for Money_SQL v1.1.0
 
 This is the changelog for Money_SQL v1.1.0 released on August 22nd, 2019.
