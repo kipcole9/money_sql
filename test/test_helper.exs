@@ -26,5 +26,7 @@ defmodule Money.SQL.RepoCase do
 
     :ok
   end
+
+
 end
 
