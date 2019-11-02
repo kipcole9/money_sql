@@ -3,8 +3,7 @@ defmodule Money.Ecto.Test do
 
   describe "Money.Ecto.Composite.Type specific tests" do
     test "load a tuple with an unknown currency code produces an error" do
-      assert Money.Ecto.Composite.Type.load({"ABC", 100}) ==
-               {:error, {Cldr.UnknownCurrencyError, "The currency \"ABC\" is invalid"}}
+      assert Money.Ecto.Composite.Type.load({"ABC", 100}) == :error
     end
 
     test "load a tuple produces a Money struct" do
@@ -26,6 +25,10 @@ defmodule Money.Ecto.Test do
     test "load a json map with a number amount produces a Money struct" do
       assert Money.Ecto.Map.Type.load(%{"currency" => "USD", "amount" => 100}) ==
                {:ok, Money.new(:USD, 100)}
+    end
+
+    test "load a json map with an unknown currency code produces an error" do
+      assert Money.Ecto.Map.Type.load(%{"currency" => "AAA", "amount" => 100}) == :error
     end
 
     test "dump a money struct" do
@@ -69,7 +72,7 @@ defmodule Money.Ecto.Test do
 
     test "#{inspect(ecto_type_module)}: cast a map with string keys and invalid currency" do
       assert unquote(ecto_type_module).cast(%{"currency" => "AAA", "amount" => 100}) ==
-               {:error, {Cldr.UnknownCurrencyError, "The currency \"AAA\" is invalid"}}
+               {:error, message: "The currency \"AAA\" is invalid"}
     end
 
     test "#{inspect(ecto_type_module)}: cast a map with atom keys and values" do
@@ -94,7 +97,7 @@ defmodule Money.Ecto.Test do
 
     test "#{inspect(ecto_type_module)}: cast a map with atom keys and invalid currency" do
       assert unquote(ecto_type_module).cast(%{currency: "AAA", amount: 100}) ==
-               {:error, {Cldr.UnknownCurrencyError, "The currency \"AAA\" is invalid"}}
+               {:error, message: "The currency \"AAA\" is invalid"}
     end
 
     test "#{inspect(ecto_type_module)}: cast a string that includes currency code and amount" do
@@ -110,8 +113,10 @@ defmodule Money.Ecto.Test do
     end
 
     test "#{inspect(ecto_type_module)}: cast an invalid string is an error" do
-      assert unquote(ecto_type_module).cast("100 USD and other stuff") == :error
-      assert unquote(ecto_type_module).cast("100") == :error
+      assert unquote(ecto_type_module).cast("100 USD and other stuff") ==
+        {:error,  message: "Unable to create money from \"usd and other stuff\" and \"100\""}
+      assert unquote(ecto_type_module).cast("100") ==
+        {:error, message: "A currency code must be specified but was not found in \"100\""}
     end
 
     test "#{inspect(ecto_type_module)}: cast anything else is an error" do

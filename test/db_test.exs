@@ -16,14 +16,14 @@ defmodule Money.DB.Test do
     assert Money.cmp(sum, Money.new(:USD, 300))
   end
 
-  test "Repo.aggregate function sum on a :money_with_currency type" do
-    m = Money.new(:USD, 100)
-    {:ok, _} = Repo.insert(%Organization{payroll: m})
-    {:ok, _} = Repo.insert(%Organization{payroll: m})
-    {:ok, _} = Repo.insert(%Organization{payroll: m})
-    sum = Repo.aggregate(Organization, :sum, :payroll)
-    assert Money.cmp(sum, Money.new(:USD, 300))
-  end
+  # test "Repo.aggregate function sum on a :money_with_currency type" do
+  #   m = Money.new(:USD, 100)
+  #   {:ok, _} = Repo.insert(%Organization{payroll: m})
+  #   {:ok, _} = Repo.insert(%Organization{payroll: m})
+  #   {:ok, _} = Repo.insert(%Organization{payroll: m})
+  #   sum = Repo.aggregate(Organization, :sum, :payroll)
+  #   assert Money.cmp(sum, Money.new(:USD, 300))
+  # end
 
   # The following will result in a compile error because `type/2` is not
   # defined

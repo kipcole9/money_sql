@@ -32,12 +32,16 @@ if Code.ensure_loaded?(Ecto.Type) do
       with {:ok, amount} <- Decimal.parse(amount),
            {:ok, currency} <- Money.validate_currency(currency) do
         {:ok, Money.new(currency, amount)}
+      else
+        _ -> :error
       end
     end
 
     def load(%{"currency" => currency, "amount" => amount}) when is_integer(amount) do
       with {:ok, currency} <- Money.validate_currency(currency) do
         {:ok, Money.new(currency, amount)}
+      else
+        _ -> :error
       end
     end
 

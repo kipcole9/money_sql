@@ -1,3 +1,11 @@
+# Changelog for Money_SQL v1.2.1
+
+This is the changelog for Money_SQL v1.2.1 released on November 2nd, 2019.
+
+### Bug Fixes
+
+* Fixes `Money.Ecto.Composite.Type` and `Money.Ecto.Map.Type` by ensuring the `load/1` and `cast/1` callbacks conform to their typespecs.  Thanks to @bgracie. Closes #4 and #5.
+
 # Changelog for Money_SQL v1.2.0
 
 This is the changelog for Money_SQL v1.2.0 released on November 2nd, 2019.
