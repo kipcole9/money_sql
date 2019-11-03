@@ -165,8 +165,16 @@ Since the datatype used to store `Money` in Postgres is a composite type (called
   iex> Repo.all q
   [debug] QUERY OK source="items" db=6.1ms
   SELECT sum(l0."price")::money_with_currency FROM "items" AS l0 []
-  [#Money<:USD, 600.00000000>]
+  [#Money<:USD, 600>]
 ```
+
+The function `Repo.aggregate/3` can also be used. However at least [ecto version 3.2.4](https://hex/pm/packages/ecto/3.2.4) is required for this to work correctly for custom ecto types such as `:money_with_currency`.
+
+```elixir
+  iex> Repo.aggregate(Item, :sum, :price)
+  #Money<:USD, 600>
+```
+
 **Note** that to preserve the integrity of `Money` it is not permissable to aggregate money that has different currencies.  If you attempt to aggregate money with different currencies the query will abort and an exception will be raised:
 ```elixir
   iex> Repo.all q

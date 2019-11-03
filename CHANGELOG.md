@@ -1,10 +1,12 @@
 # Changelog for Money_SQL v1.2.1
 
-This is the changelog for Money_SQL v1.2.1 released on November 2nd, 2019.
+This is the changelog for Money_SQL v1.2.1 released on November 3rd, 2019.
 
 ### Bug Fixes
 
 * Fixes `Money.Ecto.Composite.Type` and `Money.Ecto.Map.Type` by ensuring the `load/1` and `cast/1` callbacks conform to their typespecs.  Thanks to @bgracie. Closes #4 and #5.
+
+* Fixes the migration templates for `money.gen.postgres.aggregate_functions` to use `numeric` intermediate types rather than `numeric(20,8)`. For current installations it should be enough to run `mix money.gen.postgres.aggregate_functions` again followed by `mix ecto.migrate` to install the corrected aggregate function.
 
 # Changelog for Money_SQL v1.2.0
 
