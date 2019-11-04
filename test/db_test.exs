@@ -25,4 +25,15 @@ defmodule Money.DB.Test do
     assert Money.cmp(sum, Money.new(:USD, 300))
   end
 
+  test "Exception is raised if trying to sum different currencies" do
+    m = Money.new(:USD, 100)
+    m2 = Money.new(:AUD, 100)
+    {:ok, _} = Repo.insert(%Organization{payroll: m})
+    {:ok, _} = Repo.insert(%Organization{payroll: m})
+    {:ok, _} = Repo.insert(%Organization{payroll: m2})
+    assert_raise Postgrex.Error, fn ->
+      Repo.aggregate(Organization, :sum, :payroll)
+    end
+  end
+
 end
