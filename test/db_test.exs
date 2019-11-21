@@ -36,4 +36,16 @@ defmodule Money.DB.Test do
     end
   end
 
+  test "select distinct aggregate function sum on a :money_with_currency type" do
+    m = Money.new(:USD, 100)
+    {:ok, _} = Repo.insert(%Organization{payroll: m})
+    {:ok, _} = Repo.insert(%Organization{payroll: m})
+    {:ok, _} = Repo.insert(%Organization{payroll: m})
+    {:ok, _} = Repo.insert(%Organization{payroll: Money.new(:USD, 200)})
+
+    query = select(Organization, [o], type(fragment("SUM(DISTINCT ?)", o.payroll), o.payroll))
+    sum = query |> Repo.one
+    assert Money.cmp(sum, Money.new(:USD, 300))
+  end
+
 end
