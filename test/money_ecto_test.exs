@@ -114,9 +114,9 @@ defmodule Money.Ecto.Test do
 
     test "#{inspect(ecto_type_module)}: cast an invalid string is an error" do
       assert unquote(ecto_type_module).cast("100 USD and other stuff") ==
-        {:error,  message: "Unable to create money from \"usd and other stuff\" and \"100\""}
+        {:error,  message: "The currency \"USD and other stuff\" is unknown or not supported"}
       assert unquote(ecto_type_module).cast("100") ==
-        {:error, message: "A currency code must be specified but was not found in \"100\""}
+        {:error, message: "A currency code, symbol or description must be specified but was not found in \"100\""}
     end
 
     test "#{inspect(ecto_type_module)}: cast anything else is an error" do
