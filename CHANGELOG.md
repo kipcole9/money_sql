@@ -1,3 +1,11 @@
+# Changelog for Money_SQL v1.3.0
+
+This is the changelog for Money_SQL v1.3.0 released on January 30th, 2020.
+
+### Enhancements
+
+* Updates to `ex_money` version `5.0`. Thanks to @morgz
+
 # Changelog for Money_SQL v1.2.1
 
 This is the changelog for Money_SQL v1.2.1 released on November 3rd, 2019.

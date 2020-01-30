@@ -1,7 +1,7 @@
 defmodule Money.Sql.Mixfile do
   use Mix.Project
 
-  @version "1.2.1"
+  @version "1.3.0"
 
   def project do
     [
@@ -76,9 +76,9 @@ defmodule Money.Sql.Mixfile do
 
   defp deps do
     [
-      {:ex_money, "~> 5.0.1"},
+      {:ex_money, "~> 5.0"},
       {:jason, "~> 1.0"},
-      {:dialyxir, "~> 1.0.0-rc.4", only: [:dev], runtime: false},
+      {:dialyxir, "~> 1.0.0-rc", only: [:dev], runtime: false},
       {:ecto_sql, "~> 3.0"},
       {:postgrex, "~> 0.15"},
       {:benchee, "~> 1.0", optional: true, only: :dev},
