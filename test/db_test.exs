@@ -14,7 +14,7 @@ defmodule Money.DB.Test do
     {:ok, _} = Repo.insert(%Organization{payroll: m})
     {:ok, _} = Repo.insert(%Organization{payroll: m})
     sum = select(Organization, [o], type(sum(o.payroll), o.payroll)) |> Repo.one
-    assert Money.compare(sum, Money.new(:USD, 300))
+    assert Money.compare(sum, Money.new(:USD, 300)) == :eq
   end
 
   test "Repo.aggregate function sum on a :money_with_currency type" do
@@ -23,7 +23,7 @@ defmodule Money.DB.Test do
     {:ok, _} = Repo.insert(%Organization{payroll: m})
     {:ok, _} = Repo.insert(%Organization{payroll: m})
     sum = Repo.aggregate(Organization, :sum, :payroll)
-    assert Money.compare(sum, Money.new(:USD, 300))
+    assert Money.compare(sum, Money.new(:USD, 300)) == :eq
   end
 
   test "Exception is raised if trying to sum different currencies" do
@@ -46,7 +46,25 @@ defmodule Money.DB.Test do
 
     query = select(Organization, [o], type(fragment("SUM(DISTINCT ?)", o.payroll), o.payroll))
     sum = query |> Repo.one
-    assert Money.compare(sum, Money.new(:USD, 300))
+    assert Money.compare(sum, Money.new(:USD, 300)) == :eq
+  end
+
+  test "filter on a currency type" do
+    m = Money.new(:USD, 100)
+    m2 = Money.new(:AUD, 200)
+
+    {:ok, _} = Repo.insert(%Organization{payroll: m})
+    {:ok, _} = Repo.insert(%Organization{payroll: m2})
+    {:ok, _} = Repo.insert(%Organization{payroll: m})
+    {:ok, _} = Repo.insert(%Organization{payroll: m2})
+
+    query = from o in Organization,
+              where: fragment("currency_code(payroll)") == "USD",
+              select: sum(o.payroll)
+
+    result = query |> Repo.one
+
+    assert result == Money.new(:USD, 200)
   end
 
 end
