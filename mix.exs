@@ -70,7 +70,7 @@ defmodule Money.Sql.Mixfile do
 
   defp aliases do
     [
-     test: ["ecto.drop --quiet", "ecto.create --quiet", "ecto.migrate", "test"]
+     test: ["ecto.drop --quiet", "ecto.create --quiet", "ecto.migrate --quiet", "test"]
     ]
   end
 
@@ -78,7 +78,7 @@ defmodule Money.Sql.Mixfile do
     [
       {:ex_money, "~> 5.0"},
       {:jason, "~> 1.0"},
-      {:dialyxir, "~> 1.0.0-rc", only: [:dev], runtime: false},
+      {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:ecto_sql, "~> 3.0"},
       {:postgrex, "~> 0.15"},
       {:benchee, "~> 1.0", optional: true, only: :dev},
@@ -100,7 +100,7 @@ defmodule Money.Sql.Mixfile do
     end
   end
 
-  defp elixirc_paths(:test), do: ["lib", "test", "test/support"]
+  defp elixirc_paths(:test), do: ["lib", "test", "mix", "test/support"]
   defp elixirc_paths(:dev), do: ["lib", "mix"]
   defp elixirc_paths(_), do: ["lib"]
 end
