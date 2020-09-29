@@ -29,7 +29,7 @@ if Code.ensure_loaded?(Ecto.Type) do
     end
 
     def load(%{"currency" => currency, "amount" => amount}) when is_binary(amount) do
-      with {:ok, amount} <- Decimal.parse(amount),
+      with {amount, ""} <- Cldr.Decimal.parse(amount),
            {:ok, currency} <- Money.validate_currency(currency) do
         {:ok, Money.new(currency, amount)}
       else

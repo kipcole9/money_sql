@@ -1,3 +1,11 @@
+# Changelog for Money_SQL v1.3.1
+
+This is the changelog for Money_SQL v1.3.1 released on September 30th, 2020.
+
+### Bug Fixes
+
+* Fixes compatibility with both `Decimal` version `1.x` and `2.x`. Thanks to @doughsay and @coladarci for the report. Closes #8.
+
 # Changelog for Money_SQL v1.3.0
 
 This is the changelog for Money_SQL v1.3.0 released on January 30th, 2020.
