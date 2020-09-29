@@ -84,21 +84,8 @@ defmodule Money.Sql.Mixfile do
       {:postgrex, "~> 0.15"},
       {:benchee, "~> 1.0", optional: true, only: :dev},
       {:exprof, "~> 0.2", only: :dev, runtime: false},
-      ex_doc_version(System.version())
+      {:ex_doc, "~> 0.22", only: [:dev, :test, :release]}
     ]
-  end
-
-  defp ex_doc_version(version) do
-    cond do
-      Version.compare(version, "1.7.0") in [:gt, :eq] ->
-        {:ex_doc, "~> 0.19", only: [:dev, :release]}
-
-      Version.compare(version, "1.6.0") == :lt ->
-        {:ex_doc, ">= 0.17.0 and < 0.18.0", only: [:dev, :release]}
-
-      Version.compare(version, "1.7.0") == :lt ->
-        {:ex_doc, ">= 0.18.0 and < 0.19.0", only: [:dev, :release]}
-    end
   end
 
   defp elixirc_paths(:test), do: ["lib", "test", "mix", "test/support"]
