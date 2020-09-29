@@ -76,7 +76,6 @@ defmodule Money.Sql.Mixfile do
 
   defp deps do
     [
-      {:cldr_utils, "~> 2.13"},
       {:ex_money, "~> 5.0"},
       {:jason, "~> 1.0"},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
