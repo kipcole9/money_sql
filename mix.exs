@@ -83,7 +83,8 @@ defmodule Money.Sql.Mixfile do
       {:postgrex, "~> 0.15"},
       {:benchee, "~> 1.0", optional: true, only: :dev},
       {:exprof, "~> 0.2", only: :dev, runtime: false},
-      {:ex_doc, "~> 0.22", only: [:dev, :test, :release]}
+      {:ex_doc, "~> 0.22", only: [:dev, :test, :release]},
+      {:earmark, "~> 1.4", only: [:dev, :test, :release]}
     ]
   end
 

@@ -11,9 +11,7 @@ if Code.ensure_loaded?(Ecto.Type) do
     JSON representation of a numeric value is either an integer or a float.
 
     `Decimal.to_string/1` is not guaranteed to produce a string that will round-trip
-    convert back to the identical number.  However given enough precision in the
-    `Decimal.get_context/0` then round trip conversion should be expected.  The default
-    precision in the context is 28 digits.
+    convert back to the identical number.
     """
 
     @behaviour Ecto.Type
