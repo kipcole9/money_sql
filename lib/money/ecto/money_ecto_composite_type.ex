@@ -76,7 +76,7 @@ if Code.ensure_loaded?(Ecto.Type) do
         {:ok, Money.new(currency_code, amount, params)}
       else
         {:error, {_, message}} -> {:error, message: message}
-        :error -> {:error, message: "Couldn't parse amount #{inspect amount}"}
+        {:error, _value} -> {:error, message: "Couldn't parse amount #{inspect amount}"}
       end
     end
 

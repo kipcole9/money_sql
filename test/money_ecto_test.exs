@@ -121,5 +121,9 @@ defmodule Money.Ecto.Test do
     test "#{inspect(ecto_type_module)}: cast anything else is an error" do
       assert unquote(ecto_type_module).cast(:atom) == :error
     end
+
+    test "#{inspect(ecto_type_module)}: cast amount error does not raise" do
+      assert unquote(ecto_type_module).cast(%{"currency" => "USD", "amount" => "yes"})
+    end
   end
 end
