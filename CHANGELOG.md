@@ -1,6 +1,6 @@
 # Changelog for Money_SQL v1.4.0
 
-This is the changelog for Money_SQL v1.4.0 released on ____, 2021.
+This is the changelog for Money_SQL v1.4.0 released on February 10th, 2021.
 
 ### Bug Fixes
 
