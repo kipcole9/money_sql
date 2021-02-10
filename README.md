@@ -1,6 +1,6 @@
 # Introduction to Money SQL
 ![Build Status](http://sweatbox.noexpectations.com.au:8080/buildStatus/icon?job=money_sql_)
-[![Hex pm](http://img.shields.io/hexpm/v/ex_money.svg?style=flat)](https://hex.pm/packages/ex_money_sql)
+[![Hex pm](http://img.shields.io/hexpm/v/ex_money_sql.svg?style=flat)](https://hex.pm/packages/ex_money_sql)
 [![License](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://github.com/kipcole9/money_sql/blob/master/LICENSE)
 
 Money_SQL implements a set of functions to store and retrieve data structured as a `%Money{}` type that is composed of an ISO 4217 currency code and a currency amount. See [ex_money](https://hex.pm/packages/ex_money) for details of using `Money`.  Note that `ex_money_sql` depends on `ex_money`.
