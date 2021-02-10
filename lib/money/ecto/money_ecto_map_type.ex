@@ -14,40 +14,50 @@ if Code.ensure_loaded?(Ecto.Type) do
     convert back to the identical number.
     """
 
-    @behaviour Ecto.Type
+    use Ecto.ParameterizedType
 
+    defdelegate init(params), to: Money.Ecto.Composite.Type
     defdelegate cast(money), to: Money.Ecto.Composite.Type
+    defdelegate cast(money, params), to: Money.Ecto.Composite.Type
 
     # New for ecto_sql 3.2
-    defdelegate  embed_as(term), to: Money.Ecto.Composite.Type
-    defdelegate  equal?(term1, term2), to: Money.Ecto.Composite.Type
+    defdelegate  embed_as(term, params), to: Money.Ecto.Composite.Type
+    defdelegate  equal?(term1, term2, params), to: Money.Ecto.Composite.Type
 
-    def type() do
+    def type(_params) do
       :map
     end
 
-    def load(%{"currency" => currency, "amount" => amount}) when is_binary(amount) do
+    def load(money, loader \\ nil, params \\ [])
+
+    def load(nil, _loader, _params) do
+      {:ok, nil}
+    end
+
+    def load(%{"currency" => currency, "amount" => amount}, _loader, params) when is_binary(amount) do
       with {amount, ""} <- Cldr.Decimal.parse(amount),
            {:ok, currency} <- Money.validate_currency(currency) do
-        {:ok, Money.new(currency, amount)}
+        {:ok, Money.new(currency, amount, params)}
       else
         _ -> :error
       end
     end
 
-    def load(%{"currency" => currency, "amount" => amount}) when is_integer(amount) do
+    def load(%{"currency" => currency, "amount" => amount}, _loader, params) when is_integer(amount) do
       with {:ok, currency} <- Money.validate_currency(currency) do
-        {:ok, Money.new(currency, amount)}
+        {:ok, Money.new(currency, amount, params)}
       else
         _ -> :error
       end
     end
 
-    def dump(%Money{currency: currency, amount: %Decimal{} = amount}) do
+    def dump(money, dumper \\ nil, params \\ [])
+
+    def dump(%Money{currency: currency, amount: %Decimal{} = amount}, _dumper, _params) do
       {:ok, %{"currency" => to_string(currency), "amount" => Decimal.to_string(amount)}}
     end
 
-    def dump(_) do
+    def dump(_, _, _) do
       :error
     end
 

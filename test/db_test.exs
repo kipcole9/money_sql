@@ -3,9 +3,17 @@ defmodule Money.DB.Test do
 
   test "insert a record with a money amount" do
     m = Money.new(:USD, 100)
-    Repo.insert(%Organization{payroll: m})
     assert {:ok, struct} = Repo.insert(%Organization{payroll: m})
     assert Money.compare(m, struct.payroll) == :eq
+  end
+
+  test "insert a record with a money amount with params" do
+    m = Money.new(:USD, 100)
+    {:ok, _} = Repo.insert(%Organization{name: "a", tax: m})
+    struct = Repo.get_by(Organization, name: "a")
+
+    assert Money.compare(m, struct.tax) == :eq
+    assert struct.tax.format_options == [fractional_digits: 4]
   end
 
   test "select aggregate function sum on a :money_with_currency type" do
