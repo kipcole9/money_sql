@@ -4,7 +4,7 @@ This is the changelog for Money_SQL v1.4.0 released on February 10th, 2021.
 
 ### Bug Fixes
 
-* Fix parsing error handling in `Money.Ecto.Composite.Type.cast/3`. Thanks to @NikitaAvvakumov. Closes #10.
+* Fix parsing error handling in `Money.Ecto.Composite.Type.cast/2`. Thanks to @NikitaAvvakumov. Closes #10.
 
 * Fix casting localized amounts. Thanks to @olivermt. Closes #11.
 
