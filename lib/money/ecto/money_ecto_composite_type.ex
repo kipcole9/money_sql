@@ -61,9 +61,8 @@ if Code.ensure_loaded?(Ecto.Type) do
 
     def cast(%{"currency" => currency, "amount" => amount}, params)
         when (is_binary(currency) or is_atom(currency)) and is_integer(amount) do
-      with decimal_amount <- Decimal.new(amount),
-           {:ok, currency_code} <- Money.validate_currency(currency) do
-        {:ok, Money.new(currency_code, decimal_amount, params)}
+      with money when is_struct(money) <- Money.new(currency, amount, params) do
+        {:ok, money}
       else
         {:error, {_, message}} -> {:error, message: message}
       end
@@ -71,19 +70,17 @@ if Code.ensure_loaded?(Ecto.Type) do
 
     def cast(%{"currency" => currency, "amount" => amount}, params)
         when (is_binary(currency) or is_atom(currency)) and is_binary(amount) do
-      with {amount, ""} <- Cldr.Decimal.parse(amount),
-           {:ok, currency_code} <- Money.validate_currency(currency) do
-        {:ok, Money.new(currency_code, amount, params)}
+      with money when is_struct(money) <- Money.new(currency, amount, params) do
+        {:ok, money}
       else
         {:error, {_, message}} -> {:error, message: message}
-        {:error, _value} -> {:error, message: "Couldn't parse amount #{inspect amount}"}
       end
     end
 
     def cast(%{"currency" => currency, "amount" => %Decimal{} = amount}, params)
         when is_binary(currency) or is_atom(currency) do
-      with {:ok, currency_code} <- Money.validate_currency(currency) do
-        {:ok, Money.new(currency_code, amount, params)}
+      with money when is_struct(money) <- Money.new(currency, amount, params) do
+        {:ok, money}
       else
         {:error, {_, message}} -> {:error, message: message}
       end

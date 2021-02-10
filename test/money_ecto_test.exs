@@ -125,5 +125,11 @@ defmodule Money.Ecto.Test do
     test "#{inspect(ecto_type_module)}: cast amount error does not raise" do
       assert unquote(ecto_type_module).cast(%{"currency" => "USD", "amount" => "yes"})
     end
+
+    test "#{inspect(ecto_type_module)}: cast localized amount error does not raise" do
+      Cldr.put_locale(Money.Cldr, "de")
+      assert unquote(ecto_type_module).cast(%{currency: :NOK, amount: "218,75"})
+      Cldr.put_locale(Money.Cldr, "en")
+    end
   end
 end

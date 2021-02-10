@@ -6,6 +6,8 @@ This is the changelog for Money_SQL v1.4.0 released on ____, 2021.
 
 * Fix parsing error handling in `Money.Ecto.Composite.Type.cast/3`. Thanks to @NikitaAvvakumov. Closes #10.
 
+* Fix casting localized amounts. Thanks to @olivermt. Closes #11.
+
 ### Enhancements
 
 * Changes `Money.Ecto.Composite.Type` and `Money.Ecto.Map.Type` to be `ParameterizedType`. As a result, Ecto 3.5 or later is required. This change allows configuration of format options for the `:money_with_currency` to added as parameters in the Ecto schema.  For the example schema:
