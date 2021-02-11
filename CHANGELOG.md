@@ -1,3 +1,19 @@
+# Changelog for Money_SQL v1.4.2
+
+This is the changelog for Money_SQL v1.4.2 released on February 12th, 2021.
+
+### Bug Fixes
+
+* Dumping/loading `nil` returns `{:ok, nil}`.  Thanks to @morinap.
+
+# Changelog for Money_SQL v1.4.1
+
+This is the changelog for Money_SQL v1.4.1 released on February 11th, 2021.
+
+### Bug Fixes
+
+* Casting `nil` returns `{:ok, nil}`.  Thanks to @morinap.
+
 # Changelog for Money_SQL v1.4.0
 
 This is the changelog for Money_SQL v1.4.0 released on February 10th, 2021.

@@ -57,6 +57,10 @@ if Code.ensure_loaded?(Ecto.Type) do
       {:ok, %{"currency" => to_string(currency), "amount" => Decimal.to_string(amount)}}
     end
 
+    def dump(nil, _, _) do
+      {:ok, nil}
+    end
+
     def dump(_, _, _) do
       :error
     end

@@ -44,12 +44,20 @@ if Code.ensure_loaded?(Ecto.Type) do
       {:ok, {to_string(money.currency), money.amount}}
     end
 
+    def dump(nil, _, _) do
+      {:ok, nil}
+    end
+
     def dump(_, _, _) do
       :error
     end
 
     # Casting in changesets
     def cast(money, params \\ [])
+
+    def cast(nil, _params) do
+      {:ok, nil}
+    end
 
     def cast(%Money{} = money, _params) do
       {:ok, money}

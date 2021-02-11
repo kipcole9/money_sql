@@ -128,8 +128,20 @@ defmodule Money.Ecto.Test do
 
     test "#{inspect(ecto_type_module)}: cast localized amount error does not raise" do
       Cldr.put_locale(Money.Cldr, "de")
-      assert unquote(ecto_type_module).cast(%{currency: :NOK, amount: "218,75"})
+      assert unquote(ecto_type_module).cast(%{currency: :NOK, amount: "218,75"}) == {:ok, Money.from_float(:NOK, 218.75)}
       Cldr.put_locale(Money.Cldr, "en")
+    end
+
+    test "#{inspect(ecto_type_module)}: cast nil returns nil" do
+      assert unquote(ecto_type_module).cast(nil) == {:ok, nil}
+    end
+
+    test "#{inspect(ecto_type_module)}: dumo nil returns nil" do
+      assert unquote(ecto_type_module).dump(nil) == {:ok, nil}
+    end
+
+    test "#{inspect(ecto_type_module)}: load nil returns nil" do
+      assert unquote(ecto_type_module).load(nil) == {:ok, nil}
     end
   end
 end

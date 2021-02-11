@@ -75,4 +75,10 @@ defmodule Money.DB.Test do
     assert result == Money.new(:USD, 200)
   end
 
+  test "nil values for money is ok" do
+    assert {:ok, _} = Repo.insert(%Organization{name: "a", payroll: nil})
+    organization = Repo.get_by(Organization, name: "a")
+    assert is_nil(organization.payroll)
+  end
+
 end
