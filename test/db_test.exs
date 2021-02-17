@@ -16,6 +16,16 @@ defmodule Money.DB.Test do
     assert struct.tax.format_options == [fractional_digits: 4]
   end
 
+  test "insert a record with a default money amount without params" do
+    m = Money.new(:USD, 0)
+    {:ok, _} = Repo.insert(%Organization{name: "a"})
+    struct = Repo.get_by(Organization, name: "a")
+
+    assert struct.value == m
+    assert Money.compare(m, struct.value) == :eq
+    assert struct.value.format_options == []
+  end
+
   test "select aggregate function sum on a :money_with_currency type" do
     m = Money.new(:USD, 100)
     {:ok, _} = Repo.insert(%Organization{payroll: m})

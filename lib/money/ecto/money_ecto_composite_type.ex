@@ -18,6 +18,7 @@ if Code.ensure_loaded?(Ecto.Type) do
       opts
       |> Keyword.delete(:field)
       |> Keyword.delete(:schema)
+      |> Keyword.delete(:default)
     end
 
     # When loading from the database
@@ -108,6 +109,5 @@ if Code.ensure_loaded?(Ecto.Type) do
     def cast(_money, _params) do
       :error
     end
-
   end
 end
