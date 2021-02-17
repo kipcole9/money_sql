@@ -1,3 +1,11 @@
+# Changelog for Money_SQL v1.4.3
+
+This is the changelog for Money_SQL v1.4.3 released on February 17th, 2021.
+
+### Bug Fixes
+
+* Don't propogate a `:default` option into the `t:Money` from the schema. Fixes #14. Thanks to @emaiax.
+
 # Changelog for Money_SQL v1.4.2
 
 This is the changelog for Money_SQL v1.4.2 released on February 12th, 2021.

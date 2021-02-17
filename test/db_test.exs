@@ -55,6 +55,24 @@ defmodule Money.DB.Test do
     end
   end
 
+  test "aggregate from a keyword query using a schema module" do
+    m = Money.new(:USD, 100)
+    m2 = Money.new(:USD, 100)
+    {:ok, _} = Repo.insert(%Organization{payroll: m})
+    {:ok, _} = Repo.insert(%Organization{payroll: m})
+    {:ok, _} = Repo.insert(%Organization{payroll: m2})
+
+    query =
+      from(
+        organization in Organization,
+        select: %{
+          total: type(sum(organization.payroll), organization.payroll)
+        }
+      )
+
+    assert Repo.all(query) == [%{total: Money.new(:USD, 300)}]
+  end
+
   test "select distinct aggregate function sum on a :money_with_currency type" do
     m = Money.new(:USD, 100)
     {:ok, _} = Repo.insert(%Organization{payroll: m})
