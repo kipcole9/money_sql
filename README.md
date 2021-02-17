@@ -1,5 +1,5 @@
 # Introduction to Money SQL
-![Build Status](http://sweatbox.noexpectations.com.au:8080/buildStatus/icon?job=money_sql_)
+![Build Status](http://sweatbox.noexpectations.com.au:8080/buildStatus/icon?job=money_sql)
 [![Hex pm](http://img.shields.io/hexpm/v/ex_money_sql.svg?style=flat)](https://hex.pm/packages/ex_money_sql)
 [![License](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://github.com/kipcole9/money_sql/blob/master/LICENSE)
 
