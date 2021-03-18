@@ -79,7 +79,6 @@ defmodule Money.Sql.Mixfile do
       {:ex_money, "~> 5.5"},
       {:jason, "~> 1.0"},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
-      # {:ecto, github: "elixir-ecto/ecto", override: true},
       {:ecto, "~> 3.5"},
       {:ecto_sql, "~> 3.0"},
       {:postgrex, "~> 0.15"},

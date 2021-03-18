@@ -85,7 +85,7 @@ defmodule Money.DB.Test do
           organization in "organizations",
           select: %{
             total: type(sum(organization.payroll),
-              ^{:parameterized, Money.Ecto.Composite.Type, []}
+              ^Money.Ecto.Composite.Type.cast_type()
             )
           }
         )
@@ -104,13 +104,24 @@ defmodule Money.DB.Test do
           organization in "organizations",
           select: %{
             total: type(sum(organization.payroll),
-              ^{:parameterized, Money.Ecto.Composite.Type, []}
+              ^Money.Ecto.Composite.Type.cast_type()
             )
           }
         )
 
       assert Repo.all(query) == [%{total: Money.new(:USD, 300)}]
     end
+  end
+
+  test "select using Ecto functional query composition" do
+    m = Money.new(:USD, 100)
+    {:ok, _} = Repo.insert(%Organization{payroll: m})
+
+    query =
+      from(Organization)
+      |> select([o], %{money: o.payroll})
+
+    assert [%{money: ^m}] = Repo.all(query)
   end
 
   test "select distinct aggregate function sum on a :money_with_currency type" do
