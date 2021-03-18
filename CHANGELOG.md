@@ -1,3 +1,11 @@
+# Changelog for Money_SQL v1.4.4
+
+This is the changelog for Money_SQL v1.4.4 released on March 18th, 2021.
+
+### Bug Fixes
+
+* Don't use `is_struct/1` guard to support compatibility on older Elixir releases
+
 # Changelog for Money_SQL v1.4.3
 
 This is the changelog for Money_SQL v1.4.3 released on February 17th, 2021.

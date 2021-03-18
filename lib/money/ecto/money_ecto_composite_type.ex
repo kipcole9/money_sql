@@ -78,7 +78,7 @@ if Code.ensure_loaded?(Ecto.Type) do
 
     def cast(%{"currency" => currency, "amount" => amount}, params)
         when (is_binary(currency) or is_atom(currency)) and is_integer(amount) do
-      with money when is_struct(money) <- Money.new(currency, amount, params) do
+      with %{__struct__: Money} = money <- Money.new(currency, amount, params) do
         {:ok, money}
       else
         {:error, {_, message}} -> {:error, message: message}
@@ -87,7 +87,7 @@ if Code.ensure_loaded?(Ecto.Type) do
 
     def cast(%{"currency" => currency, "amount" => amount}, params)
         when (is_binary(currency) or is_atom(currency)) and is_binary(amount) do
-      with money when is_struct(money) <- Money.new(currency, amount, params) do
+      with %{__struct__: Money} = money <- Money.new(currency, amount, params) do
         {:ok, money}
       else
         {:error, {_, message}} -> {:error, message: message}
@@ -96,7 +96,7 @@ if Code.ensure_loaded?(Ecto.Type) do
 
     def cast(%{"currency" => currency, "amount" => %Decimal{} = amount}, params)
         when is_binary(currency) or is_atom(currency) do
-      with money when is_struct(money) <- Money.new(currency, amount, params) do
+      with %{__struct__: Money} = money <- Money.new(currency, amount, params) do
         {:ok, money}
       else
         {:error, {_, message}} -> {:error, message: message}
