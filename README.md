@@ -5,6 +5,18 @@
 
 Money_SQL implements a set of functions to store and retrieve data structured as a `%Money{}` type that is composed of an ISO 4217 currency code and a currency amount. See [ex_money](https://hex.pm/packages/ex_money) for details of using `Money`.  Note that `ex_money_sql` depends on `ex_money`.
 
+## Migrating from Money SQL versions 1.3 or earlier
+
+As of [ex_money_sql version 1.4.0](https://hex.pm/packages/ex_money_sql/1.4.0) the composite type for postgres, `Money.Ecto.Composite.Type` is defined as a [parameterized type](https://hexdocs.pm/ecto/Ecto.ParameterizedType.html). This is compatible with earlier versions with the exception of the behaviour of the `type/2` macro used to cast results. These calls have to be changed as follows:
+
+```elixir
+# ex_money_sql version 1.3 and earlier
+where(Credit, [c], c.price < type(^value, Money.Ecto.Composite.Type))
+
+# ex_money_sql version 1.4 and later
+where(Credit, [c], c.price < type(^value, ^Money.Ecto.Composite.Type.cast_type()))
+```
+
 ## Prerequisities
 
 * `Money_SQL` is supported on Elixir 1.6 and later only

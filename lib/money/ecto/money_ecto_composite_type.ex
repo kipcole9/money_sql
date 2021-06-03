@@ -14,12 +14,8 @@ if Code.ensure_loaded?(Ecto.Type) do
       :money_with_currency
     end
 
-    # Returns a tuple that can be used with
-    # Ecto's `type/2` macro to cast a value
-    if function_exported?(Ecto.ParamaterizedType, :init, 2) do
-      def cast_type(opts \\ []) do
-        Ecto.ParamaterizedType.init(__MODULE__, opts)
-      end
+    def cast_type(opts \\ []) do
+      Ecto.ParameterizedType.init(__MODULE__, opts)
     end
 
     def init(opts) do

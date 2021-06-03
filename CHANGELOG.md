@@ -1,4 +1,16 @@
-# Changelog for Money_SQL v1.4.4
+# Changelog
+
+**When upgrading from `ex_money_sql` version `1.3.x` to `1.4.x` and later, please read the important migration information in the [README](/readme.html#migrating-from-money-sql-versions-1-3-or-earlier)**
+
+## Money_SQL v1.4.5
+
+This is the changelog for Money_SQL v1.4.5 released on June 3rd, 2021.
+
+### Bug Fixes
+
+* Remove conditional compilation in `Money.Ecto.Composite.Type` - the type is always `Ecto.ParameterizedType`.
+
+## Money_SQL v1.4.4
 
 This is the changelog for Money_SQL v1.4.4 released on March 18th, 2021.
 
@@ -6,7 +18,7 @@ This is the changelog for Money_SQL v1.4.4 released on March 18th, 2021.
 
 * Don't use `is_struct/1` guard to support compatibility on older Elixir releases
 
-# Changelog for Money_SQL v1.4.3
+## Money_SQL v1.4.3
 
 This is the changelog for Money_SQL v1.4.3 released on February 17th, 2021.
 
@@ -14,7 +26,7 @@ This is the changelog for Money_SQL v1.4.3 released on February 17th, 2021.
 
 * Don't propogate a `:default` option into the `t:Money` from the schema. Fixes #14. Thanks to @emaiax.
 
-# Changelog for Money_SQL v1.4.2
+## Money_SQL v1.4.2
 
 This is the changelog for Money_SQL v1.4.2 released on February 12th, 2021.
 
@@ -22,7 +34,7 @@ This is the changelog for Money_SQL v1.4.2 released on February 12th, 2021.
 
 * Dumping/loading `nil` returns `{:ok, nil}`.  Thanks to @morinap.
 
-# Changelog for Money_SQL v1.4.1
+## Money_SQL v1.4.1
 
 This is the changelog for Money_SQL v1.4.1 released on February 11th, 2021.
 
@@ -30,7 +42,7 @@ This is the changelog for Money_SQL v1.4.1 released on February 11th, 2021.
 
 * Casting `nil` returns `{:ok, nil}`.  Thanks to @morinap.
 
-# Changelog for Money_SQL v1.4.0
+## Money_SQL v1.4.0
 
 This is the changelog for Money_SQL v1.4.0 released on February 10th, 2021.
 
@@ -59,7 +71,7 @@ end
 ```
 The field `:tax` will be instantiated as a `Money.t` with `:format_options` of `fractional_digits: 4`.
 
-# Changelog for Money_SQL v1.3.1
+## Money_SQL v1.3.1
 
 This is the changelog for Money_SQL v1.3.1 released on September 30th, 2020.
 
@@ -67,7 +79,7 @@ This is the changelog for Money_SQL v1.3.1 released on September 30th, 2020.
 
 * Fixes compatibility with both `Decimal` version `1.x` and `2.x`. Thanks to @doughsay and @coladarci for the report. Closes #8.
 
-# Changelog for Money_SQL v1.3.0
+## Money_SQL v1.3.0
 
 This is the changelog for Money_SQL v1.3.0 released on January 30th, 2020.
 
@@ -75,7 +87,7 @@ This is the changelog for Money_SQL v1.3.0 released on January 30th, 2020.
 
 * Updates to `ex_money` version `5.0`. Thanks to @morgz
 
-# Changelog for Money_SQL v1.2.1
+## Money_SQL v1.2.1
 
 This is the changelog for Money_SQL v1.2.1 released on November 3rd, 2019.
 
@@ -85,7 +97,7 @@ This is the changelog for Money_SQL v1.2.1 released on November 3rd, 2019.
 
 * Fixes the migration templates for `money.gen.postgres.aggregate_functions` to use `numeric` intermediate types rather than `numeric(20,8)`. For current installations it should be enough to run `mix money.gen.postgres.aggregate_functions` again followed by `mix ecto.migrate` to install the corrected aggregate function.
 
-# Changelog for Money_SQL v1.2.0
+## Money_SQL v1.2.0
 
 This is the changelog for Money_SQL v1.2.0 released on November 2nd, 2019.
 
@@ -97,7 +109,7 @@ This is the changelog for Money_SQL v1.2.0 released on November 2nd, 2019.
 
 * Adds `equal?/2` callbacks to the `Money.Ecto.Composite.Type` and `Money.Ecto.Map.Type` for `ecto_sql` version 3.2
 
-# Changelog for Money_SQL v1.1.0
+## Money_SQL v1.1.0
 
 This is the changelog for Money_SQL v1.1.0 released on August 22nd, 2019.
 
@@ -109,7 +121,7 @@ This is the changelog for Money_SQL v1.1.0 released on August 22nd, 2019.
 
 * Correctly generate and execute migrations.  Fixes #1 and #2.  Thanks to @davidsulc, @KungPaoChicken.
 
-# Changelog for Money_SQL v1.0.0
+## Money_SQL v1.0.0
 
 This is the changelog for Money_SQL v1.0.0 released on July 8th, 2019.
 

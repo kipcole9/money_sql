@@ -73,44 +73,41 @@ defmodule Money.DB.Test do
     assert Repo.all(query) == [%{total: Money.new(:USD, 300)}]
   end
 
-  if function_exported?(Ecto.ParamaterizedType, :init, 2) do
-    test "aggregate from a keyword query using a schemaLESS query" do
-      m = Money.new(:USD, 100)
-      {:ok, _} = Repo.insert(%Organization{payroll: m})
-      {:ok, _} = Repo.insert(%Organization{payroll: m})
-      {:ok, _} = Repo.insert(%Organization{payroll: m})
+  test "keyword query using a schema module casting with a type" do
+    m = Money.new(:USD, 100)
+    m2 = Money.new(:USD, 100)
+    {:ok, _} = Repo.insert(%Organization{payroll: m})
+    {:ok, _} = Repo.insert(%Organization{payroll: m})
+    {:ok, _} = Repo.insert(%Organization{payroll: m2})
 
-      query =
-        from(
-          organization in "organizations",
-          select: %{
-            total: type(sum(organization.payroll),
-              ^Money.Ecto.Composite.Type.cast_type()
-            )
-          }
-        )
+    query =
+      from(
+        organization in Organization,
+        select: %{
+          total: type(sum(organization.payroll), ^Money.Ecto.Composite.Type.cast_type())
+        }
+      )
 
-      assert Repo.all(query) == [%{total: Money.new(:USD, 300)}]
-    end
+    assert Repo.all(query) == [%{total: Money.new(:USD, 300)}]
+  end
 
-    test "aggregate from a keyword query using a schemaLESS query" do
-      m = Money.new(:USD, 100)
-      {:ok, _} = Repo.insert(%Organization{payroll: m})
-      {:ok, _} = Repo.insert(%Organization{payroll: m})
-      {:ok, _} = Repo.insert(%Organization{payroll: m})
+  test "aggregate from a keyword query using a schemaLESS query" do
+    m = Money.new(:USD, 100)
+    {:ok, _} = Repo.insert(%Organization{payroll: m})
+    {:ok, _} = Repo.insert(%Organization{payroll: m})
+    {:ok, _} = Repo.insert(%Organization{payroll: m})
 
-      query =
-        from(
-          organization in "organizations",
-          select: %{
-            total: type(sum(organization.payroll),
-              ^Money.Ecto.Composite.Type.cast_type()
-            )
-          }
-        )
+    query =
+      from(
+        organization in "organizations",
+        select: %{
+          total: type(sum(organization.payroll),
+            ^Money.Ecto.Composite.Type.cast_type()
+          )
+        }
+      )
 
-      assert Repo.all(query) == [%{total: Money.new(:USD, 300)}]
-    end
+    assert Repo.all(query) == [%{total: Money.new(:USD, 300)}]
   end
 
   test "select using Ecto functional query composition" do
