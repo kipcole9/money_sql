@@ -1,6 +1,6 @@
 # Changelog
 
-**When upgrading from `ex_money_sql` version `1.3.x` to `1.4.x` and later, please read the important migration information in the [README](/readme.html#migrating-from-money-sql-versions-1-3-or-earlier)**
+**When upgrading from `ex_money_sql` version `1.3.x` to `1.4.x` and later, please read the important migration information in the [README](/ex_money_sql/readme.html#migrating-from-money-sql-versions-1-3-or-earlier)**
 
 ## Money_SQL v1.4.5
 
