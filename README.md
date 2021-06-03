@@ -15,6 +15,9 @@ where(Credit, [c], c.price < type(^value, Money.Ecto.Composite.Type))
 
 # ex_money_sql version 1.4 and later
 where(Credit, [c], c.price < type(^value, ^Money.Ecto.Composite.Type.cast_type()))
+
+# When the query is a schema query this is preferred
+where(Credit, [c], c.price < type(^value, c.price))
 ```
 
 ## Prerequisities
