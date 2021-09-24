@@ -31,7 +31,7 @@ where(Credit, [c], c.price < type(^value, c.price))
 1. First generate the migration to create the custom type:
 
 ```elixir
-mix money.gen.postgres.money_with_currency_migration
+mix money.gen.postgres.money_with_currency
 * creating priv/repo/migrations
 * creating priv/repo/migrations/20161007234652_add_money_with_currency_type_to_postgres.exs
 ```
@@ -161,6 +161,24 @@ CAST(JSON_EXTRACT(amount_map, '$.amount') AS DECIMAL(20, 8)) AS amount;
 
 Since the datatype used to store `Money` in Postgres is a composite type (called `:money_with_currency`), the standard aggregation functions like `sum` and `average` are not supported and the `order_by` clause doesn't perform as expected.  `Money` provides mechanisms to provide these functions.
 
+### Plus operator `+`
+
+`Money` defines a migration generator which, when migrated to the database with `mix ecto.migrate`, supports the `+` operator for `:money_with_currency` columns. The steps are:
+
+1. Generate the migration by executing `mix money.gen.postgres.plus_operator`
+
+2. Migrate the database by executing `mix ecto.migrate`
+
+3. Formulate an Ecto query to use the `+` operator
+```elixir
+  iex> q = Ecto.Query.select Item, [l], type(fragment("price + price"), l.price)
+  #Ecto.Query<from l0 in Item, select: type(fragment("price + price"), l0.price)>
+  iex> Repo.one q
+  [debug] QUERY OK source="items" db=5.6ms queue=0.5ms
+  SELECT price + tax::money_with_currency FROM "items" AS l0 []
+  #Money<:USD, 200>]
+```
+
 ### Aggregate functions: sum()
 
 `Money` provides a migration generator which, when migrated to the database with `mix ecto.migrate`, supports performing `sum()` aggregation on `Money` types. The steps are:
@@ -176,7 +194,7 @@ Since the datatype used to store `Money` in Postgres is a composite type (called
   # expression which is needed to inform Ecto of the return
   # type of the function
   iex> q = Ecto.Query.select Item, [l], type(sum(l.price), l.price)
-  #Ecto.Query<from l in Item, select: type(sum(l.price), l.price)>
+  #Ecto.Query<from l0 in Item, select: type(sum(l.price), l.price)>
   iex> Repo.all q
   [debug] QUERY OK source="items" db=6.1ms
   SELECT sum(l0."price")::money_with_currency FROM "items" AS l0 []

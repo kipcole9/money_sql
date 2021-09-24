@@ -7,7 +7,7 @@ if Code.ensure_loaded?(Ecto) do
     import Macro, only: [camelize: 1, underscore: 1]
     import Money.Migration
 
-    @shortdoc "Generates a migration to create aggregate types for money_with_currency"
+    @shortdoc "Generates a migration to create aggregate types for :money_with_currency"
 
     @moduledoc """
     Generates a migration to add a aggregation functions

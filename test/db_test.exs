@@ -157,4 +157,30 @@ defmodule Money.DB.Test do
     assert is_nil(organization.payroll)
   end
 
+  test "Plus operator a :money_with_currency type" do
+    m = Money.new(:USD, 100)
+    {:ok, _} = Repo.insert(%Organization{payroll: m, tax: m})
+
+    query =
+      from o in Organization,
+        select: type(fragment("payroll + tax"), o.payroll)
+
+    assert Repo.one(query) == Money.new(:USD, 200)
+  end
+
+  test "Plus operator with incompatible money currencies" do
+    m = Money.new(:USD, 100)
+    n = Money.new(:AUD, 100)
+
+    {:ok, _} = Repo.insert(%Organization{payroll: m, tax: n})
+
+    query =
+      from o in Organization,
+        select: type(fragment("payroll + tax"), o.payroll)
+
+    assert_raise Postgrex.Error, fn ->
+      Repo.one(query)
+    end
+  end
+
 end

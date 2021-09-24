@@ -2,6 +2,16 @@
 
 **When upgrading from `ex_money_sql` version `1.3.x` to `1.4.x` and later, please read the important migration information in the [README](/ex_money_sql/readme.html#migrating-from-money-sql-versions-1-3-or-earlier)**
 
+## Money_SQL v1.5.0
+
+This is the changelog for Money_SQL v1.5.0 released on September 25th, 2021.
+
+### Enhancements
+
+* Adds a `+` operator for the Postgres type `:money_with_currency`
+
+* The name of the migration to create the `:money_with_currency` type has shortened to be `money.gen.postgres.money_with_currency`
+
 ## Money_SQL v1.4.5
 
 This is the changelog for Money_SQL v1.4.5 released on June 3rd, 2021.

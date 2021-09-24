@@ -1,30 +1,27 @@
 if Code.ensure_loaded?(Ecto) do
-  defmodule Mix.Tasks.Money.Gen.Postgres.MoneyWithCurrency do
+  defmodule Mix.Tasks.Money.Gen.Postgres.PlusOperator do
     use Mix.Task
 
-    import Macro, only: [camelize: 1, underscore: 1]
     import Mix.Generator
     import Mix.Ecto, except: [migrations_path: 1]
+    import Macro, only: [camelize: 1, underscore: 1]
     import Money.Migration
 
-    @shortdoc "Generates a migration to create the :money_with_currency " <>
-                "type for Postgres"
+    @shortdoc "Generates a migration to create a `+` operator for :money_with_currency"
 
     @moduledoc """
-    Generates a migration to add a composite type called `:money_with_currency`
-    to a Postgres database.
+    Generates a migration to add a `+` operator
+    to Postgres for the `money_with_currency` type
 
-    The `:money_with_currency` type created is a composite type and
-    therefore may not be supported in other databases.
     """
 
     @doc false
     @dialyzer {:no_return, run: 1}
 
     def run(args) do
-      no_umbrella!("money.gen.money_with_currency")
+      no_umbrella!("money.gen.postgres.plus_operator")
       repos = parse_repo(args)
-      name = "add_money_with_currency_type_to_postgres"
+      name = "add_postgres_money_plus_operator"
 
       Enum.each(repos, fn repo ->
         ensure_repo(repo, args)
@@ -60,11 +57,11 @@ if Code.ensure_loaded?(Ecto) do
       use Ecto.Migration
 
       def up do
-        <%= Money.DDL.execute(Money.DDL.create_money_with_currency) %>
+        <%= Money.DDL.execute_each(Money.DDL.define_plus_operator) %>
       end
 
       def down do
-        <%= Money.DDL.execute(Money.DDL.drop_money_with_currency) %>
+        <%= Money.DDL.execute_each(Money.DDL.drop_plus_operator) %>
       end
     end
     """)
