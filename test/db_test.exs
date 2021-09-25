@@ -183,4 +183,28 @@ defmodule Money.DB.Test do
     end
   end
 
+  test "plus operator with Ecto multi update :inc" do
+    alias Ecto.Multi
+    amount = Money.new(:USD, 100)
+
+    {:ok, _} = Repo.insert(%Organization{payroll: amount})
+    {:ok, _} = Repo.insert(%Organization{payroll: amount})
+
+    {:ok, %{organization: {2, nil}}} =
+      Multi.new()
+      |> Multi.update_all(
+         :organization,
+         fn _ ->
+           from(o in Organization,
+             update: [inc: [payroll: type(^amount, ^Money.Ecto.Composite.Type.cast_type())]]
+           )
+         end,
+         []
+       )
+      |> Repo.transaction()
+
+    result = (from o in Organization, select: sum(o.payroll)) |> Repo.one()
+    assert result == Money.new(:USD, 400)
+  end
+
 end
