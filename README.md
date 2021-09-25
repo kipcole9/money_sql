@@ -175,7 +175,7 @@ Since the datatype used to store `Money` in Postgres is a composite type (called
   #Ecto.Query<from l0 in Item, select: type(fragment("price + price"), l0.price)>
   iex> Repo.one q
   [debug] QUERY OK source="items" db=5.6ms queue=0.5ms
-  SELECT price + tax::money_with_currency FROM "items" AS l0 []
+  SELECT price + price::money_with_currency FROM "items" AS l0 []
   #Money<:USD, 200>]
 ```
 
