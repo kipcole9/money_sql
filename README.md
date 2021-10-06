@@ -157,6 +157,57 @@ Retrieve from the database:
 CAST(JSON_EXTRACT(amount_map, '$.amount') AS DECIMAL(20, 8)) AS amount;
 ```
 
+## Casting Money with Changesets
+
+Then the schema type is `Money.Ecto.Composite.Type` then any option that is applicable to `Money.parse/2` or `Money.new/3` can be added to the field definition. These options will then be applied when `Money.Ecto.Composite.Type.cast/2` or `Money.Ecto.Composite.Type.load/3` is called. These functions are called with loading data from the database or when calling `Ecto.Schema.cast/3` is called. Typically this is useful to:
+
+1. Apply a default currency to a field input representing a money amount.
+2. Add formatting options to the returned `t:Money` that will be applied when calling `Money.to_string/2`
+
+Consider the following example where a money amount will be considered in a default currency if no currency is applied:
+
+### Example schema
+
+The example below has three columns defined as `Money.Ecto.Composite.Type`.
+
+* `:payroll` will be cast as with the default currency `:JPY` if no currency field is provided.  Note that if no `:default_currency` option is defined, the default currency will be derived from the currenc locale.
+
+* `:tax` is defined with the option `:fractional_digits`. This option will be applied to `Money.to_string/3` when formatting `:tax` with `Money.to_string/3`
+
+* `:default` is the `t:Money` that is used if the `:value` field is `nil` both when casting and when loading from the database.
+
+```elixir
+defmodule Organization do
+  use Ecto.Schema
+  import Ecto.Changeset
+
+  @primary_key false
+  schema "organizations" do
+    field :payroll,         Money.Ecto.Composite.Type, default_currency: :JPY
+    field :tax,             Money.Ecto.Composite.Type, fractional_digits: 4
+    field :value,           Money.Ecto.Composite.Type, default: Money.new(:USD, 0)
+    field :name,            :string
+    field :employee_count,  :integer
+    timestamps()
+  end
+
+  def changeset(organization, params \\ %{}) do
+    organization
+    |> cast(params, [:payroll])
+  end
+end
+```
+
+### Changeset execution
+
+In the following example, a default of `:JPY` currency (using our previous schema example) will be applied when casting the changeset.
+
+```elixir
+iex> changeset = Organization.changeset(%Organization{}, %{payroll: "0"})
+iex> changeset.changes.payroll == Money.new(:JPY, 0)
+true
+```
+
 ## Postgres Database functions
 
 Since the datatype used to store `Money` in Postgres is a composite type (called `:money_with_currency`), the standard aggregation functions like `sum` and `average` are not supported and the `order_by` clause doesn't perform as expected.  `Money` provides mechanisms to provide these functions.
