@@ -170,7 +170,7 @@ Consider the following example where a money amount will be considered in a defa
 
 The example below has three columns defined as `Money.Ecto.Composite.Type`.
 
-* `:payroll` will be cast as with the default currency `:JPY` if no currency field is provided.  Note that if no `:default_currency` option is defined, the default currency will be derived from the currenc locale.
+* `:payroll` will be cast as with the default currency `:JPY` if no currency field is provided.  Note that if no `:default_currency` option is defined, the default currency will be derived from the current locale or configured `:locale` option.
 
 * `:tax` is defined with the option `:fractional_digits`. This option will be applied when formatting `:tax` with `Money.to_string/2`
 
