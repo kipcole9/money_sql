@@ -159,7 +159,7 @@ CAST(JSON_EXTRACT(amount_map, '$.amount') AS DECIMAL(20, 8)) AS amount;
 
 ## Casting Money with Changesets
 
-Then the schema type is `Money.Ecto.Composite.Type` then any option that is applicable to `Money.parse/2` or `Money.new/3` can be added to the field definition. These options will then be applied when `Money.Ecto.Composite.Type.cast/2` or `Money.Ecto.Composite.Type.load/3` is called. These functions are called with loading data from the database or when calling `Ecto.Schema.cast/3` is called. Typically this is useful to:
+Then the schema type is `Money.Ecto.Composite.Type` then any option that is applicable to `Money.parse/2` or `Money.new/3` can be added to the field definition. These options will then be applied when `Money.Ecto.Composite.Type.cast/2` or `Money.Ecto.Composite.Type.load/3` is called. These functions are called with loading data from the database or when calling `Ecto.Changeset.cast/3` is called. Typically this is useful to:
 
 1. Apply a default currency to a field input representing a money amount.
 2. Add formatting options to the returned `t:Money` that will be applied when calling `Money.to_string/2`
@@ -172,7 +172,7 @@ The example below has three columns defined as `Money.Ecto.Composite.Type`.
 
 * `:payroll` will be cast as with the default currency `:JPY` if no currency field is provided.  Note that if no `:default_currency` option is defined, the default currency will be derived from the currenc locale.
 
-* `:tax` is defined with the option `:fractional_digits`. This option will be applied to `Money.to_string/3` when formatting `:tax` with `Money.to_string/3`
+* `:tax` is defined with the option `:fractional_digits`. This option will be applied when formatting `:tax` with `Money.to_string/2`
 
 * `:default` is the `t:Money` that is used if the `:value` field is `nil` both when casting and when loading from the database.
 
