@@ -21,8 +21,8 @@ if Code.ensure_loaded?(Ecto.Type) do
     defdelegate cast(money, params), to: Money.Ecto.Composite.Type
 
     # New for ecto_sql 3.2
-    defdelegate  embed_as(term, params), to: Money.Ecto.Composite.Type
-    defdelegate  equal?(term1, term2, params), to: Money.Ecto.Composite.Type
+    defdelegate embed_as(term, params), to: Money.Ecto.Composite.Type
+    defdelegate equal?(term1, term2, params), to: Money.Ecto.Composite.Type
 
     def type(_params) do
       :map
@@ -34,7 +34,8 @@ if Code.ensure_loaded?(Ecto.Type) do
       {:ok, nil}
     end
 
-    def load(%{"currency" => currency, "amount" => amount}, _loader, params) when is_binary(amount) do
+    def load(%{"currency" => currency, "amount" => amount}, _loader, params)
+        when is_binary(amount) do
       with {amount, ""} <- Cldr.Decimal.parse(amount),
            {:ok, currency} <- Money.validate_currency(currency) do
         {:ok, Money.new(currency, amount, params)}
@@ -43,7 +44,8 @@ if Code.ensure_loaded?(Ecto.Type) do
       end
     end
 
-    def load(%{"currency" => currency, "amount" => amount}, _loader, params) when is_integer(amount) do
+    def load(%{"currency" => currency, "amount" => amount}, _loader, params)
+        when is_integer(amount) do
       with {:ok, currency} <- Money.validate_currency(currency) do
         {:ok, Money.new(currency, amount, params)}
       else
@@ -64,6 +66,5 @@ if Code.ensure_loaded?(Ecto.Type) do
     def dump(_, _, _) do
       :error
     end
-
   end
 end

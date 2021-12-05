@@ -1,3 +1,2 @@
 defmodule MoneySqlTest do
-
 end

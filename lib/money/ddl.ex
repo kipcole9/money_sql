@@ -164,10 +164,11 @@ defmodule Money.DDL do
 
   defp read_sql_file(db_type, file_name) do
     raise ArgumentError,
-          "Database type #{db_type} does not have a SQL definition " <> "file #{inspect(file_name)}"
+          "Database type #{db_type} does not have a SQL definition " <>
+            "file #{inspect(file_name)}"
   end
 
-  @app Mix.Project.config[:app]
+  @app Mix.Project.config()[:app]
   defp base_dir(db_type) do
     :code.priv_dir(@app)
     |> Path.join(["SQL", "/#{db_type}"])

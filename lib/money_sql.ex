@@ -1,5 +1,4 @@
 defmodule Money.Sql do
   @moduledoc false
-  #require Money
-
+  # require Money
 end

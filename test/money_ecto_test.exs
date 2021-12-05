@@ -107,15 +107,16 @@ defmodule Money.Ecto.Test do
 
     test "#{inspect(ecto_type_module)}: cast a string that includes currency code and localised amount" do
       # "de"
-      locale = Test.Cldr.get_locale
-      Test.Cldr.put_locale "de"
+      locale = Test.Cldr.get_locale()
+      Test.Cldr.put_locale("de")
       assert unquote(ecto_type_module).cast("100,00 USD") == {:ok, Money.new("100,00", :USD)}
-      Test.Cldr.put_locale locale
+      Test.Cldr.put_locale(locale)
     end
 
     test "#{inspect(ecto_type_module)}: cast an invalid string is an error" do
       assert unquote(ecto_type_module).cast("100 USD and other stuff") ==
-        {:error,  message: "The currency \"USD and other stuff\" is unknown or not supported"}
+               {:error,
+                message: "The currency \"USD and other stuff\" is unknown or not supported"}
     end
 
     test "#{inspect(ecto_type_module)}: cast anything else is an error" do
@@ -128,7 +129,10 @@ defmodule Money.Ecto.Test do
 
     test "#{inspect(ecto_type_module)}: cast localized amount error does not raise" do
       Cldr.put_locale(Money.Cldr, "de")
-      assert unquote(ecto_type_module).cast(%{currency: :NOK, amount: "218,75"}) == {:ok, Money.from_float(:NOK, 218.75)}
+
+      assert unquote(ecto_type_module).cast(%{currency: :NOK, amount: "218,75"}) ==
+               {:ok, Money.from_float(:NOK, 218.75)}
+
       Cldr.put_locale(Money.Cldr, "en")
     end
 
