@@ -147,5 +147,19 @@ defmodule Money.Ecto.Test do
     test "#{inspect(ecto_type_module)}: load nil returns nil" do
       assert unquote(ecto_type_module).load(nil) == {:ok, nil}
     end
+
+    test "#{inspect(ecto_type_module)}: equal? two equal money struct returns true" do
+      assert unquote(ecto_type_module).equal?(
+               Money.new(:USD, 100),
+               Money.new(:USD, Decimal.new("100.0"))
+             ) == true
+    end
+
+    test "#{inspect(ecto_type_module)}: equal? two unequal money struct returns false" do
+      assert unquote(ecto_type_module).equal?(
+               Money.new(:USD, 100),
+               Money.new(:USD, Decimal.new("200.0"))
+             ) == false
+    end
   end
 end

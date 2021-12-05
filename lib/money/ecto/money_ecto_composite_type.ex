@@ -124,7 +124,9 @@ if Code.ensure_loaded?(Ecto.Type) do
       :error
     end
 
-		@impl Ecto.ParameterizedType
+    def equal?(money1, money2), do: equal?(money1, money2, [])
+
+    @impl Ecto.ParameterizedType
     def equal?(money1, money2, _params) do
       Money.equal?(money1, money2)
     end
