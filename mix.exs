@@ -7,7 +7,7 @@ defmodule Money.Sql.Mixfile do
     [
       app: :ex_money_sql,
       version: @version,
-      elixir: "~> 1.6",
+      elixir: "~> 1.10",
       name: "Money",
       source_url: "https://github.com/kipcole9/money_sql",
       docs: docs(),
@@ -64,7 +64,7 @@ defmodule Money.Sql.Mixfile do
       extras: ["README.md", "CHANGELOG.md", "LICENSE.md"],
       main: "readme",
       logo: "logo.png",
-      skip_undefined_reference_warnings_on: ["changelog"]
+      skip_undefined_reference_warnings_on: ["CHANGELOG.md", "README.md"]
     ]
   end
 
@@ -76,7 +76,7 @@ defmodule Money.Sql.Mixfile do
 
   defp deps do
     [
-      {:ex_money, "~> 5.5"},
+      {:ex_money, "~> 5.7"},
       {:jason, "~> 1.0"},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:ecto, "~> 3.5"},

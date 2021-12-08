@@ -10,6 +10,7 @@ if Code.ensure_loaded?(Ecto.Type) do
 
     use Ecto.ParameterizedType
 
+		@impl Ecto.ParameterizedType
     def type(_params) do
       :money_with_currency
     end
@@ -18,6 +19,7 @@ if Code.ensure_loaded?(Ecto.Type) do
       Ecto.ParameterizedType.init(__MODULE__, opts)
     end
 
+		@impl Ecto.ParameterizedType
     def init(opts) do
       opts
       |> Keyword.delete(:field)
@@ -26,6 +28,8 @@ if Code.ensure_loaded?(Ecto.Type) do
     end
 
     # When loading from the database
+
+		@impl Ecto.ParameterizedType
     def load(tuple, loader \\ nil, params \\ [])
 
     def load(nil, _loader, _params) do
@@ -43,6 +47,8 @@ if Code.ensure_loaded?(Ecto.Type) do
     # Dumping to the database.  We make the assumption that
     # since we are dumping from %Money{} structs that the
     # data is ok
+
+		@impl Ecto.ParameterizedType
     def dump(money, dumper \\ nil, params \\ [])
 
     def dump(%Money{} = money, _dumper, _params) do
@@ -58,8 +64,12 @@ if Code.ensure_loaded?(Ecto.Type) do
     end
 
     # Casting in changesets
-    def cast(money, params \\ [])
 
+    def cast(money) do
+			cast(money, [])
+		end
+
+		@impl Ecto.ParameterizedType
     def cast(nil, _params) do
       {:ok, nil}
     end
@@ -114,6 +124,7 @@ if Code.ensure_loaded?(Ecto.Type) do
       :error
     end
 
+		@impl Ecto.ParameterizedType
     def equal?(money1, money2, _params) do
       Money.equal?(money1, money2)
     end

@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 config :ex_money_sql, Money.SQL.Repo,
     username: "kip",
