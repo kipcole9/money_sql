@@ -10,7 +10,7 @@ This is the changelog for Money_SQL v1.5.1 released on December 8th, 2021.
 
 ## Bug Fixes
 
-* Implements `c:Ecto.ParamaterizedType.equal?/3` callback for the `Ecto.ParamaterizedType` behaviour. Thanks to @namhoangyojee for the report and the PR.
+* Implements `c:Ecto.ParameterizedType.equal?/3` callback for the `Ecto.ParameterizedType` behaviour. Thanks to @namhoangyojee for the report and the PR.
 
 * Adds `@impl Ecto.ParamaterizedType` to the relevant callbacks.
 
