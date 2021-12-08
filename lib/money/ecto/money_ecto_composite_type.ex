@@ -113,5 +113,9 @@ if Code.ensure_loaded?(Ecto.Type) do
     def cast(_money, _params) do
       :error
     end
+
+    def equal?(money1, money2, _params) do
+      Money.equal?(money1, money2)
+    end
   end
 end
