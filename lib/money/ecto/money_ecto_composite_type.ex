@@ -124,6 +124,11 @@ if Code.ensure_loaded?(Ecto.Type) do
       :error
     end
 
+    def embed_as(term), do: embed_as(term, [])
+
+    @impl Ecto.ParameterizedType
+    def embed_as(_term, _params), do: :self
+
     def equal?(money1, money2), do: equal?(money1, money2, [])
 
     @impl Ecto.ParameterizedType

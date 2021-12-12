@@ -21,6 +21,7 @@ if Code.ensure_loaded?(Ecto.Type) do
     defdelegate cast(money, params), to: Money.Ecto.Composite.Type
 
     # New for ecto_sql 3.2
+    defdelegate embed_as(term), to: Money.Ecto.Composite.Type
     defdelegate embed_as(term, params), to: Money.Ecto.Composite.Type
     defdelegate equal?(term1, term2), to: Money.Ecto.Composite.Type
     defdelegate equal?(term1, term2, params), to: Money.Ecto.Composite.Type
