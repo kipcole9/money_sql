@@ -14,10 +14,10 @@ config :ex_money,
   default_cldr_backend: Money.Cldr
 
 config :ex_money_sql, Money.SQL.Repo,
-    username: "kip",
-    database: "money_dev",
-    hostname: "localhost",
-    pool: Ecto.Adapters.SQL.Sandbox
+  username: "kip",
+  database: "money_dev",
+  hostname: "localhost",
+  pool: Ecto.Adapters.SQL.Sandbox
 
 config :ex_money_sql,
   ecto_repos: [Money.SQL.Repo]

@@ -31,7 +31,7 @@ defmodule Money.DB.Test do
     {:ok, _} = Repo.insert(%Organization{payroll: m})
     {:ok, _} = Repo.insert(%Organization{payroll: m})
     {:ok, _} = Repo.insert(%Organization{payroll: m})
-    sum = select(Organization, [o], type(sum(o.payroll), o.payroll)) |> Repo.one
+    sum = select(Organization, [o], type(sum(o.payroll), o.payroll)) |> Repo.one()
     assert Money.compare(sum, Money.new(:USD, 300)) == :eq
   end
 
@@ -50,6 +50,7 @@ defmodule Money.DB.Test do
     {:ok, _} = Repo.insert(%Organization{payroll: m})
     {:ok, _} = Repo.insert(%Organization{payroll: m})
     {:ok, _} = Repo.insert(%Organization{payroll: m2})
+
     assert_raise Postgrex.Error, fn ->
       Repo.aggregate(Organization, :sum, :payroll)
     end
@@ -101,9 +102,11 @@ defmodule Money.DB.Test do
       from(
         organization in "organizations",
         select: %{
-          total: type(sum(organization.payroll),
-            ^Money.Ecto.Composite.Type.cast_type()
-          )
+          total:
+            type(
+              sum(organization.payroll),
+              ^Money.Ecto.Composite.Type.cast_type()
+            )
         }
       )
 
@@ -129,7 +132,7 @@ defmodule Money.DB.Test do
     {:ok, _} = Repo.insert(%Organization{payroll: Money.new(:USD, 200)})
 
     query = select(Organization, [o], type(fragment("SUM(DISTINCT ?)", o.payroll), o.payroll))
-    sum = query |> Repo.one
+    sum = query |> Repo.one()
     assert Money.compare(sum, Money.new(:USD, 300)) == :eq
   end
 
@@ -142,11 +145,13 @@ defmodule Money.DB.Test do
     {:ok, _} = Repo.insert(%Organization{payroll: m})
     {:ok, _} = Repo.insert(%Organization{payroll: m2})
 
-    query = from o in Organization,
-              where: fragment("currency_code(payroll)") == "USD",
-              select: sum(o.payroll)
+    query =
+      from(o in Organization,
+        where: fragment("currency_code(payroll)") == "USD",
+        select: sum(o.payroll)
+      )
 
-    result = query |> Repo.one
+    result = query |> Repo.one()
 
     assert result == Money.new(:USD, 200)
   end
@@ -162,8 +167,9 @@ defmodule Money.DB.Test do
     {:ok, _} = Repo.insert(%Organization{payroll: m, tax: m})
 
     query =
-      from o in Organization,
+      from(o in Organization,
         select: type(fragment("payroll + tax"), o.payroll)
+      )
 
     assert Repo.one(query) == Money.new(:USD, 200)
   end
@@ -175,8 +181,9 @@ defmodule Money.DB.Test do
     {:ok, _} = Repo.insert(%Organization{payroll: m, tax: n})
 
     query =
-      from o in Organization,
+      from(o in Organization,
         select: type(fragment("payroll + tax"), o.payroll)
+      )
 
     assert_raise Postgrex.Error, fn ->
       Repo.one(query)
@@ -193,18 +200,17 @@ defmodule Money.DB.Test do
     {:ok, %{organization: {2, nil}}} =
       Multi.new()
       |> Multi.update_all(
-         :organization,
-         fn _ ->
-           from(o in Organization,
-             update: [inc: [payroll: type(^amount, ^Money.Ecto.Composite.Type.cast_type())]]
-           )
-         end,
-         []
-       )
+        :organization,
+        fn _ ->
+          from(o in Organization,
+            update: [inc: [payroll: type(^amount, ^Money.Ecto.Composite.Type.cast_type())]]
+          )
+        end,
+        []
+      )
       |> Repo.transaction()
 
-    result = (from o in Organization, select: sum(o.payroll)) |> Repo.one()
+    result = from(o in Organization, select: sum(o.payroll)) |> Repo.one()
     assert result == Money.new(:USD, 400)
   end
-
 end

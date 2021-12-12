@@ -5,6 +5,4 @@ defmodule Money.Changeset.Test do
     changeset = Organization.changeset(%Organization{}, %{payroll: "0"})
     assert changeset.changes.payroll == Money.new(:JPY, 0)
   end
-
-
 end

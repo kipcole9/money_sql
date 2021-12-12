@@ -10,7 +10,7 @@ if Code.ensure_loaded?(Ecto.Type) do
 
     use Ecto.ParameterizedType
 
-		@impl Ecto.ParameterizedType
+    @impl Ecto.ParameterizedType
     def type(_params) do
       :money_with_currency
     end
@@ -19,7 +19,7 @@ if Code.ensure_loaded?(Ecto.Type) do
       Ecto.ParameterizedType.init(__MODULE__, opts)
     end
 
-		@impl Ecto.ParameterizedType
+    @impl Ecto.ParameterizedType
     def init(opts) do
       opts
       |> Keyword.delete(:field)
@@ -29,7 +29,7 @@ if Code.ensure_loaded?(Ecto.Type) do
 
     # When loading from the database
 
-		@impl Ecto.ParameterizedType
+    @impl Ecto.ParameterizedType
     def load(tuple, loader \\ nil, params \\ [])
 
     def load(nil, _loader, _params) do
@@ -48,7 +48,7 @@ if Code.ensure_loaded?(Ecto.Type) do
     # since we are dumping from %Money{} structs that the
     # data is ok
 
-		@impl Ecto.ParameterizedType
+    @impl Ecto.ParameterizedType
     def dump(money, dumper \\ nil, params \\ [])
 
     def dump(%Money{} = money, _dumper, _params) do
@@ -66,10 +66,10 @@ if Code.ensure_loaded?(Ecto.Type) do
     # Casting in changesets
 
     def cast(money) do
-			cast(money, [])
-		end
+      cast(money, [])
+    end
 
-		@impl Ecto.ParameterizedType
+    @impl Ecto.ParameterizedType
     def cast(nil, _params) do
       {:ok, nil}
     end
@@ -115,7 +115,7 @@ if Code.ensure_loaded?(Ecto.Type) do
 
     def cast(string, params) when is_binary(string) do
       case Money.parse(string, params) do
-        {:error,{_, message}} -> {:error, message: message}
+        {:error, {_, message}} -> {:error, message: message}
         money -> {:ok, money}
       end
     end
@@ -124,7 +124,14 @@ if Code.ensure_loaded?(Ecto.Type) do
       :error
     end
 
-		@impl Ecto.ParameterizedType
+    def embed_as(term), do: embed_as(term, [])
+
+    @impl Ecto.ParameterizedType
+    def embed_as(_term, _params), do: :self
+
+    def equal?(money1, money2), do: equal?(money1, money2, [])
+
+    @impl Ecto.ParameterizedType
     def equal?(money1, money2, _params) do
       Money.equal?(money1, money2)
     end
