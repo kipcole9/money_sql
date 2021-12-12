@@ -2,6 +2,16 @@
 
 **When upgrading from `ex_money_sql` version `1.3.x` to `1.4.x` and later, please read the important migration information in the [README](/ex_money_sql/readme.html#migrating-from-money-sql-versions-1-3-or-earlier)**
 
+## Money_SQL v1.5.2
+
+This is the changelog for Money_SQL v1.5.2 released on December 13th, 2021.
+
+**Note** That `money_sql` is now supported on Elixir 1.10 and later only.
+
+## Bug Fixes
+
+* Fixes `c:Ecto.ParameterizedType.embed_as/2` callback for the `Ecto.ParameterizedType` behaviour. Thanks to @nseantanly for the report and the PR.
+
 ## Money_SQL v1.5.1
 
 This is the changelog for Money_SQL v1.5.1 released on December 8th, 2021.
