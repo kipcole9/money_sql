@@ -2,6 +2,32 @@
 
 **When upgrading from `ex_money_sql` version `1.3.x` to `1.4.x` and later, please read the important migration information in the [README](/ex_money_sql/readme.html#migrating-from-money-sql-versions-1-3-or-earlier)**
 
+## Money_SQL v1.6.0
+
+This is the changelog for Money_SQL v1.6.0 released on December 31st, 2021.
+
+**Note** That `money_sql` is now supported on Elixir 1.10 and later only.
+
+## Enhancements
+
+* `t:Money.Ecto.Composite.Type` and `t:Money.Ecto.Map.Type` now return the exception module when there is an error in `cast/1`. For example:
+
+```elixir
+iex> Money.Ecto.Composite.Type.cast("") ==
+{:error,
+ [
+   exception: Money.InvalidAmountError,
+   message: "Amount cannot be converted to a number: \"\""
+ ]}
+ ```
+ The expected exceptions are:
+ 
+   * `Money.InvalidAmountError`
+   * `Money.UnknownCurrencyError`
+   * `Money.ParseError`
+
+Thanks to @DaTrader for the enhancement request.
+
 ## Money_SQL v1.5.2
 
 This is the changelog for Money_SQL v1.5.2 released on December 13th, 2021.

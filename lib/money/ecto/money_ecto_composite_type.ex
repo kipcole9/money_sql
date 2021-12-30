@@ -87,7 +87,7 @@ if Code.ensure_loaded?(Ecto.Type) do
       with %{__struct__: Money} = money <- Money.new(currency, amount, params) do
         {:ok, money}
       else
-        {:error, {_, message}} -> {:error, message: message}
+        {:error, {exception, message}} -> {:error, exception: exception, message: message}
       end
     end
 
@@ -96,7 +96,7 @@ if Code.ensure_loaded?(Ecto.Type) do
       with %{__struct__: Money} = money <- Money.new(currency, amount, params) do
         {:ok, money}
       else
-        {:error, {_, message}} -> {:error, message: message}
+        {:error, {exception, message}} -> {:error, exception: exception, message: message}
       end
     end
 
@@ -105,7 +105,7 @@ if Code.ensure_loaded?(Ecto.Type) do
       with %{__struct__: Money} = money <- Money.new(currency, amount, params) do
         {:ok, money}
       else
-        {:error, {_, message}} -> {:error, message: message}
+        {:error, {exception, message}} -> {:error, exception: exception, message: message}
       end
     end
 
@@ -115,7 +115,7 @@ if Code.ensure_loaded?(Ecto.Type) do
 
     def cast(string, params) when is_binary(string) do
       case Money.parse(string, params) do
-        {:error, {_, message}} -> {:error, message: message}
+        {:error, {exception, message}} -> {:error, exception: exception, message: message}
         money -> {:ok, money}
       end
     end

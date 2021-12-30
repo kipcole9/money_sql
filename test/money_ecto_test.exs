@@ -14,6 +14,20 @@ defmodule Money.Ecto.Test do
       assert Money.Ecto.Composite.Type.dump(Money.new(:USD, 100)) ==
                {:ok, {"USD", Decimal.new(100)}}
     end
+
+    test "cast returns a parse error" do
+      assert Money.Ecto.Composite.Type.cast("(USD)") ==
+        {:error, [exception: Money.ParseError, message: "Could not parse \"(USD)\"."]}
+    end
+
+    test "case with empty input returns an error" do
+      assert Money.Ecto.Composite.Type.cast("") ==
+        {:error,
+         [
+           exception: Money.InvalidAmountError,
+           message: "Amount cannot be converted to a number: \"\""
+         ]}
+     end
   end
 
   describe "Money.Ecto.Map.Type specific tests" do
@@ -72,7 +86,8 @@ defmodule Money.Ecto.Test do
 
     test "#{inspect(ecto_type_module)}: cast a map with string keys and invalid currency" do
       assert unquote(ecto_type_module).cast(%{"currency" => "AAA", "amount" => 100}) ==
-               {:error, message: "The currency \"AAA\" is invalid"}
+               {:error,
+                exception: Money.UnknownCurrencyError, message: "The currency \"AAA\" is invalid"}
     end
 
     test "#{inspect(ecto_type_module)}: cast a map with atom keys and values" do
@@ -97,7 +112,8 @@ defmodule Money.Ecto.Test do
 
     test "#{inspect(ecto_type_module)}: cast a map with atom keys and invalid currency" do
       assert unquote(ecto_type_module).cast(%{currency: "AAA", amount: 100}) ==
-               {:error, message: "The currency \"AAA\" is invalid"}
+               {:error,
+                exception: Money.UnknownCurrencyError, message: "The currency \"AAA\" is invalid"}
     end
 
     test "#{inspect(ecto_type_module)}: cast a string that includes currency code and amount" do
@@ -116,6 +132,7 @@ defmodule Money.Ecto.Test do
     test "#{inspect(ecto_type_module)}: cast an invalid string is an error" do
       assert unquote(ecto_type_module).cast("100 USD and other stuff") ==
                {:error,
+                exception: Money.UnknownCurrencyError,
                 message: "The currency \"USD and other stuff\" is unknown or not supported"}
     end
 
