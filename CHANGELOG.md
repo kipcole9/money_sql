@@ -2,6 +2,16 @@
 
 **When upgrading from `ex_money_sql` version `1.3.x` to `1.4.x` and later, please read the important migration information in the [README](/ex_money_sql/readme.html#migrating-from-money-sql-versions-1-3-or-earlier)**
 
+## Money_SQL v1.7.0
+
+This is the changelog for Money_SQL v1.7.0 released on _______.
+
+**Note** That `money_sql` is now supported on Elixir 1.10 and later only.
+
+## Enhancements
+
+* Adds the module `Money.Validation` to provide [Ecto Changeset validations](https://hexdocs.pm/ecto/Ecto.Changeset.html#module-validations-and-constraints). In particular it adds `Money.Validation.validate_money/3` which behaves exactly like `Ecto.Changeset.validate_number/3` only for `t:Money` types.
+
 ## Money_SQL v1.6.0
 
 This is the changelog for Money_SQL v1.6.0 released on December 31st, 2021.
