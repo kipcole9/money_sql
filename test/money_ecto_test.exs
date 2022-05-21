@@ -22,11 +22,7 @@ defmodule Money.Ecto.Test do
 
     test "case with empty input returns an error" do
       assert Money.Ecto.Composite.Type.cast("") ==
-        {:error,
-         [
-           exception: Money.InvalidAmountError,
-           message: "Amount cannot be converted to a number: \"\""
-         ]}
+        {:error, [exception: Money.Invalid, message: "Unable to create money from :USD and \"\""]}
      end
   end
 
