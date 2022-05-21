@@ -7,7 +7,7 @@ defmodule Money.Sql.Mixfile do
     [
       app: :ex_money_sql,
       version: @version,
-      elixir: "~> 1.10",
+      elixir: "~> 1.11",
       name: "Money",
       source_url: "https://github.com/kipcole9/money_sql",
       docs: docs(),

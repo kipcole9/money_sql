@@ -6,7 +6,7 @@
 
 This is the changelog for Money_SQL v1.7.0 released on _______.
 
-**Note** That `money_sql` is now supported on Elixir 1.10 and later only.
+**Note** That `money_sql` is now supported on Elixir 1.11 and later only.
 
 ## Enhancements
 
@@ -31,7 +31,7 @@ iex> Money.Ecto.Composite.Type.cast("") ==
  ]}
  ```
  The expected exceptions are:
- 
+
    * `Money.InvalidAmountError`
    * `Money.UnknownCurrencyError`
    * `Money.ParseError`
