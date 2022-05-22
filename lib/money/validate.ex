@@ -1,6 +1,6 @@
 defmodule Money.Validate do
   @moduledoc """
-  Implements Ecto validations for the `t:Money` type based upon the
+  Implements Ecto validations for the `t:Money.t/0` type based upon the
   `Money.Ecto.Composite.Type` type.
 
   """
@@ -15,7 +15,7 @@ defmodule Money.Validate do
   }
 
   @doc """
-  Validates the properties of a `t:Money`.
+  Validates the properties of a `t:Money.t/0`.
 
   This function, including its options, is designed to
   mirror the function `Ecto.Changeset.validate_number/3`.
