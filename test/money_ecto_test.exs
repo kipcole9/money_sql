@@ -132,6 +132,13 @@ defmodule Money.Ecto.Test do
                 message: "The currency \"USD and other stuff\" is unknown or not supported"}
     end
 
+    test "#{inspect(ecto_type_module)}: A nil currency amount returns an error on casting" do
+       assert unquote(ecto_type_module).cast(%{amount: "10", currency: nil}) ==
+         {:error,
+           exception:  Money.UnknownCurrencyError,
+           message: "Currency must not be `nil`"}
+    end
+
     test "#{inspect(ecto_type_module)}: cast anything else is an error" do
       assert unquote(ecto_type_module).cast(:atom) == :error
     end
@@ -174,5 +181,6 @@ defmodule Money.Ecto.Test do
                Money.new(:USD, Decimal.new("200.0"))
              ) == false
     end
+
   end
 end

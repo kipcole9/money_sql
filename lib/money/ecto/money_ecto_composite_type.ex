@@ -37,6 +37,8 @@ if Code.ensure_loaded?(Ecto.Type) do
     end
 
     def load({currency, amount}, _loader, params) do
+      currency = String.trim_trailing(currency)
+
       with {:ok, currency_code} <- Money.validate_currency(currency) do
         {:ok, Money.new(currency_code, amount, params)}
       else
@@ -80,6 +82,12 @@ if Code.ensure_loaded?(Ecto.Type) do
 
     def cast(%{"currency" => _, "amount" => ""}, _params) do
       {:ok, nil}
+    end
+
+    def cast(%{"currency" => nil, "amount" => _amount}, _params) do
+      {:error,
+        exception:  Money.UnknownCurrencyError,
+        message: "Currency must not be `nil`"}
     end
 
     def cast(%{"currency" => currency, "amount" => amount}, params)
