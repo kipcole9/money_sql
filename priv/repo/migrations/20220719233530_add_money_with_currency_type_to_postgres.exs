@@ -2,7 +2,7 @@ defmodule Money.SQL.Repo.Migrations.AddMoneyWithCurrencyTypeToPostgres do
   use Ecto.Migration
 
   def up do
-    execute("CREATE TYPE public.money_with_currency AS (currency_code char(3), amount numeric);")
+    execute("CREATE TYPE public.money_with_currency AS (currency_code varchar, amount numeric);")
   end
 
   def down do

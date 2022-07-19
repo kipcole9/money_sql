@@ -5,7 +5,7 @@ STRICT
 LANGUAGE plpgsql
 AS $$
   DECLARE
-    currency char(3);
+    currency varchar;
     addition numeric;
   BEGIN
     IF currency_code(money_1) = currency_code(money_2) THEN

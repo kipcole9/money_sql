@@ -10,7 +10,7 @@ defmodule Money.SQL.Repo.Migrations.AddPostgresMoneyPlusOperator do
     LANGUAGE plpgsql
     AS $$
       DECLARE
-        currency char(3);
+        currency varchar;
         addition numeric;
       BEGIN
         IF currency_code(money_1) = currency_code(money_2) THEN
@@ -19,7 +19,7 @@ defmodule Money.SQL.Repo.Migrations.AddPostgresMoneyPlusOperator do
           return row(currency, addition);
         ELSE
           RAISE EXCEPTION
-            'Incompatible currency codes. Expected both currency codes to be %', currency_code(money_1)
+            'Incompatible currency codes for + operator. Expected both currency codes to be %', currency_code(money_1)
             USING HINT = 'Please ensure both columns have the same currency code',
             ERRCODE = '22033';
         END IF;

@@ -10,7 +10,7 @@ defmodule Money.SQL.Repo.Migrations.AddPostgresMoneyAggregateFunctions do
     LANGUAGE plpgsql
     AS $$
       DECLARE
-        expected_currency char(3);
+        expected_currency varchar;
         aggregate numeric;
         addition numeric;
       BEGIN
