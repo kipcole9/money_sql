@@ -1,6 +1,17 @@
 # Changelog
 
-**When upgrading from `ex_money_sql` version `1.3.x` to `1.4.x` and later, please read the important migration information in the [README](/ex_money_sql/readme.html#migrating-from-money-sql-versions-1-3-or-earlier)**
+**When upgrading from `ex_money_sql` version `1.3.x` to `1.4.x` and later, please read the important migration information in the [README](readme.html#migrating-from-money-sql-versions-1-3-or-earlier)**
+
+## Money_SQL v1.8.0
+
+This is the changelog for Money_SQL v1.8.0 released on _____, 2022.
+
+## Enhancements
+
+* Changes the `money_with_sql.currency_code` type to be `varchar` instead of `char(3)`. This change is to accomodate the use of digital tokens (aka crypto currencies).
+
+  *  This only changes the generation of migrations and does not affect existing implementations
+  * Upgrading an existing database is a non-trivial exercise since database types cannot be changed while the type is being used by any table.  See some recommendations in the [README](readme.html#updating-the-money_with_sql-type)
 
 ## Money_SQL v1.7.1
 

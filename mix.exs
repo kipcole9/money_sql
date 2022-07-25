@@ -1,7 +1,7 @@
 defmodule Money.Sql.Mixfile do
   use Mix.Project
 
-  @version "1.7.1"
+  @version "1.8.0"
 
   def project do
     [
@@ -64,7 +64,8 @@ defmodule Money.Sql.Mixfile do
       extras: ["README.md", "CHANGELOG.md", "LICENSE.md"],
       main: "readme",
       logo: "logo.png",
-      skip_undefined_reference_warnings_on: ["CHANGELOG.md", "README.md"]
+      skip_undefined_reference_warnings_on: ["CHANGELOG.md", "README.md"],
+      formatters: ["html"]
     ]
   end
 

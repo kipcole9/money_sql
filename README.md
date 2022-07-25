@@ -291,8 +291,14 @@ Since `:money_with_currency` is a composite type, the default `order_by` results
 ```elixir
 def deps do
   [
-    {:ex_money_sql, "~> 1.0"},
+    {:ex_money_sql, "~> 1.8"},
     ...
   ]
 end
 ```
+
+## Updating the money_with_sql type
+
+As of [ex_money_sql version 1.8.0](https://hex.pm/packages/ex_money_sql/1.8.0) the `money_with_currency` database type definition has changed for Postgres database. The `currency_code` is now a `varchar` rather than a `char(3)` column. While the underlying database storage mechanism is compatible (and no additional storage will be used as a result of changing the type), migrating the database to the new format is not straight forward since Postgres does not allowing changing a type that is in use in the database.
+
+

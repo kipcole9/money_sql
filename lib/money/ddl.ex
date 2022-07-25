@@ -109,6 +109,24 @@ defmodule Money.DDL do
   end
 
   @doc """
+  Returns the SQL string which when executed will
+  change the money_with_currency type for a given
+  table and column to the updated money_with_currency
+  type that has a varchar() for currency code rather
+  than char(3).
+
+  ## Arguments
+
+  * `db_type`: the type of the database for which the SQL
+    string should be returned.  Defaults to `:postgres` which
+    is currently the only supported database type.
+
+  """
+  def change_money_type(db_type \\ @default_db) do
+    read_sql_file(db_type, "change_currency_to_varchar.sql")
+  end
+
+  @doc """
   Returns a string that will Ecto `execute` each SQL
   command.
 
@@ -156,13 +174,14 @@ defmodule Money.DDL do
     end
   end
 
-  defp read_sql_file(db_type, file_name) when db_type in @supported_db_types do
+  @doc false
+  def read_sql_file(db_type, file_name) when db_type in @supported_db_types do
     base_dir(db_type)
     |> Path.join(file_name)
     |> File.read!()
   end
 
-  defp read_sql_file(db_type, file_name) do
+  def read_sql_file(db_type, file_name) do
     raise ArgumentError,
           "Database type #{db_type} does not have a SQL definition " <>
             "file #{inspect(file_name)}"
