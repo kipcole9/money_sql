@@ -30,8 +30,29 @@ AS $$
 $$;
 
 
+CREATE OR REPLACE FUNCTION money_combine_function(agg_state1 money_with_currency, agg_state2 money_with_currency)
+RETURNS money_with_currency
+IMMUTABLE
+STRICT
+LANGUAGE plpgsql
+AS $$
+  BEGIN
+    IF currency_code(agg_state1) = currency_code(agg_state2) THEN
+      return row(currency_code(agg_state1), amount(agg_state1) + amount(agg_state2));
+    ELSE
+      RAISE EXCEPTION
+        'Incompatible currency codes. Expected all currency codes to be %', expected_currency
+        USING HINT = 'Please ensure all columns have the same currency code',
+        ERRCODE = '22033';
+    END IF;
+  END;
+$$;
+
+
 CREATE AGGREGATE sum(money_with_currency)
 (
   sfunc = money_state_function,
-  stype = money_with_currency
+  stype = money_with_currency,
+  combinefunc = money_combine_function,
+  parallel = SAFE
 );

@@ -2,6 +2,16 @@
 
 **When upgrading from `ex_money_sql` version `1.3.x` to `1.4.x` and later, please read the important migration information in the [README](/ex_money_sql/readme.html#migrating-from-money-sql-versions-1-3-or-earlier)**
 
+## Money_SQL v1.7.2
+
+This is the changelog for Money_SQL v1.7.2 released on August 27th, 2022.
+
+**Note** That `money_sql` is now supported on Elixir 1.11 and later only.
+
+## Bug Fixes
+
+* Makes the aggregate functions parallel-safe which provides up to 100% speed improvement. Thanks to @milangupta1 for the PR.
+
 ## Money_SQL v1.7.1
 
 This is the changelog for Money_SQL v1.7.1 released on July 8th, 2022.
