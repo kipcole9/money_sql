@@ -45,6 +45,18 @@ defmodule Money.Ecto.Test do
       assert Money.Ecto.Map.Type.dump(Money.new(:USD, 100)) ==
                {:ok, %{"amount" => "100", "currency" => "USD"}}
     end
+
+    test "dump and loade a money struct when the locale uses non-default separators" do
+      Cldr.with_locale("de", Test.Cldr, fn ->
+        money = Money.new(:USD, "100,34")
+        dumped = Money.Ecto.Map.Type.dump(money)
+        assert dumped == {:ok, %{"amount" => "100.34", "currency" => "USD"}}
+
+        cast = Money.Ecto.Map.Type.load(elem(dumped, 1))
+        assert cast == {:ok, money}
+      end)
+    end
+
   end
 
   for ecto_type_module <- [Money.Ecto.Composite.Type, Money.Ecto.Map.Type] do

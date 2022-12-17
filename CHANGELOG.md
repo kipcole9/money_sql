@@ -2,11 +2,19 @@
 
 **When upgrading from `ex_money_sql` version `1.3.x` to `1.4.x` and later, please read the important migration information in the [README](/ex_money_sql/readme.html#migrating-from-money-sql-versions-1-3-or-earlier)**
 
+**Note** That `money_sql` is supported on Elixir 1.11 and later only from ex_money_sql version 1.7.0.
+
+## Money_SQL v1.7.3
+
+This is the changelog for Money_SQL v1.7.3 released on December 18th, 2022.
+
+## Bug Fixes
+
+* WHen loading money from the database with the `Money.Ecto.Map.Type` type, do not do localized parsing of the amount. The amount is always saved using `Decimal.to_string/1` and therefore is not localized. It must not be parsed with localization on loading.
+
 ## Money_SQL v1.7.2
 
 This is the changelog for Money_SQL v1.7.2 released on August 27th, 2022.
-
-**Note** That `money_sql` is now supported on Elixir 1.11 and later only.
 
 ## Bug Fixes
 
@@ -16,8 +24,6 @@ This is the changelog for Money_SQL v1.7.2 released on August 27th, 2022.
 
 This is the changelog for Money_SQL v1.7.1 released on July 8th, 2022.
 
-**Note** That `money_sql` is now supported on Elixir 1.11 and later only.
-
 ## Bug Fixes
 
 * Fixes casting a money map when the currency is `nil`. Thanks to @frahugo for the report. Closes #24.
@@ -25,8 +31,6 @@ This is the changelog for Money_SQL v1.7.1 released on July 8th, 2022.
 ## Money_SQL v1.7.0
 
 This is the changelog for Money_SQL v1.7.0 released on May 21st, 2022.
-
-**Note** That `money_sql` is now supported on Elixir 1.11 and later only.
 
 ## Enhancements
 
