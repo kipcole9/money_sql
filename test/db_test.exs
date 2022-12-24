@@ -213,4 +213,45 @@ defmodule Money.DB.Test do
     result = from(o in Organization, select: sum(o.payroll)) |> Repo.one()
     assert result == Money.new(:USD, 400)
   end
+
+  test "order by money" do
+    {:ok, _} = Repo.insert(%Organization{payroll: Money.new(:USD, 100)})
+    {:ok, _} = Repo.insert(%Organization{payroll: Money.new(:USD, 200)})
+
+    assert [%Organization{payroll: p1}, %Organization{payroll: p2}] =
+      Repo.all(from o in Organization, order_by: o.payroll)
+
+    assert p1 == Money.new(:USD, 100)
+    assert p2 == Money.new(:USD, 200)
+  end
+
+  test "order by money descending" do
+    {:ok, _} = Repo.insert(%Organization{payroll: Money.new(:USD, 100)})
+    {:ok, _} = Repo.insert(%Organization{payroll: Money.new(:USD, 200)})
+
+    assert [%Organization{payroll: p1}, %Organization{payroll: p2}] =
+      Repo.all(from o in Organization, order_by: [desc: o.payroll])
+
+    assert p1 == Money.new(:USD, 200)
+    assert p2 == Money.new(:USD, 100)
+  end
+
+  test "order by money of different currency" do
+    {:ok, _} = Repo.insert(%Organization{payroll: Money.new(:USD, 100)})
+    {:ok, _} = Repo.insert(%Organization{payroll: Money.new(:AUD, 200)})
+
+    assert [%Organization{payroll: p1}, %Organization{payroll: p2}] =
+      Repo.all(from o in Organization, order_by: o.payroll)
+
+    assert p1 == Money.new(:AUD, 200)
+    assert p2 == Money.new(:USD, 100)
+  end
+
+  test "selecting money ordering" do
+    alias Ecto.Adapters.SQL
+    assert {:ok, %Postgrex.Result{rows: [[true]]}} = SQL.query(Repo,"select ('USD', 100) < ('USD', 200)", [])
+    assert {:ok, %Postgrex.Result{rows: [[true]]}} = SQL.query(Repo,"select ('USD', 100) = ('USD', 100)", [])
+    assert {:ok, %Postgrex.Result{rows: [[false]]}} = SQL.query(Repo,"select ('USD', 100) < ('USD', 100)", [])
+    assert {:ok, %Postgrex.Result{rows: [[true]]}} = SQL.query(Repo,"select ('AUD', 100) < ('USD', 100)", [])
+  end
 end
