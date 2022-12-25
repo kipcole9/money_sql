@@ -17,13 +17,14 @@ defmodule Money.Ecto.Test do
 
     test "cast returns a parse error" do
       assert Money.Ecto.Composite.Type.cast("(USD)") ==
-        {:error, [exception: Money.ParseError, message: "Could not parse \"(USD)\"."]}
+               {:error, [exception: Money.ParseError, message: "Could not parse \"(USD)\"."]}
     end
 
     test "case with empty input returns an error" do
       assert Money.Ecto.Composite.Type.cast("") ==
-        {:error, [exception: Money.Invalid, message: "Unable to create money from :USD and \"\""]}
-     end
+               {:error,
+                [exception: Money.Invalid, message: "Unable to create money from :USD and \"\""]}
+    end
   end
 
   describe "Money.Ecto.Map.Type specific tests" do
@@ -56,7 +57,6 @@ defmodule Money.Ecto.Test do
         assert cast == {:ok, money}
       end)
     end
-
   end
 
   for ecto_type_module <- [Money.Ecto.Composite.Type, Money.Ecto.Map.Type] do
@@ -145,10 +145,9 @@ defmodule Money.Ecto.Test do
     end
 
     test "#{inspect(ecto_type_module)}: A nil currency amount returns an error on casting" do
-       assert unquote(ecto_type_module).cast(%{amount: "10", currency: nil}) ==
-         {:error,
-           exception:  Money.UnknownCurrencyError,
-           message: "Currency must not be `nil`"}
+      assert unquote(ecto_type_module).cast(%{amount: "10", currency: nil}) ==
+               {:error,
+                exception: Money.UnknownCurrencyError, message: "Currency must not be `nil`"}
     end
 
     test "#{inspect(ecto_type_module)}: cast anything else is an error" do
@@ -193,6 +192,5 @@ defmodule Money.Ecto.Test do
                Money.new(:USD, Decimal.new("200.0"))
              ) == false
     end
-
   end
 end

@@ -10,29 +10,43 @@ defmodule Money.Changeset.Test do
 
   test "money positive validation" do
     assert validate_money(test_changeset(), :value, less_than: Money.new(:USD, 200)).valid?
+
     assert validate_money(test_changeset(), :value, less_than_or_equal_to: Money.new(:USD, 200)).valid?
+
     assert validate_money(test_changeset(), :value, less_than_or_equal_to: Money.new(:USD, 100)).valid?
 
     assert validate_money(test_changeset(), :value, greater_than: Money.new(:USD, 50)).valid?
+
     assert validate_money(test_changeset(), :value, greater_than_or_equal_to: Money.new(:USD, 50)).valid?
+
     assert validate_money(test_changeset(), :value, greater_than_or_equal_to: Money.new(:USD, 100)).valid?
 
     assert validate_money(test_changeset(), :value, equal_to: Money.new(:USD, 100)).valid?
 
-    assert validate_money(test_changeset(), :value, greater_than: Money.new(:USD, 50), less_than: Money.new(:USD, 200)).valid?
+    assert validate_money(test_changeset(), :value,
+             greater_than: Money.new(:USD, 50),
+             less_than: Money.new(:USD, 200)
+           ).valid?
   end
 
   test "money negative validation" do
     refute validate_money(test_changeset(), :value, less_than: Money.new(:AUD, 200)).valid?
 
     assert validate_money(test_changeset(), :value, less_than: Money.new(:USD, 50)).errors ==
-     [value: {"must be less than %{money}", [validation: :money, kind: :less_than, money: Money.new(:USD, 50)]}]
+             [
+               value:
+                 {"must be less than %{money}",
+                  [validation: :money, kind: :less_than, money: Money.new(:USD, 50)]}
+             ]
   end
 
   test "Non-money changeset and comparison values" do
     assert validate_money(test_changeset(), :value, less_than: Money.new(:AUD, 200)).errors ==
-      [value: {"Cannot compare monies with different currencies. Received :USD and :AUD.",
-        [validation: :money, kind: :less_than, money: Money.new(:AUD, 200)]}]
+             [
+               value:
+                 {"Cannot compare monies with different currencies. Received :USD and :AUD.",
+                  [validation: :money, kind: :less_than, money: Money.new(:AUD, 200)]}
+             ]
 
     assert_raise ArgumentError, ~r/expected target_value to be of type Money/, fn ->
       validate_money(test_changeset(), :value, less_than: 200)

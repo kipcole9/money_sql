@@ -219,7 +219,7 @@ defmodule Money.DB.Test do
     {:ok, _} = Repo.insert(%Organization{payroll: Money.new(:USD, 200)})
 
     assert [%Organization{payroll: p1}, %Organization{payroll: p2}] =
-      Repo.all(from o in Organization, order_by: o.payroll)
+             Repo.all(from(o in Organization, order_by: o.payroll))
 
     assert p1 == Money.new(:USD, 100)
     assert p2 == Money.new(:USD, 200)
@@ -230,7 +230,7 @@ defmodule Money.DB.Test do
     {:ok, _} = Repo.insert(%Organization{payroll: Money.new(:USD, 200)})
 
     assert [%Organization{payroll: p1}, %Organization{payroll: p2}] =
-      Repo.all(from o in Organization, order_by: [desc: o.payroll])
+             Repo.all(from(o in Organization, order_by: [desc: o.payroll]))
 
     assert p1 == Money.new(:USD, 200)
     assert p2 == Money.new(:USD, 100)
@@ -241,17 +241,36 @@ defmodule Money.DB.Test do
     {:ok, _} = Repo.insert(%Organization{payroll: Money.new(:AUD, 200)})
 
     assert [%Organization{payroll: p1}, %Organization{payroll: p2}] =
-      Repo.all(from o in Organization, order_by: o.payroll)
+             Repo.all(from(o in Organization, order_by: o.payroll))
 
     assert p1 == Money.new(:AUD, 200)
     assert p2 == Money.new(:USD, 100)
   end
 
+  test "min and max on money" do
+    {:ok, _} = Repo.insert(%Organization{payroll: Money.new(:USD, 100)})
+    {:ok, _} = Repo.insert(%Organization{payroll: Money.new(:USD, 200)})
+
+    assert Repo.one(from(o in Organization, select: fragment("max(amount(payroll))"))) ==
+             Decimal.new("200")
+
+    assert Repo.one(from(o in Organization, select: max(o.payroll))) == Money.new(:USD, "200")
+    assert Repo.one(from(o in Organization, select: min(o.payroll))) == Money.new(:USD, "100")
+  end
+
   test "selecting money ordering" do
     alias Ecto.Adapters.SQL
-    assert {:ok, %Postgrex.Result{rows: [[true]]}} = SQL.query(Repo,"select ('USD', 100) < ('USD', 200)", [])
-    assert {:ok, %Postgrex.Result{rows: [[true]]}} = SQL.query(Repo,"select ('USD', 100) = ('USD', 100)", [])
-    assert {:ok, %Postgrex.Result{rows: [[false]]}} = SQL.query(Repo,"select ('USD', 100) < ('USD', 100)", [])
-    assert {:ok, %Postgrex.Result{rows: [[true]]}} = SQL.query(Repo,"select ('AUD', 100) < ('USD', 100)", [])
+
+    assert {:ok, %Postgrex.Result{rows: [[true]]}} =
+             SQL.query(Repo, "select ('USD', 100) < ('USD', 200)", [])
+
+    assert {:ok, %Postgrex.Result{rows: [[true]]}} =
+             SQL.query(Repo, "select ('USD', 100) = ('USD', 100)", [])
+
+    assert {:ok, %Postgrex.Result{rows: [[false]]}} =
+             SQL.query(Repo, "select ('USD', 100) < ('USD', 100)", [])
+
+    assert {:ok, %Postgrex.Result{rows: [[true]]}} =
+             SQL.query(Repo, "select ('AUD', 100) < ('USD', 100)", [])
   end
 end

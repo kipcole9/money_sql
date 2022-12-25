@@ -85,9 +85,7 @@ if Code.ensure_loaded?(Ecto.Type) do
     end
 
     def cast(%{"currency" => nil, "amount" => _amount}, _params) do
-      {:error,
-        exception:  Money.UnknownCurrencyError,
-        message: "Currency must not be `nil`"}
+      {:error, exception: Money.UnknownCurrencyError, message: "Currency must not be `nil`"}
     end
 
     def cast(%{"currency" => currency, "amount" => amount}, params)

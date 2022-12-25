@@ -1,5 +1,5 @@
 if Code.ensure_loaded?(Ecto) do
-  defmodule Mix.Tasks.Money.Gen.Postgres.AggregateFunctions do
+  defmodule Mix.Tasks.Money.Gen.Postgres.MinMaxFunctions do
     use Mix.Task
 
     import Mix.Generator
@@ -7,23 +7,21 @@ if Code.ensure_loaded?(Ecto) do
     import Macro, only: [camelize: 1, underscore: 1]
     import Money.Migration
 
-    @shortdoc "Generates a migration to create aggregate types for :money_with_currency"
+    @shortdoc "Generates a migration to create a min and max functions for :money_with_currency"
 
     @moduledoc """
-    Generates a migration to add a aggregation functions
-    to Postgres for the `money_with_currency` type
+    Generates a migration to add min and max aggregate functions
+    to Postgres for the `money_with_currency` type.
 
-    This release includes only the `sum` aggregattion
-    function.
     """
 
     @doc false
     @dialyzer {:no_return, run: 1}
 
     def run(args) do
-      no_umbrella!("money.gen.postgres.aggregate_functions")
+      no_umbrella!("money.gen.postgres.minmax_functions")
       repos = parse_repo(args)
-      name = "add_postgres_money_aggregate_functions"
+      name = "add_postgres_money_minmax_functions"
 
       Enum.each(repos, fn repo ->
         ensure_repo(repo, args)
@@ -59,11 +57,11 @@ if Code.ensure_loaded?(Ecto) do
       use Ecto.Migration
 
       def up do
-        <%= Money.DDL.execute_each(Money.DDL.define_aggregate_functions) %>
+        <%= Money.DDL.execute_each(Money.DDL.define_minmax_functions) %>
       end
 
       def down do
-        <%= Money.DDL.execute_each(Money.DDL.drop_aggregate_functions) %>
+        <%= Money.DDL.execute_each(Money.DDL.drop_minmax_functions) %>
       end
     end
     """)

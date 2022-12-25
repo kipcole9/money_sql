@@ -1,13 +1,13 @@
 defmodule Money.Sql.Mixfile do
   use Mix.Project
 
-  @version "1.7.3"
+  @version "1.8.0"
 
   def project do
     [
       app: :ex_money_sql,
       version: @version,
-      elixir: "~> 1.11",
+      elixir: "~> 1.12",
       name: "Money",
       source_url: "https://github.com/kipcole9/money_sql",
       docs: docs(),

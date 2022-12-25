@@ -2,7 +2,17 @@
 
 **When upgrading from `ex_money_sql` version `1.3.x` to `1.4.x` and later, please read the important migration information in the [README](/ex_money_sql/readme.html#migrating-from-money-sql-versions-1-3-or-earlier)**
 
-**Note** That `money_sql` is supported on Elixir 1.11 and later only from ex_money_sql version 1.7.0.
+**Note** That `money_sql` is supported on Elixir 1.12 and later only from ex_money_sql version 1.7.0.
+
+## Money_SQL v1.8.0
+
+This is the changelog for Money_SQL v1.8.0 released on December 26th, 2022.  As of this release, Elixir 1.12 or later is required.
+
+## Enhancements
+
+* Adds migrations and SQL functions to support `min` and `max` aggregate functions for Postgres when using the `money_with_currency` composite data type.  The new mix task is `money.gen.postgres.min_max_functions`.
+
+* Renames the migration task `money.gen.postgres.aggregate_functions` to `money.gen.postgres.sum_function` to better reflect its intent. This change affects only new installations. It has no effect on pre-existing generated migrations.
 
 ## Money_SQL v1.7.3
 

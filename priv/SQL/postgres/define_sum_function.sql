@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION money_state_function(agg_state money_with_currency, money money_with_currency)
+CREATE OR REPLACE FUNCTION money_sum_state_function(agg_state money_with_currency, money money_with_currency)
 RETURNS money_with_currency
 IMMUTABLE
 STRICT
@@ -30,7 +30,7 @@ AS $$
 $$;
 
 
-CREATE OR REPLACE FUNCTION money_combine_function(agg_state1 money_with_currency, agg_state2 money_with_currency)
+CREATE OR REPLACE FUNCTION money_sum_combine_function(agg_state1 money_with_currency, agg_state2 money_with_currency)
 RETURNS money_with_currency
 IMMUTABLE
 STRICT
@@ -51,8 +51,8 @@ $$;
 
 CREATE AGGREGATE sum(money_with_currency)
 (
-  sfunc = money_state_function,
+  sfunc = money_sum_state_function,
   stype = money_with_currency,
-  combinefunc = money_combine_function,
+  combinefunc = money_sum_combine_function,
   parallel = SAFE
 );
