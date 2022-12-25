@@ -258,6 +258,19 @@ defmodule Money.DB.Test do
     assert Repo.one(from(o in Organization, select: min(o.payroll))) == Money.new(:USD, "100")
   end
 
+  test "min max raise exceptions if the currencies are different" do
+    {:ok, _} = Repo.insert(%Organization{payroll: Money.new(:AUD, 100)})
+    {:ok, _} = Repo.insert(%Organization{payroll: Money.new(:USD, 200)})
+
+    assert_raise Postgrex.Error, fn ->
+      Repo.one(from(o in Organization, select: max(o.payroll)))
+    end
+
+    assert_raise Postgrex.Error, fn ->
+      Repo.one(from(o in Organization, select: min(o.payroll)))
+    end
+  end
+
   test "selecting money ordering" do
     alias Ecto.Adapters.SQL
 
