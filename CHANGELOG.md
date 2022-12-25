@@ -2,11 +2,11 @@
 
 **When upgrading from `ex_money_sql` version `1.3.x` to `1.4.x` and later, please read the important migration information in the [README](/ex_money_sql/readme.html#migrating-from-money-sql-versions-1-3-or-earlier)**
 
-**Note** That `money_sql` is supported on Elixir 1.12 and later only from ex_money_sql version 1.7.0.
+**Note** That `money_sql` is supported on Elixir 1.11 and later only from ex_money_sql version 1.7.0.
 
 ## Money_SQL v1.8.0
 
-This is the changelog for Money_SQL v1.8.0 released on December 26th, 2022.  As of this release, Elixir 1.12 or later is required.
+This is the changelog for Money_SQL v1.8.0 released on December 26th, 2022. 
 
 ## Enhancements
 
