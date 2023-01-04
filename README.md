@@ -267,9 +267,9 @@ The function `Repo.aggregate/3` can also be used. However at least [ecto version
   ** (Postgrex.Error) ERROR 22033 (): Incompatible currency codes. Expected all currency codes to be USD
 ```
 
-### Aggregate functions: min() and max
+### Aggregate functions: min() and max()
 
-`Money` provides a migration generator which, when migrated to the database with `mix ecto.migrate`, supports performing `min()` and max() aggregation on `Money` types. The steps are:
+`Money` provides a migration generator which, when migrated to the database with `mix ecto.migrate`, supports performing `min()` and `max()` aggregation on `Money` types. The steps are:
 
 1. Generate the migration by executing `mix money.gen.postgres.min_max_functions`
 
