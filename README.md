@@ -234,7 +234,7 @@ Since the datatype used to store `Money` in Postgres is a composite type (called
 
 `Money` provides a migration generator which, when migrated to the database with `mix ecto.migrate`, supports performing `sum()` aggregation on `Money` types. The steps are:
 
-1. Generate the migration by executing `mix money.gen.postgres.aggregate_functions`
+1. Generate the migration by executing `mix money.gen.postgres.sum_function`
 
 2. Migrate the database by executing `mix ecto.migrate`
 
@@ -254,8 +254,32 @@ Since the datatype used to store `Money` in Postgres is a composite type (called
 
 The function `Repo.aggregate/3` can also be used. However at least [ecto version 3.2.4](https://hex/pm/packages/ecto/3.2.4) is required for this to work correctly for custom ecto types such as `:money_with_currency`.
 
+### Aggregate functions: min() and max
+
+`Money` provides a migration generator which, when migrated to the database with `mix ecto.migrate`, supports performing `min()` and max() aggregation on `Money` types. The steps are:
+
+1. Generate the migration by executing `mix money.gen.postgres.min_max_functions`
+
+2. Migrate the database by executing `mix ecto.migrate`
+
+3. Formulate an Ecto query to use the aggregate function `min()` or `max()`
+
 ```elixir
-  iex> Repo.aggregate(Item, :sum, :price)
+  # Formulate the query.  Note the required use of the type()
+  # expression which is needed to inform Ecto of the return
+  # type of the function
+  iex> q = Ecto.Query.select Item, [l], type(min(l.price), l.price)
+  #Ecto.Query<from l0 in Item, select: type(min(l.price), l.price)>
+  iex> Repo.all q
+  [debug] QUERY OK source="items" db=6.1ms
+  SELECT min(l0."price")::money_with_currency FROM "items" AS l0 []
+  [#Money<:USD, 600>]
+```
+
+The function `Repo.aggregate/3` can also be used. However at least [ecto version 3.2.4](https://hex/pm/packages/ecto/3.2.4) is required for this to work correctly for custom ecto types such as `:money_with_currency`.
+
+```elixir
+  iex> Repo.aggregate(Item, :min, :price)
   #Money<:USD, 600>
 ```
 
@@ -263,7 +287,7 @@ The function `Repo.aggregate/3` can also be used. However at least [ecto version
 ```elixir
   iex> Repo.all q
   [debug] QUERY ERROR source="items" db=4.5ms
-  SELECT sum(l0."price")::money_with_currency FROM "items" AS l0 []
+  SELECT min(l0."price")::money_with_currency FROM "items" AS l0 []
   ** (Postgrex.Error) ERROR 22033 (): Incompatible currency codes. Expected all currency codes to be USD
 ```
 
