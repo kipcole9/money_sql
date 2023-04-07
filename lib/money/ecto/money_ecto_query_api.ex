@@ -64,22 +64,22 @@ if Code.ensure_loaded?(Ecto.Query.API) do
 
     ```elixir
     iex> Organization
-    ...> |> where([o], currency_is(o.payroll, :AUD))
+    ...> |> where([o], currency_eq(o.payroll, :AUD))
     ...> |> select([o], o.payroll)
     ...> |> Repo.all()
     [Money.new(:AUD, "50"), Money.new(:AUD, "70")
     ```
     """
-    defmacro currency_is(field, currency) when is_atom(currency) do
+    defmacro currency_eq(field, currency) when is_atom(currency) do
       currency = currency |> to_string() |> String.upcase()
-      do_currency_is(field, currency)
+      do_currency_eq(field, currency)
     end
 
-    defmacro currency_is(field, currency) when is_binary(currency) do
-      do_currency_is(field, currency)
+    defmacro currency_eq(field, currency) when is_binary(currency) do
+      do_currency_eq(field, currency)
     end
 
-    defp do_currency_is(field, <<_::binary-size(3)>> = currency) do
+    defp do_currency_eq(field, <<_::binary-size(3)>> = currency) do
       quote do: currency_code(unquote(field)) == ^unquote(currency)
     end
 
@@ -90,13 +90,13 @@ if Code.ensure_loaded?(Ecto.Query.API) do
 
     ```elixir
     iex> Organization
-    ...> |> where([o], amount_is(o.payroll, 100))
+    ...> |> where([o], amount_eq(o.payroll, 100))
     ...> |> select([o], o.payroll)
     ...> |> Repo.all()
     [Money.new(:EUR, "100"), Money.new(:USD, "100")
     ```
     """
-    defmacro amount_is(field, amount) when is_integer(amount) do
+    defmacro amount_eq(field, amount) when is_integer(amount) do
       quote do
         amount(unquote(field)) == ^unquote(amount)
       end
@@ -109,13 +109,13 @@ if Code.ensure_loaded?(Ecto.Query.API) do
 
     ```elixir
     iex> Organization
-    ...> |> where([o], money_is(o.payroll, Money.new!(100, :USD)))
+    ...> |> where([o], money_eq(o.payroll, Money.new!(100, :USD)))
     ...> |> select([o], o.payroll)
     ...> |> Repo.all()
     [Money.new(:USD, "100"), Money.new(:USD, "100")]
     ```
     """
-    defmacro money_is(field, money) do
+    defmacro money_eq(field, money) do
       quote do
         amount(unquote(field)) == ^unquote(money).amount and
           currency_code(unquote(field)) == ^to_string(unquote(money).currency)

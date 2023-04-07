@@ -19,7 +19,7 @@ defmodule Money.Query.API.Test do
     test "select by currency(-ies)", %{m_aud: m_aud, m_usd: m_usd, m_eur: m_eur} do
       same_currency =
         Organization
-        |> where([o], currency_is(o.payroll, :AUD))
+        |> where([o], currency_eq(o.payroll, :AUD))
         |> select([o], o.payroll)
         |> Repo.all()
 
@@ -75,7 +75,7 @@ defmodule Money.Query.API.Test do
     test "select by amount", %{m_usd: m_usd, m_eur: m_eur} do
       no_currency_filter =
         Organization
-        |> where([o], amount_is(o.payroll, 100))
+        |> where([o], amount_eq(o.payroll, 100))
         |> select([o], o.payroll)
         |> Repo.all()
 
@@ -83,8 +83,8 @@ defmodule Money.Query.API.Test do
 
       currency_filter =
         Organization
-        |> where([o], currency_is(o.payroll, "USD"))
-        |> where([o], amount_is(o.payroll, 100))
+        |> where([o], currency_eq(o.payroll, "USD"))
+        |> where([o], amount_eq(o.payroll, 100))
         |> select([o], o.payroll)
         |> Repo.all()
 
@@ -92,7 +92,7 @@ defmodule Money.Query.API.Test do
 
       currency_filter =
         Organization
-        |> where([o], money_is(o.payroll, Money.new!(100, :USD)))
+        |> where([o], money_eq(o.payroll, Money.new!(100, :USD)))
         |> select([o], o.payroll)
         |> Repo.all()
 
@@ -110,7 +110,7 @@ defmodule Money.Query.API.Test do
 
       currency_filter =
         Organization
-        |> where([o], currency_is(o.payroll, "USD"))
+        |> where([o], currency_eq(o.payroll, "USD"))
         |> where([o], amount_in(o.payroll, 100..90//-1))
         |> select([o], o.payroll)
         |> Repo.all()
