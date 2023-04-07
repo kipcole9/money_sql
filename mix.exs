@@ -82,6 +82,7 @@ defmodule Money.Sql.Mixfile do
       {:ecto, "~> 3.5"},
       {:ecto_sql, "~> 3.0"},
       {:postgrex, "~> 0.15"},
+      {:myxql, "~> 0.4", only: :test},
       {:benchee, "~> 1.0", optional: true, only: :dev},
       {:exprof, "~> 0.2", only: :dev, runtime: false},
       {:ex_doc, "~> 0.22", only: [:dev, :test, :release]},

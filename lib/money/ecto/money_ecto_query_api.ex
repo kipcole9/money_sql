@@ -11,10 +11,15 @@ if Code.ensure_loaded?(Ecto.Query.API) do
     It is also designed to be an implementation-agnostic, meaning one can use
     these helpers without a necessity to explicitly specify a backing type.
 
-    The default implementation ships with a `Postgres` adapter. To use it with,
-    say, `MySQL`, one should implement this behaviour for `MySQL` and declare
+    The default implementation recommends a `Composite` adapter, which is used by default.
+    To use it with, say, `MySQL`, one should implement this behaviour for `MySQL` and declare
     the implementation as `use Money.Ecto.Query.API, adapter: MyImpl.MySQL.Adapter`
 
+    Although the library provides the MySQL adapter too (`Money.Ecto.Query.API.Map.MySQL`,)
+    but it is not actively maintained, so use it on your own.
+
+    If for some reason you use `Map` type with `Postgres`, helpers are still available
+    with `use Money.Ecto.Query.API, adapter: Money.Ecto.Query.API.Map.Postgres`
     """
 
     @doc """
@@ -44,7 +49,7 @@ if Code.ensure_loaded?(Ecto.Query.API) do
 
     @doc false
     defmacro __using__([]),
-      do: do_using(Money.Ecto.Query.API.Postgres)
+      do: do_using(Money.Ecto.Query.API.Composite)
 
     @doc false
     defmacro __using__(adapter: adapter),
@@ -117,7 +122,7 @@ if Code.ensure_loaded?(Ecto.Query.API) do
     """
     defmacro money_eq(field, money) do
       quote do
-        amount(unquote(field)) == ^unquote(money).amount and
+        amount(unquote(field)) == ^Decimal.to_integer(unquote(money).amount) and
           currency_code(unquote(field)) == ^to_string(unquote(money).currency)
       end
     end

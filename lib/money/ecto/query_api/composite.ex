@@ -1,5 +1,5 @@
 if Code.ensure_loaded?(Ecto.Query.API) do
-  defmodule Money.Ecto.Query.API.Postgres do
+  defmodule Money.Ecto.Query.API.Composite do
     @moduledoc false
 
     @behaviour Money.Ecto.Query.API
