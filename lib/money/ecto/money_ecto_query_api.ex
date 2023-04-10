@@ -47,6 +47,14 @@ if Code.ensure_loaded?(Ecto.Query.API) do
     """
     @macrocallback sum(Macro.t(), cast? :: boolean()) :: Macro.t()
 
+    @doc """
+    Cast decimal to the value accepted by the database.
+    """
+    @callback cast_decimal(Decimal.t()) :: any()
+
+    @doc false
+    defmacro __using__(opts \\ [])
+
     @doc false
     defmacro __using__([]),
       do: do_using(Money.Ecto.Query.API.Composite)
@@ -122,7 +130,7 @@ if Code.ensure_loaded?(Ecto.Query.API) do
     """
     defmacro money_eq(field, money) do
       quote do
-        amount(unquote(field)) == ^Decimal.to_integer(unquote(money).amount) and
+        amount(unquote(field)) == ^cast_decimal(unquote(money).amount) and
           currency_code(unquote(field)) == ^to_string(unquote(money).currency)
       end
     end
