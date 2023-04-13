@@ -8,6 +8,7 @@ defmodule Money.Repo.Migrations.CreateMoneyTable do
       add :payroll,         :money_with_currency
       add :tax,             :money_with_currency
       add :value,           :money_with_currency
+      add :revenue,         :map
       timestamps()
     end
   end
