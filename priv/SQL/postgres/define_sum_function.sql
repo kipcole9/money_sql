@@ -49,7 +49,7 @@ AS $$
 $$;
 
 
-CREATE AGGREGATE sum(money_with_currency)
+CREATE OR REPLACE AGGREGATE sum(money_with_currency)
 (
   sfunc = money_sum_state_function,
   stype = money_with_currency,
