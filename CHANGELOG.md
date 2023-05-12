@@ -10,7 +10,7 @@ This is the changelog for Money_SQL v1.9.1 released on May 12th, 2022.
 
 ## Bug Fixes
 
-* Fixes casting a map the `"amount"` is `nil`. Thanks to @treere for the report and PR. Closes #30.
+* Fixes casting a map when the `"amount"` is `nil`. Thanks to @treere for the report and PR. Closes #30.
 
 ## Money_SQL v1.9.0
 
