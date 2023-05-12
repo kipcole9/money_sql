@@ -4,6 +4,14 @@
 
 **Note** That `money_sql` is supported on Elixir 1.11 and later only from ex_money_sql version 1.7.0.
 
+## Money_SQL v1.9.1
+
+This is the changelog for Money_SQL v1.9.1 released on May 12th, 2022. 
+
+## Bug Fixes
+
+* Fixes casting a map the `"amount"` is `nil`. Thanks to @treere for the report and PR. Closes #30.
+
 ## Money_SQL v1.9.0
 
 This is the changelog for Money_SQL v1.9.0 released on April 28th, 2022. 
