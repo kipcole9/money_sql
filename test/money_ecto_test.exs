@@ -68,6 +68,10 @@ defmodule Money.Ecto.Test do
       assert unquote(ecto_type_module).cast(%{"currency" => "USD", "amount" => ""}) == {:ok, nil}
     end
 
+    test "#{inspect(ecto_type_module)}: cast a map with the current structure but a nil amount" do
+      assert unquote(ecto_type_module).cast(%{"currency" => "USD", "amount" => nil}) == {:ok, nil}
+    end
+
     test "#{inspect(ecto_type_module)}: cast a money struct" do
       assert unquote(ecto_type_module).cast(Money.new(:USD, 100)) == {:ok, Money.new(:USD, 100)}
     end
