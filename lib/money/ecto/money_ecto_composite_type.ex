@@ -46,6 +46,10 @@ if Code.ensure_loaded?(Ecto.Type) do
       end
     end
 
+    def load(_, _, _) do
+      :error
+    end
+
     # Dumping to the database.  We make the assumption that
     # since we are dumping from %Money{} structs that the
     # data is ok
