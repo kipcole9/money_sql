@@ -10,11 +10,20 @@ defmodule Organization do
     field :revenue,         Money.Ecto.Map.Type, default: Money.new(:AUD, 0)
     field :name,            :string
     field :employee_count,  :integer
+    embeds_many :customers, Customer do
+      field :name, :string
+      field :revenue, Money.Ecto.Map.Type, default: Money.new(:USD, 0)
+    end
     timestamps()
   end
 
   def changeset(organization, params \\ %{}) do
     organization
     |> cast(params, [:payroll])
+    |> cast_embed(:customers, with: &customer_changeset/2)
+  end
+
+  def customer_changeset(customer, params \\ %{}) do
+    cast(customer, params, [:name, :revenue])
   end
 end

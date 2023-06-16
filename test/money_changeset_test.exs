@@ -8,6 +8,11 @@ defmodule Money.Changeset.Test do
     assert changeset.changes.payroll == Money.new(:JPY, 0)
   end
 
+  test "Changeset default currency in embedded schema" do
+    changeset = Organization.changeset(%Organization{}, %{customers: [%{revenue: "12345.67"}]})
+    assert hd(changeset.changes.customers).changes.revenue == Money.new(:USD, "12345.67")
+  end
+
   test "money positive validation" do
     assert validate_money(test_changeset(), :value, less_than: Money.new(:USD, 200)).valid?
 

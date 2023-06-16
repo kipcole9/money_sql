@@ -46,6 +46,10 @@ if Code.ensure_loaded?(Ecto.Type) do
       end
     end
 
+    def load(_, _, _) do
+      :error
+    end
+
     # Dumping to the database.  We make the assumption that
     # since we are dumping from %Money{} structs that the
     # data is ok
@@ -137,7 +141,7 @@ if Code.ensure_loaded?(Ecto.Type) do
     def embed_as(term), do: embed_as(term, [])
 
     @impl Ecto.ParameterizedType
-    def embed_as(_term, _params), do: :self
+    def embed_as(_term, _params), do: :dump
 
     def equal?(money1, money2), do: equal?(money1, money2, [])
 

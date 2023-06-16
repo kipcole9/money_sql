@@ -9,6 +9,7 @@ defmodule Money.Repo.Migrations.CreateMoneyTable do
       add :tax,             :money_with_currency
       add :value,           :money_with_currency
       add :revenue,         :map
+      add :customers,       {:array, :map}
       timestamps()
     end
   end

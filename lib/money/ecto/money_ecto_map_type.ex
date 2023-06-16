@@ -55,6 +55,10 @@ if Code.ensure_loaded?(Ecto.Type) do
       end
     end
 
+    def load(_, _, _) do
+      :error
+    end
+
     def dump(money, dumper \\ nil, params \\ [])
 
     def dump(%Money{currency: currency, amount: %Decimal{} = amount}, _dumper, _params) do
