@@ -166,7 +166,7 @@ Then the schema type is `Money.Ecto.Composite.Type` then any option that is appl
 
 Consider the following example where a money amount will be considered in a default currency if no currency is applied:
 
-### Example schema
+### Schema Example
 
 The example below has three columns defined as `Money.Ecto.Composite.Type`.
 
@@ -196,6 +196,30 @@ defmodule Organization do
     |> cast(params, [:payroll])
   end
 end
+```
+
+### Embedded schema example
+
+Embedded schemas are represented in Postgres as a `jsobn` data type which, in Elixir, is represented as a map. Therefore to include money fields in an embedded scheam, the `Money.Ecto.Map.Type` is used. Here is an example schema, extending the previous example:
+
+```elixir
+defmodule Organization do
+  use Ecto.Schema
+  import Ecto.Changeset
+
+  @primary_key false
+  schema "organizations" do
+    field :payroll,         Money.Ecto.Composite.Type, default_currency: :JPY
+    field :tax,             Money.Ecto.Composite.Type, fractional_digits: 4
+    field :value,           Money.Ecto.Composite.Type, default: Money.new(:USD, 0)
+    field :name,            :string
+    field :employee_count,  :integer
+    embeds_many :customers, Customer do
+      field :name, :string
+      field :revenue, Money.Ecto.Map.Type, default: Money.new(:USD, 0)
+    end
+    timestamps()
+  end
 ```
 
 ### Changeset execution

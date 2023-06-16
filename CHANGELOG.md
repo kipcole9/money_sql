@@ -4,6 +4,14 @@
 
 **Note** That `money_sql` is supported on Elixir 1.11 and later only from ex_money_sql version 1.7.0.
 
+## Money_SQL v1.9.2
+
+This is the changelog for Money_SQL v1.9.2 released on June 17th, 2022. 
+
+## Bug Fixes
+
+* Fixes dumping and loading of `Money.Ecto.Map.Type` when used in embedded schemas. Many thanks to @redrabbit for the issue and the PR.  Closes #32.
+
 ## Money_SQL v1.9.1
 
 This is the changelog for Money_SQL v1.9.1 released on May 12th, 2022. 
