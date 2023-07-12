@@ -12,21 +12,6 @@ Money_SQL implements a set of functions to store and retrieve data structured as
 >
 > In previous releases the misconfiguration of the type worked by accident. From `ex_money_sql` version 1.9.2 and subsequent releases an exception like `** (Protocol.UndefinedError) protocol Jason.Encoder not implemented for {"USD", Decimal.new("50.00")} of type Tuple` will be raised. This is most likely an indication of type misconfiguration in an embedded schema.
 
-> #### Migrating from Money SQL versions 1.3 or earlier {: .info}
->
-> As of [ex_money_sql version 1.4.0](https://hex.pm/packages/ex_money_sql/1.4.0) the composite type for postgres, `Money.Ecto.Composite.Type` is defined as a [parameterized type](https://hexdocs.pm/ecto/Ecto.ParameterizedType.html). This is compatible with earlier versions with the exception of the behaviour of the `type/2` macro used to cast results. These calls have to be changed as follows:
->
-> ```elixir
-> # ex_money_sql version 1.3 and earlier
-> where(Credit, [c], c.price < type(^value, Money.Ecto.Composite.Type))
->
-> # ex_money_sql version 1.4 and later
-> where(Credit, [c], c.price < type(^value, ^Money.Ecto.Composite.Type.cast_type()))
->
-> # When the query is a schema query this is preferred
-> where(Credit, [c], c.price < type(^value, c.price))
-> ```
-
 ## Installation
 
 `ex_money_sql` can be installed by adding `ex_money_sql` to your list of dependencies in `mix.exs` and then executing `mix deps.get`
