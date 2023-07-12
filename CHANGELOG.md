@@ -8,9 +8,15 @@
 
 This is the changelog for Money_SQL v1.9.2 released on June 17th, 2022. 
 
+## Embedded Schema Configuration 
+
+Please ensure that if you are using Ecto [embedded schemas](https://hexdocs.pm/ecto/embedded-schemas.html) that include a `money` type that it is configured with the type `Money.Ecto.Map.Type`, **NOT** `Money.Ecto.Composite.Type`. 
+
+In previous releases the misconfiguration of the type worked by accident. In this release and subsequent releases you will likely see an exception like `** (Protocol.UndefinedError) protocol Jason.Encoder not implemented for {"USD", Decimal.new("50.00")} of type Tuple`. This is most likely an indication of type misconfiguration in an embedded schema.
+
 ## Bug Fixes
 
-* Fixes dumping and loading of `Money.Ecto.Map.Type` when used in embedded schemas. Many thanks to @redrabbit for the issue and the PR.  Closes #32.
+* Fixes dumping and loading of `Money.Ecto.Map.Type` when used in embedded schemas. Many thanks to @redrabbit for the issue and the PR.  Closes #32. 
 
 ## Money_SQL v1.9.1
 

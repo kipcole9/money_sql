@@ -1,9 +1,16 @@
 # Introduction to Money SQL
-![Build Status](http://sweatbox.noexpectations.com.au:8080/buildStatus/icon?job=money_sql)
-[![Hex pm](http://img.shields.io/hexpm/v/ex_money_sql.svg?style=flat)](https://hex.pm/packages/ex_money_sql)
-[![License](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://github.com/kipcole9/money_sql/blob/master/LICENSE)
+[![Hex.pm](https://img.shields.io/hexpm/v/ex_money_sql.svg)](https://hex.pm/packages/ex_money_sql)
+[![Hex.pm](https://img.shields.io/hexpm/dw/ex_money_sql.svg?)](https://hex.pm/packages/ex_money_sql)
+[![Hex.pm](https://img.shields.io/hexpm/dt/ex_money_sql.svg?)](https://hex.pm/packages/ex_money_sql)
+[![Hex.pm](https://img.shields.io/hexpm/l/ex_money_sql.svg)](https://hex.pm/packages/ex_money_sql)
 
 Money_SQL implements a set of functions to store and retrieve data structured as a `%Money{}` type that is composed of an ISO 4217 currency code and a currency amount. See [ex_money](https://hex.pm/packages/ex_money) for details of using `Money`.  Note that `ex_money_sql` depends on `ex_money`.
+
+> #### Embedded Schema Configuration from ex_money_sql 1.9.2 {: .warning}
+>
+> Please ensure that if you are using Ecto [embedded schemas](https://hexdocs.pm/ecto/embedded-schemas.html) that include a `money` type that it is configured with the type `Money.Ecto.Map.Type`, **NOT** `Money.Ecto.Composite.Type`. 
+>
+> In previous releases the misconfiguration of the type worked by accident. From `ex_money_sql` version 1.9.2 and subsequent releases an exception like `** (Protocol.UndefinedError) protocol Jason.Encoder not implemented for {"USD", Decimal.new("50.00")} of type Tuple` will be raised. This is most likely an indication of type misconfiguration in an embedded schema.
 
 ## Migrating from Money SQL versions 1.3 or earlier
 

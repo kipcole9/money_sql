@@ -64,7 +64,8 @@ defmodule Money.Sql.Mixfile do
       extras: ["README.md", "CHANGELOG.md", "LICENSE.md"],
       main: "readme",
       logo: "logo.png",
-      skip_undefined_reference_warnings_on: ["CHANGELOG.md", "README.md"]
+      skip_undefined_reference_warnings_on: ["CHANGELOG.md", "README.md"],
+      formatters: ["html"]
     ]
   end
 
