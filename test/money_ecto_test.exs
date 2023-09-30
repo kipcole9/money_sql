@@ -10,6 +10,14 @@ defmodule Money.Ecto.Test do
       assert Money.Ecto.Composite.Type.load({"USD", 100}) == {:ok, Money.new(:USD, 100)}
     end
 
+    test "load treats NaN values as error" do
+      assert Money.Ecto.Composite.Type.load({"USD", "NaN"}) == :error
+    end
+
+    test "load treats Inf values as error" do
+      assert Money.Ecto.Composite.Type.load({"USD", "Inf"}) == :error
+    end
+
     test "dump a money struct" do
       assert Money.Ecto.Composite.Type.dump(Money.new(:USD, 100)) ==
                {:ok, {"USD", Decimal.new(100)}}
@@ -40,6 +48,14 @@ defmodule Money.Ecto.Test do
 
     test "load a json map with an unknown currency code produces an error" do
       assert Money.Ecto.Map.Type.load(%{"currency" => "AAA", "amount" => 100}) == :error
+    end
+
+    test "load treats NaN values as error" do
+      assert Money.Ecto.Map.Type.load(%{"currency" => "USD", "amount" => "NaN"}) == :error
+    end
+
+    test "load treats Inf values as error" do
+      assert Money.Ecto.Map.Type.load(%{"currency" => "USD", "amount" => "Inf"}) == :error
     end
 
     test "dump a money struct" do
