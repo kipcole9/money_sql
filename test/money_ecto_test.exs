@@ -3,7 +3,7 @@ defmodule Money.Ecto.Test do
 
   describe "Money.Ecto.Composite.Type specific tests" do
     test "load a tuple with an unknown currency code produces an error" do
-      assert Money.Ecto.Composite.Type.load({"ABC", 100}) == :error
+      assert Money.Ecto.Composite.Type.load({"INVALID", 100}) == :error
     end
 
     test "load a tuple produces a Money struct" do
