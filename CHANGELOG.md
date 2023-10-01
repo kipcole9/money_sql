@@ -1,6 +1,14 @@
 # Changelog
 
-**Note** That `money_sql` is supported on Elixir 1.11 and later only from ex_money_sql version 1.7.0.
+**Note** That `money_sql` is supported on Elixir 1.11 and later only.
+
+## Money_SQL v1.9.3
+
+This is the changelog for Money_SQL v1.9.2 released on October 1st, 2023. 
+
+### Bug Fixes
+
+* Return an error is loading invalid amounts such as `Inf` and `NaN`. Thanks to @dhedlund for the report and PR. Closes #34.
 
 ## Money_SQL v1.9.2
 
@@ -12,7 +20,7 @@ Please ensure that if you are using Ecto [embedded schemas](https://hexdocs.pm/e
 
 In previous releases the misconfiguration of the type worked by accident. In this release and subsequent releases you will likely see an exception like `** (Protocol.UndefinedError) protocol Jason.Encoder not implemented for {"USD", Decimal.new("50.00")} of type Tuple`. This is most likely an indication of type misconfiguration in an embedded schema.
 
-## Bug Fixes
+### Bug Fixes
 
 * Fixes dumping and loading of `Money.Ecto.Map.Type` when used in embedded schemas. Many thanks to @redrabbit for the issue and the PR.  Closes #32. 
 
@@ -20,7 +28,7 @@ In previous releases the misconfiguration of the type worked by accident. In thi
 
 This is the changelog for Money_SQL v1.9.1 released on May 12th, 2022. 
 
-## Bug Fixes
+### Bug Fixes
 
 * Fixes casting a map when the `"amount"` is `nil`. Thanks to @treere for the report and PR. Closes #30.
 
@@ -28,7 +36,7 @@ This is the changelog for Money_SQL v1.9.1 released on May 12th, 2022.
 
 This is the changelog for Money_SQL v1.9.0 released on April 28th, 2022. 
 
-## Enhancements
+### Enhancements
 
 * Adds `Money.Ecto.Query.API` query helpers to simplify Ecto queries involving money columns. Thanks very much to @am-kantox for the excellent suggestion and PR.
 
@@ -36,7 +44,7 @@ This is the changelog for Money_SQL v1.9.0 released on April 28th, 2022.
 
 This is the changelog for Money_SQL v1.8.0 released on December 26th, 2022. 
 
-## Enhancements
+### Enhancements
 
 * Adds migrations and SQL functions to support `min` and `max` aggregate functions for Postgres when using the `money_with_currency` composite data type.  The new mix task is `money.gen.postgres.min_max_functions`.
 
@@ -46,7 +54,7 @@ This is the changelog for Money_SQL v1.8.0 released on December 26th, 2022.
 
 This is the changelog for Money_SQL v1.7.3 released on December 18th, 2022.
 
-## Bug Fixes
+### Bug Fixes
 
 * WHen loading money from the database with the `Money.Ecto.Map.Type` type, do not do localized parsing of the amount. The amount is always saved using `Decimal.to_string/1` and therefore is not localized. It must not be parsed with localization on loading.
 
@@ -54,7 +62,7 @@ This is the changelog for Money_SQL v1.7.3 released on December 18th, 2022.
 
 This is the changelog for Money_SQL v1.7.2 released on August 27th, 2022.
 
-## Bug Fixes
+### Bug Fixes
 
 * Makes the aggregate functions parallel-safe which provides up to 100% speed improvement. Thanks to @milangupta1 for the PR.
 
@@ -62,7 +70,7 @@ This is the changelog for Money_SQL v1.7.2 released on August 27th, 2022.
 
 This is the changelog for Money_SQL v1.7.1 released on July 8th, 2022.
 
-## Bug Fixes
+### Bug Fixes
 
 * Fixes casting a money map when the currency is `nil`. Thanks to @frahugo for the report. Closes #24.
 
@@ -70,7 +78,7 @@ This is the changelog for Money_SQL v1.7.1 released on July 8th, 2022.
 
 This is the changelog for Money_SQL v1.7.0 released on May 21st, 2022.
 
-## Enhancements
+### Enhancements
 
 * Adds the module `Money.Validation` to provide [Ecto Changeset validations](https://hexdocs.pm/ecto/Ecto.Changeset.html#module-validations-and-constraints). In particular it adds `Money.Validation.validate_money/3` which behaves exactly like `Ecto.Changeset.validate_number/3` only for `t:Money.t/0` types.
 
@@ -80,7 +88,7 @@ This is the changelog for Money_SQL v1.6.0 released on December 31st, 2021.
 
 **Note** That `money_sql` is now supported on Elixir 1.10 and later only.
 
-## Enhancements
+### Enhancements
 
 * `t:Money.Ecto.Composite.Type` and `t:Money.Ecto.Map.Type` now return the exception module when there is an error in `cast/1`. For example:
 
@@ -106,7 +114,7 @@ This is the changelog for Money_SQL v1.5.2 released on December 13th, 2021.
 
 **Note** That `money_sql` is now supported on Elixir 1.10 and later only.
 
-## Bug Fixes
+### Bug Fixes
 
 * Fixes `c:Ecto.ParameterizedType.embed_as/2` callback for the `Ecto.ParameterizedType` behaviour. Thanks to @nseantanly for the report and the PR.
 
@@ -116,7 +124,7 @@ This is the changelog for Money_SQL v1.5.1 released on December 8th, 2021.
 
 **Note** That `money_sql` is now supported on Elixir 1.10 and later only.
 
-## Bug Fixes
+### Bug Fixes
 
 * Implements `c:Ecto.ParameterizedType.equal?/3` callback for the `Ecto.ParameterizedType` behaviour. Thanks to @namhoangyojee for the report and the PR.
 
@@ -126,7 +134,7 @@ This is the changelog for Money_SQL v1.5.1 released on December 8th, 2021.
 
 This is the changelog for Money_SQL v1.5.0 released on September 25th, 2021.
 
-### Enhancements
+#### Enhancements
 
 * Adds a `+` operator for the Postgres type `:money_with_currency`
 
@@ -136,7 +144,7 @@ This is the changelog for Money_SQL v1.5.0 released on September 25th, 2021.
 
 This is the changelog for Money_SQL v1.4.5 released on June 3rd, 2021.
 
-### Bug Fixes
+#### Bug Fixes
 
 * Remove conditional compilation in `Money.Ecto.Composite.Type` - the type is always `Ecto.ParameterizedType`.
 
@@ -144,7 +152,7 @@ This is the changelog for Money_SQL v1.4.5 released on June 3rd, 2021.
 
 This is the changelog for Money_SQL v1.4.4 released on March 18th, 2021.
 
-### Bug Fixes
+#### Bug Fixes
 
 * Don't use `is_struct/1` guard to support compatibility on older Elixir releases
 
@@ -152,7 +160,7 @@ This is the changelog for Money_SQL v1.4.4 released on March 18th, 2021.
 
 This is the changelog for Money_SQL v1.4.3 released on February 17th, 2021.
 
-### Bug Fixes
+#### Bug Fixes
 
 * Don't propogate a `:default` option into the `t:Money` from the schema. Fixes #14. Thanks to @emaiax.
 
@@ -160,7 +168,7 @@ This is the changelog for Money_SQL v1.4.3 released on February 17th, 2021.
 
 This is the changelog for Money_SQL v1.4.2 released on February 12th, 2021.
 
-### Bug Fixes
+#### Bug Fixes
 
 * Dumping/loading `nil` returns `{:ok, nil}`.  Thanks to @morinap.
 
@@ -168,7 +176,7 @@ This is the changelog for Money_SQL v1.4.2 released on February 12th, 2021.
 
 This is the changelog for Money_SQL v1.4.1 released on February 11th, 2021.
 
-### Bug Fixes
+#### Bug Fixes
 
 * Casting `nil` returns `{:ok, nil}`.  Thanks to @morinap.
 
@@ -176,13 +184,13 @@ This is the changelog for Money_SQL v1.4.1 released on February 11th, 2021.
 
 This is the changelog for Money_SQL v1.4.0 released on February 10th, 2021.
 
-### Bug Fixes
+#### Bug Fixes
 
 * Fix parsing error handling in `Money.Ecto.Composite.Type.cast/2`. Thanks to @NikitaAvvakumov. Closes #10.
 
 * Fix casting localized amounts. Thanks to @olivermt. Closes #11.
 
-### Enhancements
+#### Enhancements
 
 * Changes `Money.Ecto.Composite.Type` and `Money.Ecto.Map.Type` to be `ParameterizedType`. As a result, Ecto 3.5 or later is required. This change allows configuration of format options for the `:money_with_currency` to added as parameters in the Ecto schema.  For the example schema:
 ```elixir
@@ -205,7 +213,7 @@ The field `:tax` will be instantiated as a `Money.t` with `:format_options` of `
 
 This is the changelog for Money_SQL v1.3.1 released on September 30th, 2020.
 
-### Bug Fixes
+#### Bug Fixes
 
 * Fixes compatibility with both `Decimal` version `1.x` and `2.x`. Thanks to @doughsay and @coladarci for the report. Closes #8.
 
@@ -213,7 +221,7 @@ This is the changelog for Money_SQL v1.3.1 released on September 30th, 2020.
 
 This is the changelog for Money_SQL v1.3.0 released on January 30th, 2020.
 
-### Enhancements
+#### Enhancements
 
 * Updates to `ex_money` version `5.0`. Thanks to @morgz
 
@@ -221,7 +229,7 @@ This is the changelog for Money_SQL v1.3.0 released on January 30th, 2020.
 
 This is the changelog for Money_SQL v1.2.1 released on November 3rd, 2019.
 
-### Bug Fixes
+#### Bug Fixes
 
 * Fixes `Money.Ecto.Composite.Type` and `Money.Ecto.Map.Type` by ensuring the `load/1` and `cast/1` callbacks conform to their typespecs.  Thanks to @bgracie. Closes #4 and #5.
 
@@ -231,11 +239,11 @@ This is the changelog for Money_SQL v1.2.1 released on November 3rd, 2019.
 
 This is the changelog for Money_SQL v1.2.0 released on November 2nd, 2019.
 
-### Bug Fixes
+#### Bug Fixes
 
 * Removes the precision specification from intermediate results of the `sum` aggregate function for Postgres.
 
-### Enhancements
+#### Enhancements
 
 * Adds `equal?/2` callbacks to the `Money.Ecto.Composite.Type` and `Money.Ecto.Map.Type` for `ecto_sql` version 3.2
 
@@ -243,11 +251,11 @@ This is the changelog for Money_SQL v1.2.0 released on November 2nd, 2019.
 
 This is the changelog for Money_SQL v1.1.0 released on August 22nd, 2019.
 
-### Enhancements
+#### Enhancements
 
 * Renames the migration that generator that creates the Postgres composite type to be more meaningful.
 
-### Bug Fixes
+#### Bug Fixes
 
 * Correctly generate and execute migrations.  Fixes #1 and #2.  Thanks to @davidsulc, @KungPaoChicken.
 
@@ -255,6 +263,6 @@ This is the changelog for Money_SQL v1.1.0 released on August 22nd, 2019.
 
 This is the changelog for Money_SQL v1.0.0 released on July 8th, 2019.
 
-### Enhancements
+#### Enhancements
 
 * Initial release.  Extracted from [ex_money](https://hex.pm/packages/ex_money)
