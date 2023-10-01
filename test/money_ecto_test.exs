@@ -3,11 +3,19 @@ defmodule Money.Ecto.Test do
 
   describe "Money.Ecto.Composite.Type specific tests" do
     test "load a tuple with an unknown currency code produces an error" do
-      assert Money.Ecto.Composite.Type.load({"ABC", 100}) == :error
+      assert Money.Ecto.Composite.Type.load({"INVALID", 100}) == :error
     end
 
     test "load a tuple produces a Money struct" do
       assert Money.Ecto.Composite.Type.load({"USD", 100}) == {:ok, Money.new(:USD, 100)}
+    end
+
+    test "load treats NaN values as error" do
+      assert Money.Ecto.Composite.Type.load({"USD", "NaN"}) == :error
+    end
+
+    test "load treats Inf values as error" do
+      assert Money.Ecto.Composite.Type.load({"USD", "Inf"}) == :error
     end
 
     test "dump a money struct" do
@@ -40,6 +48,14 @@ defmodule Money.Ecto.Test do
 
     test "load a json map with an unknown currency code produces an error" do
       assert Money.Ecto.Map.Type.load(%{"currency" => "AAA", "amount" => 100}) == :error
+    end
+
+    test "load treats NaN values as error" do
+      assert Money.Ecto.Map.Type.load(%{"currency" => "USD", "amount" => "NaN"}) == :error
+    end
+
+    test "load treats Inf values as error" do
+      assert Money.Ecto.Map.Type.load(%{"currency" => "USD", "amount" => "Inf"}) == :error
     end
 
     test "dump a money struct" do
