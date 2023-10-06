@@ -141,6 +141,70 @@ defmodule Money.DDL do
   end
 
   @doc """
+  Returns the SQL string which when executed will
+  define an infix `-` operator for the `money_with_currency`
+  data type.
+
+  ## Arguments
+
+  * `db_type`: the type of the database for which the SQL
+    string should be returned.  Defaults to `:postgres` which
+    is currently the only supported database type.
+
+  """
+  def define_minus_operator(db_type \\ @default_db) do
+    read_sql_file(db_type, "define_minus_operator.sql")
+  end
+
+  @doc """
+  Returns the SQL string which when executed will
+  drop the infix `-` operator for the `money_with_currency`
+  data type.
+
+  ## Arguments
+
+  * `db_type`: the type of the database for which the SQL
+    string should be returned.  Defaults to `:postgres` which
+    is currently the only supported database type.
+
+  """
+  def drop_minus_operator(db_type \\ @default_db) do
+    read_sql_file(db_type, "drop_minus_operator.sql")
+  end
+
+  @doc """
+  Returns the SQL string which when executed will
+  define a unary `-` operator for the `money_with_currency`
+  data type.
+
+  ## Arguments
+
+  * `db_type`: the type of the database for which the SQL
+    string should be returned.  Defaults to `:postgres` which
+    is currently the only supported database type.
+
+  """
+  def define_negate_operator(db_type \\ @default_db) do
+    read_sql_file(db_type, "define_negate_operator.sql")
+  end
+
+  @doc """
+  Returns the SQL string which when executed will
+  drop the unary `-` operator for the `money_with_currency`
+  data type.
+
+  ## Arguments
+
+  * `db_type`: the type of the database for which the SQL
+    string should be returned.  Defaults to `:postgres` which
+    is currently the only supported database type.
+
+  """
+  def drop_negate_operator(db_type \\ @default_db) do
+    read_sql_file(db_type, "drop_negate_operator.sql")
+  end
+
+  @doc """
   Returns a string that will Ecto `execute` each SQL
   command.
 
