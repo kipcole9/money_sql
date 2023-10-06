@@ -2,6 +2,14 @@
 
 **Note** That `money_sql` is supported on Elixir 1.11 and later only.
 
+## Money_SQL v1.10.0
+
+This is the changelog for Money_SQL v1.10.0 released on _______, 2023. 
+
+### Enhancements
+
+* Adds database functions for unary negation and the operation `-`. Thanks to @zachdaniel for the PR.
+
 ## Money_SQL v1.9.3
 
 This is the changelog for Money_SQL v1.9.2 released on October 1st, 2023. 
