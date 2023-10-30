@@ -221,10 +221,10 @@ defmodule Money.DDL do
       "execute \"\"\"\nSELECT name FROM customers;\n\n\nSELECT id FROM orders;\n\"\"\""
 
   """
-  def execute_each(sql) do
+  def execute_each(sql, append \\ "") do
     sql
     |> String.split("\n\n\n")
-    |> Enum.map(&execute/1)
+    |> Enum.map(&execute(&1, append))
     |> Enum.join("\n")
   end
 
@@ -242,7 +242,7 @@ defmodule Money.DDL do
       "execute \"SELECT name FROM customers;\""
 
   """
-  def execute(sql) do
+  def execute(sql, append \\ "") do
     sql = String.trim_trailing(sql, "\n")
 
     if String.contains?(sql, "\n") do
@@ -250,6 +250,7 @@ defmodule Money.DDL do
     else
       "execute " <> inspect(sql)
     end
+    |> Kernel.<>(append)
   end
 
   defp read_sql_file(db_type, file_name) when db_type in @supported_db_types do

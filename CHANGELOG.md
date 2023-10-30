@@ -4,7 +4,11 @@
 
 ## Money_SQL v1.10.0
 
-This is the changelog for Money_SQL v1.10.0 released on _______, 2023. 
+This is the changelog for Money_SQL v1.10.0 released on October 30th, 2023. 
+
+### Bug Fixes
+
+* The mix tasks that generate database function migrations (`money.gen.postgres.sum_function`, `money.gen.postgres.plus_operator` and `money.gen.postgres.min_max_functions`) need to be aware of the type of the `money_with_currency` "amount" element in a Postgres database. In releases of `ex_money_sql` up to 1.7.1 the type was `char(3)`. In later releases is changed to the more canonical `varchar`.  In turn, the database functions need to know the type for the internal accumulator. It is possible, as illustrated in issue #36, to have generated the `money_with_currency` type as `char(3)` and then move to a later release of `ex_money_sql`. In which case the money database function migrations would fail because they were built with `varchar` accumulators.  This release will detect the underlying type of the `money_with_currency` "amount" element and adjust the migration accordingly. Thanks to @bigardone for the report and motivation to get this done. Closes #36.
 
 ### Enhancements
 
@@ -16,7 +20,7 @@ This is the changelog for Money_SQL v1.9.2 released on October 1st, 2023.
 
 ### Bug Fixes
 
-* Return an error is loading invalid amounts such as `Inf` and `NaN`. Thanks to @dhedlund for the report and PR. Closes #34.
+* Return an error if loading invalid amounts such as `Inf` and `NaN`. Thanks to @dhedlund for the report and PR. Closes #34.
 
 ## Money_SQL v1.9.2
 
@@ -64,11 +68,15 @@ This is the changelog for Money_SQL v1.7.3 released on December 18th, 2022.
 
 ### Bug Fixes
 
-* WHen loading money from the database with the `Money.Ecto.Map.Type` type, do not do localized parsing of the amount. The amount is always saved using `Decimal.to_string/1` and therefore is not localized. It must not be parsed with localization on loading.
+* When loading money from the database with the `Money.Ecto.Map.Type` type, do not do localized parsing of the amount. The amount is always saved using `Decimal.to_string/1` and therefore is not localized. It must not be parsed with localization on loading.
 
 ## Money_SQL v1.7.2
 
 This is the changelog for Money_SQL v1.7.2 released on August 27th, 2022.
+
+### Change in data type
+
+* The "amount" component of `money_with_currency` in a Postgres database is now `varchar` instead of `char(3)`. This is both more canonical in a Postgres database and allows for the use of Digial Tokens (crypto currencies) which have a code greater than 3 characters long.
 
 ### Bug Fixes
 

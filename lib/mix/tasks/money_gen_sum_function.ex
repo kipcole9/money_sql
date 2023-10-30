@@ -57,7 +57,7 @@ if Code.ensure_loaded?(Ecto) do
       use Ecto.Migration
 
       def up do
-        <%= Money.DDL.execute_each(Money.DDL.define_sum_function) %>
+        <%= Money.DDL.execute_each(Money.DDL.define_sum_function(), "|> Money.Migration.adjust_for_type(repo())") %>
       end
 
       def down do
