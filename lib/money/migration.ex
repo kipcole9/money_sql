@@ -16,8 +16,8 @@ defmodule Money.Migration do
   end
 
   def postgres_money_with_currency_type(repo) do
-    query = File.read!("priv/SQL/postgres/get_currency_code_type.sql")
-    case repo.query!(query, [], [log: false]) do
+    query = read_sql_file("get_currency_code_type.sql")
+    case repo.query!(query, [], log: false) do
       %Postgrex.Result{rows: [["character varying"]]} ->
         :varchar
       %Postgrex.Result{rows: [["character(3)"]]} ->
@@ -52,5 +52,11 @@ defmodule Money.Migration do
     def format_string!(string) do
       string
     end
+  end
+
+  defp read_sql_file(file_name) do
+    :code.priv_dir(:ex_money_sql)
+    |> Path.join(["SQL", "/postgres", "/#{file_name}"])
+    |> File.read!()
   end
 end
