@@ -61,7 +61,7 @@ if Code.ensure_loaded?(Ecto) do
       end
 
       def down do
-        <%= Money.DDL.execute_each(Money.DDL.drop_minmax_functions) %>
+        <%= Money.DDL.execute_each(Money.DDL.drop_minmax_functions()) %>
       end
     end
     """)

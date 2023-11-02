@@ -2,6 +2,16 @@
 
 **Note** That `money_sql` is supported on Elixir 1.11 and later only.
 
+## Money_SQL v1.10.1
+
+This is the changelog for Money_SQL v1.10.1 released on November 3rd, 2023. 
+
+### Bug Fixes
+
+* Fix compilation warnings on Elixir 1.16.
+
+* Fix migration generator for `money_with_currency` type. Thanks to @bigardone for the issue and PR. Closes #37, closes #38.
+
 ## Money_SQL v1.10.0
 
 This is the changelog for Money_SQL v1.10.0 released on October 30th, 2023. 
