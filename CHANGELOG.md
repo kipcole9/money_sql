@@ -2,6 +2,16 @@
 
 **Note** That `money_sql` is supported on Elixir 1.11 and later only.
 
+## Money_SQL v1.10.2
+
+This is the changelog for Money_SQL v1.10.2 released on December 13th, 2023.
+
+### Bug Fixes
+
+* Don't propagate some Ecto schema fields in `Money.Ecto.Composite.Type.init/2`. This change deletes additional `Ecto.Schema.field/3` options so they don't get loaded as format_options. Thanks to @axelclark for the PR. Closes #40.
+
+* Fix Changelog headings and whitespace. Thanks to @c4710n for the PR. Closes #39.
+
 ## Money_SQL v1.10.1
 
 This is the changelog for Money_SQL v1.10.1 released on November 3rd, 2023.
