@@ -25,6 +25,12 @@ if Code.ensure_loaded?(Ecto.Type) do
       |> Keyword.delete(:field)
       |> Keyword.delete(:schema)
       |> Keyword.delete(:default)
+      |> Keyword.delete(:source)
+      |> Keyword.delete(:autogenerate)
+      |> Keyword.delete(:read_after_writes)
+      |> Keyword.delete(:load_in_query)
+      |> Keyword.delete(:redact)
+      |> Keyword.delete(:skip_default_validation)
     end
 
     # When loading from the database
