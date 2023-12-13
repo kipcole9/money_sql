@@ -4,7 +4,7 @@
 
 ## Money_SQL v1.10.1
 
-This is the changelog for Money_SQL v1.10.1 released on November 3rd, 2023. 
+This is the changelog for Money_SQL v1.10.1 released on November 3rd, 2023.
 
 ### Bug Fixes
 
@@ -14,7 +14,7 @@ This is the changelog for Money_SQL v1.10.1 released on November 3rd, 2023.
 
 ## Money_SQL v1.10.0
 
-This is the changelog for Money_SQL v1.10.0 released on October 30th, 2023. 
+This is the changelog for Money_SQL v1.10.0 released on October 30th, 2023.
 
 ### Bug Fixes
 
@@ -26,7 +26,7 @@ This is the changelog for Money_SQL v1.10.0 released on October 30th, 2023.
 
 ## Money_SQL v1.9.3
 
-This is the changelog for Money_SQL v1.9.2 released on October 1st, 2023. 
+This is the changelog for Money_SQL v1.9.2 released on October 1st, 2023.
 
 ### Bug Fixes
 
@@ -34,21 +34,21 @@ This is the changelog for Money_SQL v1.9.2 released on October 1st, 2023.
 
 ## Money_SQL v1.9.2
 
-This is the changelog for Money_SQL v1.9.2 released on June 17th, 2022. 
+This is the changelog for Money_SQL v1.9.2 released on June 17th, 2022.
 
-## Embedded Schema Configuration 
+### Embedded Schema Configuration
 
-Please ensure that if you are using Ecto [embedded schemas](https://hexdocs.pm/ecto/embedded-schemas.html) that include a `money` type that it is configured with the type `Money.Ecto.Map.Type`, **NOT** `Money.Ecto.Composite.Type`. 
+Please ensure that if you are using Ecto [embedded schemas](https://hexdocs.pm/ecto/embedded-schemas.html) that include a `money` type that it is configured with the type `Money.Ecto.Map.Type`, **NOT** `Money.Ecto.Composite.Type`.
 
 In previous releases the misconfiguration of the type worked by accident. In this release and subsequent releases you will likely see an exception like `** (Protocol.UndefinedError) protocol Jason.Encoder not implemented for {"USD", Decimal.new("50.00")} of type Tuple`. This is most likely an indication of type misconfiguration in an embedded schema.
 
 ### Bug Fixes
 
-* Fixes dumping and loading of `Money.Ecto.Map.Type` when used in embedded schemas. Many thanks to @redrabbit for the issue and the PR.  Closes #32. 
+* Fixes dumping and loading of `Money.Ecto.Map.Type` when used in embedded schemas. Many thanks to @redrabbit for the issue and the PR.  Closes #32.
 
 ## Money_SQL v1.9.1
 
-This is the changelog for Money_SQL v1.9.1 released on May 12th, 2022. 
+This is the changelog for Money_SQL v1.9.1 released on May 12th, 2022.
 
 ### Bug Fixes
 
@@ -56,7 +56,7 @@ This is the changelog for Money_SQL v1.9.1 released on May 12th, 2022.
 
 ## Money_SQL v1.9.0
 
-This is the changelog for Money_SQL v1.9.0 released on April 28th, 2022. 
+This is the changelog for Money_SQL v1.9.0 released on April 28th, 2022.
 
 ### Enhancements
 
@@ -64,7 +64,7 @@ This is the changelog for Money_SQL v1.9.0 released on April 28th, 2022.
 
 ## Money_SQL v1.8.0
 
-This is the changelog for Money_SQL v1.8.0 released on December 26th, 2022. 
+This is the changelog for Money_SQL v1.8.0 released on December 26th, 2022.
 
 ### Enhancements
 
