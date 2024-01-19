@@ -87,6 +87,23 @@ defmodule Money.Ecto.Test do
         assert customer.revenue == Money.new(:EUR, "12345,67")
       end)
     end
+
+    test "dump a money struct with Ecto.embedded_dump/3" do
+      organization = %Organization{payroll: Money.new(:USD, "100.23")}
+      dumped = Ecto.embedded_dump(organization, :json)
+
+      assert dumped == %{
+        name: nil,
+        value: %{"amount" => "0", "currency" => "USD"},
+        payroll: %{"amount" => "100.23", "currency" => "USD"},
+        tax: nil,
+        revenue: %{"amount" => "0", "currency" => "AUD"},
+        employee_count: nil,
+        customers: [],
+        inserted_at: nil,
+        updated_at: nil
+      }
+    end
   end
 
   for ecto_type_module <- [Money.Ecto.Composite.Type, Money.Ecto.Map.Type] do

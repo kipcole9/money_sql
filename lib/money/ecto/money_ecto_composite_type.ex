@@ -64,8 +64,12 @@ if Code.ensure_loaded?(Ecto.Type) do
     @impl Ecto.ParameterizedType
     def dump(money, dumper \\ nil, params \\ [])
 
-    def dump(%Money{} = money, _dumper, _params) do
-      {:ok, {to_string(money.currency), money.amount}}
+    def dump(%Money{} = money, dumper, _params) do
+      if embedded_dump(dumper) do
+        Money.Ecto.Map.Type.dump(money)
+      else
+        {:ok, {to_string(money.currency), money.amount}}
+      end
     end
 
     def dump(nil, _, _) do
@@ -74,6 +78,24 @@ if Code.ensure_loaded?(Ecto.Type) do
 
     def dump(_, _, _) do
       :error
+    end
+
+    # Detects if we are being called on behalf the embedded dumper.
+    # In this case, we want to produce a map that can be serialized
+    # to JSON. See [papertrail issue](https://github.com/izelnakri/paper_trail/issues/230)
+
+    defp embedded_dump(nil) do
+      false
+    end
+
+    defp embedded_dump(dumper) do
+      case Function.info(dumper, :name) do
+        {:name, :"-embedded_dump/3-fun-0-"} ->
+          Function.info(dumper, :module) == {:module, Ecto.Type}
+
+        _other ->
+          false
+      end
     end
 
     # Casting in changesets
@@ -144,6 +166,15 @@ if Code.ensure_loaded?(Ecto.Type) do
     def cast(_money, _params) do
       :error
     end
+
+    # embed_as is set to :dump because if it is set to
+    # `:self` then `cast/2` will be called when loading. And
+    # since casting is locale-sensitive, the results may
+    # not be correct due to variations in the decimal and grouping
+    # separators for different locales. This is because when casting
+    # we don't know if the data is coming from user input (and therefore should
+    # be locale awware) or from some JSON serialization (in which
+    # case it should not be locale aware).
 
     def embed_as(term), do: embed_as(term, [])
 

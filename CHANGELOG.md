@@ -2,6 +2,14 @@
 
 **Note** That `money_sql` is supported on Elixir 1.11 and later only.
 
+## Money_SQL v1.11.0
+
+This is the changelog for Money_SQL v1.11.0 released on January 19th, 2023.
+
+### Enhancements
+
+* When dumping a `Money.Ecto.Composite.Type`, detect if `dump/3` is being called by `Ecto.Type.embedded_dump/2`. If it is, then return a map that can be serialized to JSON. If it isn't (most cases) then return the tuple to be serialized to Postgres.  See [papertrail issue](https://github.com/izelnakri/paper_trail/issues/230).
+
 ## Money_SQL v1.10.2
 
 This is the changelog for Money_SQL v1.10.2 released on December 13th, 2023.
