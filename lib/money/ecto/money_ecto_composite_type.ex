@@ -88,7 +88,7 @@ if Code.ensure_loaded?(Ecto.Type) do
       false
     end
 
-    defp embedded_dump?(dumper) do
+    defp embedded_dump?(dumper) when is_function(dumper, 3) do
       case Function.info(dumper, :name) do
         {:name, :"-embedded_dump/3-fun-0-"} ->
           Function.info(dumper, :module) == {:module, Ecto.Type}
