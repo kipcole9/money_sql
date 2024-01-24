@@ -3,7 +3,7 @@ if Code.ensure_loaded?(Ecto.Query.API) do
     @moduledoc """
     Provides several helpers to query DB for the `Money` type.
 
-    Under the hood it delegates to 
+    Under the hood it delegates to
     [`Ecto.Query.API.fragment/1`](https://hexdocs.pm/ecto/Ecto.Query.API.html#fragment/1-defining-custom-functions-using-macros-and-fragment),
     but might be helpful for compile-type sanity check for typos and
     better language server support.
@@ -15,7 +15,7 @@ if Code.ensure_loaded?(Ecto.Query.API) do
     To use it with, say, `MySQL`, one should implement this behaviour for `MySQL` and declare
     the implementation as `use Money.Ecto.Query.API, adapter: MyImpl.MySQL.Adapter`
 
-    Although the library provides the MySQL adapter too (`Money.Ecto.Query.API.Map.MySQL`,)
+    Although the library provides the MySQL adapter too (`Money.Ecto.Query.API.Map.MySQL`)
     but it is not actively maintained, so use it on your own.
 
     If for some reason you use `Map` type with `Postgres`, helpers are still available
@@ -136,7 +136,7 @@ if Code.ensure_loaded?(Ecto.Query.API) do
     end
 
     @doc """
-    `Ecto.Query.API` helper, allowing to filter records having one 
+    `Ecto.Query.API` helper, allowing to filter records having one
     of currencies given as an argument.
 
     _Example:_
