@@ -8,7 +8,7 @@ defmodule Money.Sql.Mixfile do
       app: :ex_money_sql,
       version: @version,
       elixir: "~> 1.11",
-      name: "Money",
+      name: "Money SQL",
       source_url: "https://github.com/kipcole9/money_sql",
       docs: docs(),
       build_embedded: Mix.env() == :prod,
