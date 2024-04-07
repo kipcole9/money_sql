@@ -1,5 +1,5 @@
 if Code.ensure_loaded?(Ecto.Type) do
-  defmodule Money.Ecto.Composite.Type do
+  defmodule Money.Ecto.Postgres.Type do
     @moduledoc """
     Implements the Ecto.Type behaviour for a user-defined Postgres composite type
     called `:money_with_currency`.
@@ -20,18 +20,7 @@ if Code.ensure_loaded?(Ecto.Type) do
     end
 
     @impl Ecto.ParameterizedType
-    def init(opts) do
-      opts
-      |> Keyword.delete(:field)
-      |> Keyword.delete(:schema)
-      |> Keyword.delete(:default)
-      |> Keyword.delete(:source)
-      |> Keyword.delete(:autogenerate)
-      |> Keyword.delete(:read_after_writes)
-      |> Keyword.delete(:load_in_query)
-      |> Keyword.delete(:redact)
-      |> Keyword.delete(:skip_default_validation)
-    end
+    defdelegate init(opts), to: Money.Ecto.Composite.Type
 
     # When loading from the database
 
@@ -44,17 +33,6 @@ if Code.ensure_loaded?(Ecto.Type) do
 
     def load(%Money{} = money, _loader, params) do
       {:ok, Map.put(money, :format_options, params)}
-    end
-
-    def load({currency, amount}, _loader, params) do
-      currency = String.trim_trailing(currency)
-
-      with {:ok, currency_code} <- Money.validate_currency(currency),
-           %Money{} = money <- Money.new(currency_code, amount, params) do
-        {:ok, money}
-      else
-        _ -> :error
-      end
     end
 
     def load(_, _, _) do
@@ -72,7 +50,7 @@ if Code.ensure_loaded?(Ecto.Type) do
       if embedded_dump?(dumper) do
         Money.Ecto.Map.Type.dump(money)
       else
-        {:ok, {to_string(money.currency), money.amount}}
+        {:ok, money}
       end
     end
 
@@ -109,67 +87,7 @@ if Code.ensure_loaded?(Ecto.Type) do
     end
 
     @impl Ecto.ParameterizedType
-    def cast(nil, _params) do
-      {:ok, nil}
-    end
-
-    def cast(%Money{} = money, _params) do
-      {:ok, money}
-    end
-
-    def cast(%{"currency" => _, "amount" => ""}, _params) do
-      {:ok, nil}
-    end
-
-    def cast(%{"currency" => _, "amount" => nil}, _params) do
-      {:ok, nil}
-    end
-
-    def cast(%{"currency" => nil, "amount" => _amount}, _params) do
-      {:error, exception: Money.UnknownCurrencyError, message: "Currency must not be `nil`"}
-    end
-
-    def cast(%{"currency" => currency, "amount" => amount}, params)
-        when (is_binary(currency) or is_atom(currency)) and is_integer(amount) do
-      with %{__struct__: Money} = money <- Money.new(currency, amount, params) do
-        {:ok, money}
-      else
-        {:error, {exception, message}} -> {:error, exception: exception, message: message}
-      end
-    end
-
-    def cast(%{"currency" => currency, "amount" => amount}, params)
-        when (is_binary(currency) or is_atom(currency)) and is_binary(amount) do
-      with %{__struct__: Money} = money <- Money.new(currency, amount, params) do
-        {:ok, money}
-      else
-        {:error, {exception, message}} -> {:error, exception: exception, message: message}
-      end
-    end
-
-    def cast(%{"currency" => currency, "amount" => %Decimal{} = amount}, params)
-        when is_binary(currency) or is_atom(currency) do
-      with %{__struct__: Money} = money <- Money.new(currency, amount, params) do
-        {:ok, money}
-      else
-        {:error, {exception, message}} -> {:error, exception: exception, message: message}
-      end
-    end
-
-    def cast(%{currency: currency, amount: amount}, params) do
-      cast(%{"currency" => currency, "amount" => amount}, params)
-    end
-
-    def cast(string, params) when is_binary(string) do
-      case Money.parse(string, params) do
-        {:error, {exception, message}} -> {:error, exception: exception, message: message}
-        money -> {:ok, money}
-      end
-    end
-
-    def cast(_money, _params) do
-      :error
-    end
+    defdelegate cast(value, params), to: Money.Ecto.Composite.Type
 
     # embed_as is set to :dump because if it is set to
     # `:self` then `cast/2` will be called when loading. And

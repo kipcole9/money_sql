@@ -1,0 +1,6 @@
+{:ok, db} = Postgrex.start_link(hostname: "localhost", username: "postgres", password: "postgres", database: "postgres", types: Money.Postgrex.Types)
+Postgrex.query!(db, "CREATE TYPE public.money_with_currency AS (currency_code varchar, amount numeric)", [])
+Postgrex.query!(db, "CREATE TABLE IF NOT EXISTS test_table (money money_with_currency)", [])
+Postgrex.query!(db, "INSERT INTO test_table (money) VALUES ($1)", [Money.new(:USD, 100)])
+Postgrex.query!(db, "SELECT * FROM test_table", [])
+Postgrex.query!(db, "SELECT * FROM test_table WHERE money > $1", [Money.new(:USD, 0])

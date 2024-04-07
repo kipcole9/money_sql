@@ -1,0 +1,1 @@
+Postgrex.Types.define(Money.Postgrex.Types, [Money.Postgrex.Extension])

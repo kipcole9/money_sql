@@ -9,6 +9,8 @@ import Ecto.Query
 
 Repo.start_link()
 
+Repo.delete_all Organization
+
 [m_usd: Money.new(:USD, 100), m_aud: Money.new(:AUD, 50), m_eur: Money.new(:EUR, 100)]
 |> tap(fn [m_usd: m_usd, m_aud: m_aud, m_eur: m_eur] ->
   {:ok, _} = Repo.insert(%Organization{revenue: m_eur, payroll: m_eur, name: "EU"})
