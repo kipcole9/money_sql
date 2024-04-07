@@ -3,6 +3,22 @@ if Code.ensure_loaded?(Ecto.Query.API) do
     @moduledoc """
     Provides several helpers to query DB for the `Money` type.
 
+    ### Usage
+
+    In a module where you wish to use these helpers, add:
+
+        use Money.Ecto.Query.API
+
+    The default usage is designed to work with the `Money.Ecto.Composite.Type`
+    implementation for Postgres databases. Altenative impkmentations can be
+    made that comply with the `Money.Ecto.Query.API` behaviour. In that case
+
+        use Money.Ecto.Query.API, adapter: MyAdapterModule
+
+    See the Adapters section below.
+
+    ### Implementation
+
     Under the hood it delegates to
     [`Ecto.Query.API.fragment/1`](https://hexdocs.pm/ecto/Ecto.Query.API.html#fragment/1-defining-custom-functions-using-macros-and-fragment),
     but might be helpful for compile-type sanity check for typos and
@@ -10,6 +26,8 @@ if Code.ensure_loaded?(Ecto.Query.API) do
 
     It is also designed to be an implementation-agnostic, meaning one can use
     these helpers without a necessity to explicitly specify a backing type.
+
+    ### Adapters
 
     The default implementation recommends a `Composite` adapter, which is used by default.
     To use it with, say, `MySQL`, one should implement this behaviour for `MySQL` and declare
@@ -243,7 +261,7 @@ if Code.ensure_loaded?(Ecto.Query.API) do
     end
 
     @doc """
-    `Ecto.Query.API` helper, allowing to aggregate by currency, suming amount.
+    `Ecto.Query.API` helper, allowing to aggregate by currency, summing amount.
     For more sophisticated aggregation, resort to raw `fragment`.
 
     _Example:_
