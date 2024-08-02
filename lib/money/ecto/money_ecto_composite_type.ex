@@ -6,19 +6,23 @@ if Code.ensure_loaded?(Ecto.Type) do
 
     This is the preferred option for Postgres database since the serialized money
     amount is stored as a decimal number,
+
     """
 
     use Ecto.ParameterizedType
 
+    @doc false
     @impl Ecto.ParameterizedType
     def type(_params) do
       :money_with_currency
     end
 
+    @doc false
     def cast_type(opts \\ []) do
       Ecto.ParameterizedType.init(__MODULE__, opts)
     end
 
+    @doc false
     @impl Ecto.ParameterizedType
     def init(opts) do
       opts
@@ -35,6 +39,7 @@ if Code.ensure_loaded?(Ecto.Type) do
 
     # When loading from the database
 
+    @doc false
     @impl Ecto.ParameterizedType
     def load(tuple, loader \\ nil, params \\ [])
 
@@ -61,6 +66,7 @@ if Code.ensure_loaded?(Ecto.Type) do
     # since we are dumping from %Money{} structs that the
     # data is ok.
 
+    @doc false
     @impl Ecto.ParameterizedType
     def dump(money, dumper \\ nil, params \\ [])
 
@@ -100,9 +106,66 @@ if Code.ensure_loaded?(Ecto.Type) do
 
     # Casting in changesets
 
+    @doc """
+    Casts user input into `t:Money.t/0` struct.
+
+    See `Money,Ecto.Composite.Type.cast/2`.
+
+    """
     def cast(money) do
       cast(money, [])
     end
+
+    @doc """
+    Casts user input into `t:Money.t/0` struct.
+
+    Its important to note that user input is expected
+    to be in the format expected for the current locale
+    (as determined by `Cldr.get_locale/0`) or in the locale
+    specified by the `:locale` parameter.
+
+    This can lead to unexpected results if the locale
+    and the user data are not aligned. Consider the following
+    example.
+
+    * The current locale is `:de`. This means that the
+      decimal separatator is defined ot be `,` and the
+      grouping separatr is defined to be `.`
+
+    * The user data (often, but not always, from a form) is
+      `%{"currency" => "EUR", amount: "1.00"}`.
+
+    In this case `cast/2` will return the equivalent of
+    `Money.new(:EUR, "100")` *not* `Money.new(:EUR, "1.00")`.
+
+    ### Arguments
+
+    * `money` is a map containing the keys `currency` and`amount`
+      as either strings or atoms OR a string that can be parsed
+      to produce a `t:Money.t/0` struct.
+
+    * `params` is a keyword list of option that is passed to
+      `Money.new/3`.
+
+    ### Returns
+
+    * `{:ok, money}` or
+
+    * `:error`
+
+    ### Notes
+
+    * If either the `money` or `amount` values are
+      `nil`, then `{:ok, nil}` will be returned.
+
+    * `amount` can be a string, an integer or a
+      `t:Decimal.t/0`.
+
+    * If a string is parsed then an attempt to parse
+      the string into a currency and an amount is made
+      using `Money.parse/2`. Parsing is locale specific.
+
+    """
 
     @impl Ecto.ParameterizedType
     def cast(nil, _params) do
@@ -127,7 +190,7 @@ if Code.ensure_loaded?(Ecto.Type) do
 
     def cast(%{"currency" => currency, "amount" => amount}, params)
         when (is_binary(currency) or is_atom(currency)) and is_integer(amount) do
-      with %{__struct__: Money} = money <- Money.new(currency, amount, params) do
+      with %Money{} = money <- Money.new(currency, amount, params) do
         {:ok, money}
       else
         {:error, {exception, message}} -> {:error, exception: exception, message: message}
@@ -136,7 +199,7 @@ if Code.ensure_loaded?(Ecto.Type) do
 
     def cast(%{"currency" => currency, "amount" => amount}, params)
         when (is_binary(currency) or is_atom(currency)) and is_binary(amount) do
-      with %{__struct__: Money} = money <- Money.new(currency, amount, params) do
+      with %Money{} = money <- Money.new(currency, amount, params) do
         {:ok, money}
       else
         {:error, {exception, message}} -> {:error, exception: exception, message: message}
@@ -145,7 +208,7 @@ if Code.ensure_loaded?(Ecto.Type) do
 
     def cast(%{"currency" => currency, "amount" => %Decimal{} = amount}, params)
         when is_binary(currency) or is_atom(currency) do
-      with %{__struct__: Money} = money <- Money.new(currency, amount, params) do
+      with %Money{} = money <- Money.new(currency, amount, params) do
         {:ok, money}
       else
         {:error, {exception, message}} -> {:error, exception: exception, message: message}
