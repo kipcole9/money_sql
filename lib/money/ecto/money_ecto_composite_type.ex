@@ -239,13 +239,17 @@ if Code.ensure_loaded?(Ecto.Type) do
     # be locale awware) or from some JSON serialization (in which
     # case it should not be locale aware).
 
+    @doc false
     def embed_as(term), do: embed_as(term, [])
 
+    @doc false
     @impl Ecto.ParameterizedType
     def embed_as(_term, _params), do: :dump
 
+    @doc false
     def equal?(money1, money2), do: equal?(money1, money2, [])
 
+    @doc false
     @impl Ecto.ParameterizedType
     def equal?(money1, money2, _params) do
       Money.equal?(money1, money2)
