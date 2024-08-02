@@ -246,10 +246,40 @@ if Code.ensure_loaded?(Ecto.Type) do
     @impl Ecto.ParameterizedType
     def embed_as(_term, _params), do: :dump
 
-    @doc false
+    @doc """
+    Compares two money structs and return an boolean
+    indicating if they are equal or not.
+
+    ### Arguments
+
+    * `money1` is any `t:Money.t/0`
+
+    * `money2` is any `t:Money.t/0`
+
+    ### Returns
+
+    * `true` or `false`.
+
+    """
     def equal?(money1, money2), do: equal?(money1, money2, [])
 
-    @doc false
+    @doc """
+    Compares two money structs and return an boolean
+    indicating if they are equal or not.
+
+    ### Arguments
+
+    * `money1` is any `t:Money.t/0`
+
+    * `money2` is any `t:Money.t/0`
+
+    * `params` which is ignored.
+
+    ### Returns
+
+    * `true` or `false`.
+
+    """
     @impl Ecto.ParameterizedType
     def equal?(money1, money2, _params) do
       Money.equal?(money1, money2)
