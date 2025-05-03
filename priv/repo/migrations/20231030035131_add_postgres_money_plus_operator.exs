@@ -9,6 +9,7 @@ defmodule Money.SQL.Repo.Migrations.AddPostgresMoneyPlusOperator do
       IMMUTABLE
       STRICT
       LANGUAGE plpgsql
+      SET search_path = ''
       AS $$
         DECLARE
           currency varchar;
