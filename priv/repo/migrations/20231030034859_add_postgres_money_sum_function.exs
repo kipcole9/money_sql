@@ -9,7 +9,6 @@ defmodule Money.SQL.Repo.Migrations.AddPostgresMoneySumFunction do
       IMMUTABLE
       STRICT
       LANGUAGE plpgsql
-      SET search_path = ''
       AS $$
         DECLARE
           expected_currency varchar;

@@ -3,7 +3,6 @@ RETURNS money_with_currency
 IMMUTABLE
 STRICT
 LANGUAGE plpgsql
-SET search_path = ''
 AS $$
   DECLARE
     expected_currency varchar;
@@ -40,7 +39,6 @@ RETURNS money_with_currency
 IMMUTABLE
 STRICT
 LANGUAGE plpgsql
-SET search_path = ''
 AS $$
   DECLARE
     min numeric;
@@ -76,7 +74,6 @@ RETURNS money_with_currency
 IMMUTABLE
 STRICT
 LANGUAGE plpgsql
-SET search_path = ''
 AS $$
   DECLARE
     expected_currency varchar;
@@ -113,7 +110,6 @@ RETURNS money_with_currency
 IMMUTABLE
 STRICT
 LANGUAGE plpgsql
-SET search_path = ''
 AS $$
   DECLARE
     max numeric;

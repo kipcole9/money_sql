@@ -3,7 +3,6 @@ RETURNS money_with_currency
 IMMUTABLE
 STRICT
 LANGUAGE plpgsql
-SET search_path = ''
 AS $$
     DECLARE
     currency varchar;
