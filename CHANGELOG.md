@@ -12,7 +12,7 @@ This is the changelog for Money_SQL v1.11.1 released on November 8th, 2025.
 
 ## Money_SQL v1.11.0
 
-This is the changelog for Money_SQL v1.11.0 released on January 24th, 2023.
+This is the changelog for Money_SQL v1.11.0 released on January 24th, 2024.
 
 ### Enhancements
 
