@@ -2,9 +2,17 @@
 
 **Note** That `money_sql` is supported on Elixir 1.11 and later only.
 
+## Money_SQL v1.11.1
+
+This is the changelog for Money_SQL v1.11.1 released on November 8th, 2025.
+
+### Bug Fixes
+
+* Allow casting of (very old) type values from the database for `Money.Ecto.Map.Type`. Thanks to @peaceful-james for the PR. Closes #43.
+
 ## Money_SQL v1.11.0
 
-This is the changelog for Money_SQL v1.11.0 released on January 249h, 2023.
+This is the changelog for Money_SQL v1.11.0 released on January 24th, 2023.
 
 ### Enhancements
 
