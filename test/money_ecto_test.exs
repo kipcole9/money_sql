@@ -50,6 +50,11 @@ defmodule Money.Ecto.Test do
       assert Money.Ecto.Map.Type.load(%{"currency" => "AAA", "amount" => 100}) == :error
     end
 
+    test "load a json map with a 'currency_code' string amount produces a Money struct" do
+      assert Money.Ecto.Map.Type.load(%{"currency_code" => "USD", "amount" => "100"}) ==
+               {:ok, Money.new(:USD, 100)}
+    end
+
     test "load treats NaN values as error" do
       assert Money.Ecto.Map.Type.load(%{"currency" => "USD", "amount" => "NaN"}) == :error
     end

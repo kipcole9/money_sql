@@ -36,6 +36,10 @@ if Code.ensure_loaded?(Ecto.Type) do
       {:ok, nil}
     end
 
+    def load(%{"currency_code" => currency, "amount" => amount}, _loader, params) do
+      load(%{"currency" => currency, "amount" => amount}, _loader, params)
+    end
+
     def load(%{"currency" => currency, "amount" => amount}, _loader, params)
         when is_binary(amount) do
       with {amount, ""} <- Decimal.parse(amount),
