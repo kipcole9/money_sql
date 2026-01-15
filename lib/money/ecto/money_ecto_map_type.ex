@@ -20,9 +20,16 @@ if Code.ensure_loaded?(Ecto.Type) do
     defdelegate cast(money), to: Money.Ecto.Composite.Type
     defdelegate cast(money, params), to: Money.Ecto.Composite.Type
 
-    # New for ecto_sql 3.2
-    defdelegate embed_as(term), to: Money.Ecto.Composite.Type
-    defdelegate embed_as(term, params), to: Money.Ecto.Composite.Type
+    # New for ecto_sql 3.2. Defdelegate produces doc warnings so
+    # we delegate in a function.
+    def embed_as(term) do
+       Money.Ecto.Composite.Type.embed_as(term)
+     end
+
+    def embed_as(term, params) do
+      Money.Ecto.Composite.Type.embed_as(term, params)
+    end
+
     defdelegate equal?(term1, term2), to: Money.Ecto.Composite.Type
     defdelegate equal?(term1, term2, params), to: Money.Ecto.Composite.Type
 

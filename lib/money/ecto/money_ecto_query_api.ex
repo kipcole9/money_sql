@@ -33,7 +33,7 @@ if Code.ensure_loaded?(Ecto.Query.API) do
     To use it with, say, `MySQL`, one should implement this behaviour for `MySQL` and declare
     the implementation as `use Money.Ecto.Query.API, adapter: MyImpl.MySQL.Adapter`
 
-    Although the library provides the MySQL adapter too (`Money.Ecto.Query.API.Map.MySQL`)
+    Although the library provides the MySQL adapter too (Money.Ecto.Query.API.Map.MySQL)
     but it is not actively maintained, so use it on your own.
 
     If for some reason you use `Map` type with `Postgres`, helpers are still available
