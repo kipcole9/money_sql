@@ -24,7 +24,9 @@ defmodule Money.Changeset.Test do
 
     assert validate_money(test_changeset(), :value, greater_than_or_equal_to: Money.new(:USD, 50)).valid?
 
-    assert validate_money(test_changeset(), :value, greater_than_or_equal_to: Money.new(:USD, 100)).valid?
+    assert validate_money(test_changeset(), :value,
+             greater_than_or_equal_to: Money.new(:USD, 100)
+           ).valid?
 
     assert validate_money(test_changeset(), :value, equal_to: Money.new(:USD, 100)).valid?
 

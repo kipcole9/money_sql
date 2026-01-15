@@ -209,13 +209,13 @@ if Code.ensure_loaded?(Ecto.Query.API) do
     defmacro amount_in(field, {:.., _, [min, max]}),
       do: do_amount_in(field, min, max)
 
-    defmacro amount_in(field, {:"..//", _, [min, max, 1]}),
+    defmacro amount_in(field, {:..//, _, [min, max, 1]}),
       do: do_amount_in(field, min, max)
 
-    defmacro amount_in(field, {:"..//", _, [min, max, {:-, _, [1]}]}),
+    defmacro amount_in(field, {:..//, _, [min, max, {:-, _, [1]}]}),
       do: do_amount_in(field, max, min)
 
-    defmacro amount_in(field, {:"..//", _, [_min, _max, step]}) do
+    defmacro amount_in(field, {:..//, _, [_min, _max, step]}) do
       raise CompileError,
         file: __CALLER__.file,
         line: __CALLER__.line,
