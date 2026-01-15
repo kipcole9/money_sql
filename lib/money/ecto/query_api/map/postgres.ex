@@ -31,6 +31,18 @@ if Code.ensure_loaded?(Ecto.Query.API) do
     defmacro sum(field, true),
       do: quote(do: type(sum(unquote(field), false), unquote(field)))
 
+    @avg_fragment """
+    CASE COUNT(DISTINCT(?->>'currency'))
+    WHEN 0 THEN JSON_BUILD_OBJECT('currency', NULL, 'amount', 0)
+    WHEN 1 THEN JSON_BUILD_OBJECT('currency', MAX(?->>'currency'), 'amount', AVG((?->>'amount')::int))
+    ELSE NULL
+    END
+    """
+    @impl Money.Ecto.Query.API
+    defmacro avg(field) do
+      quote do: fragment(unquote(@avg_fragment), unquote(field), unquote(field), unquote(field))
+    end
+
     @impl Money.Ecto.Query.API
     def cast_decimal(%Decimal{} = d), do: Decimal.to_integer(d)
   end

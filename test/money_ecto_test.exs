@@ -98,16 +98,16 @@ defmodule Money.Ecto.Test do
       dumped = Ecto.embedded_dump(organization, :json)
 
       assert dumped == %{
-        name: nil,
-        value: %{"amount" => "0", "currency" => "USD"},
-        payroll: %{"amount" => "100.23", "currency" => "USD"},
-        tax: nil,
-        revenue: %{"amount" => "0", "currency" => "AUD"},
-        employee_count: nil,
-        customers: [],
-        inserted_at: nil,
-        updated_at: nil
-      }
+               name: nil,
+               value: %{"amount" => "0", "currency" => "USD"},
+               payroll: %{"amount" => "100.23", "currency" => "USD"},
+               tax: nil,
+               revenue: %{"amount" => "0", "currency" => "AUD"},
+               employee_count: nil,
+               customers: [],
+               inserted_at: nil,
+               updated_at: nil
+             }
     end
   end
 

@@ -66,6 +66,15 @@ if Code.ensure_loaded?(Ecto.Query.API) do
     @macrocallback sum(Macro.t(), cast? :: boolean()) :: Macro.t()
 
     @doc """
+    Native implementation of how to `avg` (average) several records having a field
+    of the type `Money` in the DB.
+
+    For `Postgres`, it delegates to the function on the composite type,
+      for other implementation it should return a `Ecto.Query.API.fragment/1`.
+    """
+    @macrocallback avg(Macro.t()) :: Macro.t()
+
+    @doc """
     Cast decimal to the value accepted by the database.
     """
     @callback cast_decimal(Decimal.t()) :: any()
@@ -200,13 +209,13 @@ if Code.ensure_loaded?(Ecto.Query.API) do
     defmacro amount_in(field, {:.., _, [min, max]}),
       do: do_amount_in(field, min, max)
 
-    defmacro amount_in(field, {:"..//", _, [min, max, 1]}),
+    defmacro amount_in(field, {:..//, _, [min, max, 1]}),
       do: do_amount_in(field, min, max)
 
-    defmacro amount_in(field, {:"..//", _, [min, max, {:-, _, [1]}]}),
+    defmacro amount_in(field, {:..//, _, [min, max, {:-, _, [1]}]}),
       do: do_amount_in(field, max, min)
 
-    defmacro amount_in(field, {:"..//", _, [_min, _max, step]}) do
+    defmacro amount_in(field, {:..//, _, [_min, _max, step]}) do
       raise CompileError,
         file: __CALLER__.file,
         line: __CALLER__.line,

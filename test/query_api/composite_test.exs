@@ -72,6 +72,26 @@ defmodule Money.Query.API.Test do
       assert ^auds = aud_eu
     end
 
+    test "avg returns average value", %{m_aud: m_aud} do
+      # For AUD records: 50, 50, 50 -> avg should be 50
+      aud_avg =
+        Organization
+        |> where([o], currency_eq(o.payroll, :AUD))
+        |> select([o], avg(o.payroll))
+        |> Repo.one()
+
+      assert Money.compare(aud_avg, m_aud) == :eq
+
+      # Test with mixed amounts for USD: 100, 100 -> avg should be 100
+      usd_avg =
+        Organization
+        |> where([o], currency_eq(o.payroll, :USD))
+        |> select([o], type(avg(o.payroll), o.payroll))
+        |> Repo.one()
+
+      assert Money.compare(usd_avg, Money.new(:USD, 100)) == :eq
+    end
+
     test "select by amount", %{m_usd: m_usd, m_eur: m_eur} do
       no_currency_filter =
         Organization

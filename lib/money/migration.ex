@@ -5,25 +5,32 @@ defmodule Money.Migration do
     case postgres_money_with_currency_type(repo) do
       :varchar ->
         query
+
       :char_3 ->
         String.replace(query, "varchar", "char(3)")
+
       :not_postgres ->
         raise "Repo does not appear to be a Postgresql database"
+
       nil ->
         raise "No money_with_currency type is defined. " <>
-          "Please run `mix money.gen.money_with_currency && mix ecto.migrate` first."
+                "Please run `mix money.gen.money_with_currency && mix ecto.migrate` first."
     end
   end
 
   def postgres_money_with_currency_type(repo) do
     query = read_sql_file("get_currency_code_type.sql")
+
     case repo.query!(query, [], log: false) do
       %Postgrex.Result{rows: [["character varying"]]} ->
         :varchar
+
       %Postgrex.Result{rows: [["character(3)"]]} ->
         :char_3
+
       %Postgrex.Result{rows: []} ->
         nil
+
       _other ->
         :not_postgres
     end
