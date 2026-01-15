@@ -66,6 +66,15 @@ if Code.ensure_loaded?(Ecto.Query.API) do
     @macrocallback sum(Macro.t(), cast? :: boolean()) :: Macro.t()
 
     @doc """
+    Native implementation of how to `avg` (average) several records having a field
+    of the type `Money` in the DB.
+
+    For `Postgres`, it delegates to the function on the composite type,
+      for other implementation it should return a `Ecto.Query.API.fragment/1`.
+    """
+    @macrocallback avg(Macro.t()) :: Macro.t()
+
+    @doc """
     Cast decimal to the value accepted by the database.
     """
     @callback cast_decimal(Decimal.t()) :: any()

@@ -330,6 +330,37 @@ The function `Repo.aggregate/3` can also be used. However at least [ecto version
   ** (Postgrex.Error) ERROR 22033 (): Incompatible currency codes. Expected all currency codes to be USD
 ```
 
+### Aggregate functions: avg()
+
+`Money` provides a migration generator which, when migrated to the database with `mix ecto.migrate`, supports performing `avg()` (average) aggregation on `Money` types. The steps are:
+
+1. Generate the migration by executing `mix money.gen.postgres.avg_function`
+
+2. Migrate the database by executing `mix ecto.migrate`
+
+3. Formulate an Ecto query to use the aggregate function `avg()`
+
+```elixir
+  # Formulate the query.  Note the required use of the type()
+  # expression which is needed to inform Ecto of the return
+  # type of the function
+  iex> q = Ecto.Query.select Item, [l], type(avg(l.price), l.price)
+  #Ecto.Query<from l0 in Item, select: type(avg(l.price), l.price)>
+  iex> Repo.all q
+  [debug] QUERY OK source="items" db=6.1ms
+  SELECT avg(l0."price")::money_with_currency FROM "items" AS l0 []
+  [#Money<:USD, 100>]
+```
+
+The function `Repo.aggregate/3` can also be used:
+
+```elixir
+  iex> Repo.aggregate(Item, :avg, :price)
+  #Money<:USD, 100>
+```
+
+**Note** that similar to other aggregate functions, `avg()` requires all money values to have the same currency. Attempting to average money with different currencies will raise an exception.
+
 ### Order_by with Money
 
 Since `:money_with_currency` is a composite type, the default `order_by` results may surprise since the ordering is based upon the type structure, not the money amount.  Postgres defines a means to access the components of a composite type and therefore sorting can be done in a more predictable fashion.  For example:

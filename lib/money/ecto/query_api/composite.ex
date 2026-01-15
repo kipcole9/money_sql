@@ -24,6 +24,10 @@ if Code.ensure_loaded?(Ecto.Query.API) do
       do: quote(do: type(sum(unquote(field)), unquote(field)))
 
     @impl Money.Ecto.Query.API
+    defmacro avg(field),
+      do: quote(do: fragment("avg(?)", unquote(field)))
+
+    @impl Money.Ecto.Query.API
     def cast_decimal(%Decimal{} = d), do: d
   end
 end

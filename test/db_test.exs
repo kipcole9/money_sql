@@ -156,6 +156,65 @@ defmodule Money.DB.Test do
     assert result == Money.new(:USD, 200)
   end
 
+  test "select aggregate function avg on a :money_with_currency type" do
+    m1 = Money.new(:USD, 100)
+    m2 = Money.new(:USD, 200)
+    m3 = Money.new(:USD, 300)
+    {:ok, _} = Repo.insert(%Organization{payroll: m1})
+    {:ok, _} = Repo.insert(%Organization{payroll: m2})
+    {:ok, _} = Repo.insert(%Organization{payroll: m3})
+    avg = select(Organization, [o], type(avg(o.payroll), o.payroll)) |> Repo.one()
+    assert Money.compare(avg, Money.new(:USD, 200)) == :eq
+  end
+
+  test "Repo.aggregate function avg on a :money_with_currency type" do
+    m1 = Money.new(:USD, 100)
+    m2 = Money.new(:USD, 200)
+    m3 = Money.new(:USD, 300)
+    {:ok, _} = Repo.insert(%Organization{payroll: m1})
+    {:ok, _} = Repo.insert(%Organization{payroll: m2})
+    {:ok, _} = Repo.insert(%Organization{payroll: m3})
+    avg = Repo.aggregate(Organization, :avg, :payroll)
+    assert Money.compare(avg, Money.new(:USD, 200)) == :eq
+  end
+
+  test "Exception is raised if trying to avg different currencies" do
+    m = Money.new(:USD, 100)
+    m2 = Money.new(:AUD, 100)
+    {:ok, _} = Repo.insert(%Organization{payroll: m})
+    {:ok, _} = Repo.insert(%Organization{payroll: m})
+    {:ok, _} = Repo.insert(%Organization{payroll: m2})
+
+    assert_raise Postgrex.Error, fn ->
+      Repo.aggregate(Organization, :avg, :payroll)
+    end
+  end
+
+  test "avg with single value equals the value" do
+    m = Money.new(:USD, 150)
+    {:ok, _} = Repo.insert(%Organization{payroll: m})
+    avg = Repo.aggregate(Organization, :avg, :payroll)
+    assert Money.compare(avg, m) == :eq
+  end
+
+  test "avg with WHERE clause filtering" do
+    m1 = Money.new(:USD, 100)
+    m2 = Money.new(:USD, 300)
+    m3 = Money.new(:AUD, 500)
+    {:ok, _} = Repo.insert(%Organization{payroll: m1, name: "US"})
+    {:ok, _} = Repo.insert(%Organization{payroll: m2, name: "US"})
+    {:ok, _} = Repo.insert(%Organization{payroll: m3, name: "AU"})
+
+    query =
+      from(o in Organization,
+        where: o.name == "US",
+        select: avg(o.payroll)
+      )
+
+    result = query |> Repo.one()
+    assert Money.compare(result, Money.new(:USD, 200)) == :eq
+  end
+
   test "nil values for money is ok" do
     assert {:ok, _} = Repo.insert(%Organization{name: "a", payroll: nil})
     organization = Repo.get_by(Organization, name: "a")

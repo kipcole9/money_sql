@@ -33,6 +33,20 @@ if Code.ensure_loaded?(Ecto.Query.API) do
     defmacro sum(field, true),
       do: quote(do: type(sum(unquote(field), false), unquote(field)))
 
+    @avg_fragment """
+    IF(COUNT(DISTINCT(JSON_EXTRACT(?, "$.currency"))) < 2,
+      JSON_OBJECT(
+        "currency", JSON_EXTRACT(JSON_ARRAYAGG(JSON_EXTRACT(?, "$.currency")), "$[0]"),
+        "amount", AVG(CAST(JSON_EXTRACT(?, "$.amount") AS UNSIGNED))
+      ),
+      NULL
+    )
+    """
+    @impl Money.Ecto.Query.API
+    defmacro avg(field) do
+      quote do: fragment(unquote(@avg_fragment), unquote(field), unquote(field), unquote(field))
+    end
+
     @impl Money.Ecto.Query.API
     def cast_decimal(%Decimal{} = d), do: Decimal.to_integer(d)
   end

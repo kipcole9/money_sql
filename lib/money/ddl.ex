@@ -110,6 +110,38 @@ defmodule Money.DDL do
 
   @doc """
   Returns the SQL string which when executed will
+  define the avg function for the `money_with_currency`
+  data type.
+
+  ## Arguments
+
+  * `db_type`: the type of the database for which the SQL
+    string should be returned.  Defaults to `:postgres` which
+    is currently the only supported database type.
+
+  """
+  def define_avg_function(db_type \\ @default_db) do
+    read_sql_file(db_type, "define_avg_function.sql")
+  end
+
+  @doc """
+  Returns the SQL string which when executed will
+  drop the avg function for the `money_with_currency`
+  data type.
+
+  ## Arguments
+
+  * `db_type`: the type of the database for which the SQL
+    string should be returned.  Defaults to `:postgres` which
+    is currently the only supported database type.
+
+  """
+  def drop_avg_function(db_type \\ @default_db) do
+    read_sql_file(db_type, "drop_avg_function.sql")
+  end
+
+  @doc """
+  Returns the SQL string which when executed will
   define a `+` operator for the `money_with_currency`
   data type.
 
