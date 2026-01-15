@@ -2,6 +2,14 @@
 
 **Note** That `money_sql` is supported on Elixir 1.11 and later only.
 
+## Money_SQL v1.12.0
+
+This is the changelog for Money_SQL v1.12.0 released on January 15th, 2026.
+
+### Enhancements
+
+* Adds `avg` SQL function for both Postgres and MySQL. Thanks very much to @peaceful-james for the PR. Closes #44.
+
 ## Money_SQL v1.11.1
 
 This is the changelog for Money_SQL v1.11.1 released on November 8th, 2025.

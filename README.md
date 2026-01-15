@@ -256,9 +256,18 @@ Since the datatype used to store `Money` in Postgres is a composite type (called
   #Money<:USD, 200>]
 ```
 
-### Aggregate functions: sum()
+### Aggregate functions
 
-`Money` provides a migration generator which, when migrated to the database with `mix ecto.migrate`, supports performing `sum()` aggregation on `Money` types. The steps are:
+Support for some aggregate functions that operate on the `Money.t/0` type. Currently those functions are:
+
+* sum
+* max
+* min
+* avg
+
+#### Sum
+
+`Money_SQL` provides a migration generator which, when migrated to the database with `mix ecto.migrate`, supports performing `sum()` aggregation on `Money` types. The steps are:
 
 1. Generate the migration by executing `mix money.gen.postgres.sum_function`
 
@@ -293,7 +302,7 @@ The function `Repo.aggregate/3` can also be used. However at least [ecto version
   ** (Postgrex.Error) ERROR 22033 (): Incompatible currency codes. Expected all currency codes to be USD
 ```
 
-### Aggregate functions: min() and max()
+#### Min and Max
 
 `Money` provides a migration generator which, when migrated to the database with `mix ecto.migrate`, supports performing `min()` and `max()` aggregation on `Money` types. The steps are:
 
@@ -330,7 +339,7 @@ The function `Repo.aggregate/3` can also be used. However at least [ecto version
   ** (Postgrex.Error) ERROR 22033 (): Incompatible currency codes. Expected all currency codes to be USD
 ```
 
-### Aggregate functions: avg()
+#### Avg
 
 `Money` provides a migration generator which, when migrated to the database with `mix ecto.migrate`, supports performing `avg()` (average) aggregation on `Money` types. The steps are:
 
