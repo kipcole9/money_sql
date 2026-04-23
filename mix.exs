@@ -35,7 +35,6 @@ defmodule Money.Sql.Mixfile do
     [
       maintainers: ["Kip Cole"],
       licenses: ["Apache-2.0"],
-      formatters: ["html", "markdown"],
       links: %{
         "GitHub" => "https://github.com/kipcole9/money_sql",
         "Readme" => "https://github.com/kipcole9/money_sql/blob/v#{@version}/README.md",
@@ -66,7 +65,7 @@ defmodule Money.Sql.Mixfile do
       main: "readme",
       logo: "logo.png",
       skip_undefined_reference_warnings_on: ["CHANGELOG.md", "README.md"],
-      formatters: ["html"]
+      formatters: ["html", "markdown"]
     ]
   end
 
