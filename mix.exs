@@ -81,7 +81,7 @@ defmodule Money.Sql.Mixfile do
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:ecto, "~> 3.13"},
       {:ecto_sql, "~> 3.13"},
-      {:db_connection, "~> 2.9", override: true},
+      {:db_connection, "~> 2.9"},
       {:postgrex, "~> 0.19"},
       {:myxql, "~> 0.7", only: :test},
       {:benchee, "~> 1.0", optional: true, only: :dev},
