@@ -16,7 +16,10 @@ config :ex_money_sql,
 config :ex_money,
   exchange_rates_retrieve_every: :never,
   log_failure: nil,
-  log_info: nil,
-  default_cldr_backend: Test.Cldr
+  log_info: nil
+
+config :localize,
+  default_locale: "en",
+  supported_locales: ["en", "de"]
 
 config :logger, level: :error

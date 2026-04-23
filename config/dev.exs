@@ -10,8 +10,11 @@ config :ex_money,
   log_info: :info,
   log_success: :info,
   json_library: Jason,
-  exchange_rates_cache: Money.ExchangeRates.Cache.Dets,
-  default_cldr_backend: Money.Cldr
+  exchange_rates_cache: Money.ExchangeRates.Cache.Dets
+
+config :localize,
+  default_locale: "en",
+  supported_locales: ["en", "de", "it", "es", "fr"]
 
 config :ex_money_sql, Money.SQL.Repo,
   username: "kip",

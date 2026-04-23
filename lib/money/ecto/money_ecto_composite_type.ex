@@ -121,7 +121,7 @@ if Code.ensure_loaded?(Ecto.Type) do
 
     Its important to note that user input is expected
     to be in the format expected for the current locale
-    (as determined by `Cldr.get_locale/0`) or in the locale
+    (as determined by `Localize.get_locale/0`) or in the locale
     specified by the `:locale` parameter.
 
     This can lead to unexpected results if the locale

@@ -71,13 +71,22 @@ defmodule Money.Sql.Mixfile do
 
   defp aliases do
     [
-      test: ["ecto.drop --quiet", "ecto.create --quiet", "ecto.migrate --quiet", "test"]
+      test: [
+        "localize.download_locales",
+        "ecto.drop --quiet",
+        "ecto.create --quiet",
+        "ecto.migrate --quiet",
+        "test"
+      ]
     ]
   end
 
   defp deps do
     [
-      {:ex_money, "~> 5.7"},
+      # ex_money 6.0 is unreleased at the time of this migration. Switch this
+      # back to "~> 6.0" when the hex package is published.
+      {:localize, "~> 0.22", override: true},
+      {:ex_money, git: "https://github.com/kipcole9/money.git", branch: "main"},
       {:jason, "~> 1.0"},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:ecto, "~> 3.5"},
