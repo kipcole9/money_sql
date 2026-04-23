@@ -1,6 +1,22 @@
 # Changelog
 
-**Note** That `money_sql` is supported on Elixir 1.11 and later only.
+**Note** That `money_sql` is supported on Elixir 1.17 and later only.
+
+## Money_SQL v2.0.0
+
+This is the changelog for Money_SQL v2.0.0 released on April 24th, 2026.
+
+### Breaking changes
+
+* The public API has not changed - just the dependency matrix. There should be no upgrade issues for current users beyond the changes in `ex_money` 6.0.
+
+* Supported on Elixir 1.17 or later only.
+
+* Requires `ex_money ~> 6.0`, which replaces the `ex_cldr` family of dependencies with the unified [localize](https://hex.pm/packages/localize) package. As a result, the CLDR backend module (e.g. `MyApp.Cldr`) and the `:default_cldr_backend` configuration key are no longer used. Configure locales via `config :localize` instead. See the [ex_money 6.0 migration guide](https://hexdocs.pm/ex_money/readme.html#migration-from-5-x-to-6-0) for details.
+
+* The error message format for `Money.UnknownCurrencyError` now follows the `ex_money 6.0` convention (for example `"The currency :AAA is not known."`). Tests asserting on the previous message text will need to be updated.
+
+* `jason` is no longer a declared dependency. Postgrex defaults to `Jason` for `json`/`jsonb` columns; configure `config :postgrex, :json_library, JSON` (Elixir 1.18+) and run `mix deps.compile postgrex --force` once since Postgrex captures this setting at compile time.
 
 ## Money_SQL v1.12.0
 

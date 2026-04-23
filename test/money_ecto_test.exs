@@ -69,7 +69,7 @@ defmodule Money.Ecto.Test do
     end
 
     test "dump and load a money struct when the locale uses non-default separators" do
-      Cldr.with_locale("de", Test.Cldr, fn ->
+      Localize.with_locale(:de, fn ->
         money = Money.new(:USD, "100,34")
         dumped = Money.Ecto.Map.Type.dump(money)
         assert dumped == {:ok, %{"amount" => "100.34", "currency" => "USD"}}
@@ -87,7 +87,7 @@ defmodule Money.Ecto.Test do
         }
       }
 
-      Cldr.with_locale("de", Test.Cldr, fn ->
+      Localize.with_locale(:de, fn ->
         customer = Ecto.embedded_load(Organization.Customer, data, :json)
         assert customer.revenue == Money.new(:EUR, "12345,67")
       end)
@@ -151,7 +151,7 @@ defmodule Money.Ecto.Test do
     test "#{inspect(ecto_type_module)}: cast a map with string keys and invalid currency" do
       assert unquote(ecto_type_module).cast(%{"currency" => "AAA", "amount" => 100}) ==
                {:error,
-                exception: Money.UnknownCurrencyError, message: "The currency \"AAA\" is invalid"}
+                exception: Money.UnknownCurrencyError, message: "The currency :AAA is not known."}
     end
 
     test "#{inspect(ecto_type_module)}: cast a map with atom keys and values" do
@@ -177,7 +177,7 @@ defmodule Money.Ecto.Test do
     test "#{inspect(ecto_type_module)}: cast a map with atom keys and invalid currency" do
       assert unquote(ecto_type_module).cast(%{currency: "AAA", amount: 100}) ==
                {:error,
-                exception: Money.UnknownCurrencyError, message: "The currency \"AAA\" is invalid"}
+                exception: Money.UnknownCurrencyError, message: "The currency :AAA is not known."}
     end
 
     test "#{inspect(ecto_type_module)}: cast a string that includes currency code and amount" do
@@ -187,10 +187,10 @@ defmodule Money.Ecto.Test do
 
     test "#{inspect(ecto_type_module)}: cast a string that includes currency code and localised amount" do
       # "de"
-      locale = Test.Cldr.get_locale()
-      Test.Cldr.put_locale("de")
+      locale = Localize.get_locale()
+      Localize.put_locale(:de)
       assert unquote(ecto_type_module).cast("100,00 USD") == {:ok, Money.new("100,00", :USD)}
-      Test.Cldr.put_locale(locale)
+      Localize.put_locale(locale)
     end
 
     test "#{inspect(ecto_type_module)}: cast an invalid string is an error" do
@@ -215,12 +215,12 @@ defmodule Money.Ecto.Test do
     end
 
     test "#{inspect(ecto_type_module)}: cast localized amount error does not raise" do
-      Cldr.put_locale(Money.Cldr, "de")
+      Localize.put_locale(:de)
 
       assert unquote(ecto_type_module).cast(%{currency: :NOK, amount: "218,75"}) ==
                {:ok, Money.from_float(:NOK, 218.75)}
 
-      Cldr.put_locale(Money.Cldr, "en")
+      Localize.put_locale(:en)
     end
 
     test "#{inspect(ecto_type_module)}: cast nil returns nil" do

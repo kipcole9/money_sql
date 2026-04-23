@@ -6,6 +6,14 @@
 
 Money_SQL implements a set of functions to store and retrieve data structured as a `%Money{}` type that is composed of an ISO 4217 currency code and a currency amount. See [ex_money](https://hex.pm/packages/ex_money) for details of using `Money`.  Note that `ex_money_sql` depends on `ex_money`.
 
+> #### ex_money 6.0 and Localize {: .info}
+>
+> From version 2.0, `ex_money_sql` requires `ex_money ~> 6.0`. `ex_money 6.0` replaces the `ex_cldr` family of dependencies with the unified [localize](https://hex.pm/packages/localize) package and removes the compile-time CLDR backend system. Any `MyApp.Cldr` backend module, or configuration using `:default_cldr_backend`, should be removed. Locales are now configured through `config :localize` and accessed through the `Localize` module (for example `Localize.put_locale/1`). See the [ex_money 6.0 migration guide](https://hexdocs.pm/ex_money/readme.html#migration-from-5-x-to-6-0) for full details.
+
+> #### Postgrex JSON library {: .info}
+>
+> `ex_money_sql` no longer declares `jason` as a dependency. Postgrex defaults to `Jason` for encoding `json`/`jsonb` columns, so configure your preferred JSON library explicitly, for example `config :postgrex, :json_library, JSON` (requires Elixir 1.18+). Postgrex captures this setting at compile time, so after changing it run `mix deps.compile postgrex --force` once.
+
 > #### Embedded Schema Configuration from ex_money_sql 1.9.2 {: .warning}
 >
 > Please ensure that if you are using Ecto [embedded schemas](https://hexdocs.pm/ecto/embedded-schemas.html) that include a `money` type that it is configured with the type `Money.Ecto.Map.Type`, **NOT** `Money.Ecto.Composite.Type`. 

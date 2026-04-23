@@ -1,13 +1,13 @@
 defmodule Money.Sql.Mixfile do
   use Mix.Project
 
-  @version "1.12.0"
+  @version "2.0.0"
 
   def project do
     [
       app: :ex_money_sql,
       version: @version,
-      elixir: "~> 1.11",
+      elixir: "~> 1.17",
       name: "Money SQL",
       source_url: "https://github.com/kipcole9/money_sql",
       docs: docs(),
@@ -77,18 +77,26 @@ defmodule Money.Sql.Mixfile do
 
   defp deps do
     [
-      {:ex_money, "~> 5.7"},
-      {:jason, "~> 1.0"},
+      {:ex_money, "~> 6.0-rc or ~> 6.0"},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
-      {:ecto, "~> 3.5"},
-      {:ecto_sql, "~> 3.0"},
-      {:postgrex, "~> 0.15"},
-      {:myxql, "~> 0.4", only: :test},
+      {:ecto, "~> 3.13"},
+      {:ecto_sql, "~> 3.13"},
+      {:db_connection, "~> 2.9", override: true},
+      {:postgrex, "~> 0.19"},
+      {:myxql, "~> 0.7", only: :test},
       {:benchee, "~> 1.0", optional: true, only: :dev},
       {:exprof, "~> 0.2", only: :dev, runtime: false},
       {:ex_doc, "~> 0.22", only: [:dev, :test, :release]},
       {:earmark, "~> 1.4", only: [:dev, :test, :release]}
-    ]
+    ] ++ maybe_json_polyfill()
+  end
+
+  defp maybe_json_polyfill do
+    if Code.ensure_loaded?(:json) do
+      []
+    else
+      [{:json_polyfill, "~> 0.2 or ~> 1.0"}]
+    end
   end
 
   defp elixirc_paths(:test), do: ["lib", "test", "mix", "test/support"]
