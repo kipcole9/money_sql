@@ -1,7 +1,7 @@
 defmodule Money.Sql.Mixfile do
   use Mix.Project
 
-  @version "2.0.0"
+  @version "2.0.1"
   @source_url "https://github.com/ex-money/money_sql"
 
   def project do
@@ -22,7 +22,14 @@ defmodule Money.Sql.Mixfile do
       elixirc_paths: elixirc_paths(Mix.env()),
       dialyzer: [
         ignore_warnings: ".dialyzer_ignore_warnings",
-        plt_add_apps: ~w(inets jason mix ecto ecto_sql eex)a
+        plt_add_apps: ~w(inets jason mix ecto ecto_sql eex)a,
+        flags: [
+          :error_handling,
+          :unknown,
+          :underspecs,
+          :extra_return,
+          :missing_return
+        ]
       ],
       compilers: Mix.compilers()
     ]
@@ -78,13 +85,20 @@ defmodule Money.Sql.Mixfile do
 
   defp deps do
     [
-      {:ex_money, "~> 6.0-rc or ~> 6.0"},
+      # ex_money and localize_sql are referenced by path during the localize
+      # 1.0 migration: the published ex_money 6.0 still caps localize at 0.x,
+      # and localize_sql is not yet published. Switch both to hex requirements
+      # (`{:ex_money, "~> 6.2"}`, `{:localize_sql, "~> 1.0"}`) once ex_money 6.2
+      # and localize_sql are on hex against localize 1.0.
+      {:ex_money, path: "../money"},
+      {:localize_sql, path: "../../localize/localize_ecto"},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:ecto, "~> 3.13"},
       {:ecto_sql, "~> 3.13"},
       {:db_connection, "~> 2.9"},
-      {:postgrex, "~> 0.19"},
-      {:myxql, "~> 0.7", only: :test},
+      {:postgrex, "~> 0.20", only: [:dev, :test]},
+      # {:myxql, "~> 0.7", only: :test, optional: true},
       {:benchee, "~> 1.0", optional: true, only: :dev},
       {:exprof, "~> 0.2", only: :dev, runtime: false},
       {:ex_doc, "~> 0.22", only: [:dev, :test, :release]},

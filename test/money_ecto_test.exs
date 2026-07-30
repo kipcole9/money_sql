@@ -151,7 +151,8 @@ defmodule Money.Ecto.Test do
     test "#{inspect(ecto_type_module)}: cast a map with string keys and invalid currency" do
       assert unquote(ecto_type_module).cast(%{"currency" => "AAA", "amount" => 100}) ==
                {:error,
-                exception: Money.UnknownCurrencyError, message: "The currency :AAA is not known."}
+                exception: Money.UnknownCurrencyError,
+                message: "The currency \"AAA\" is not known."}
     end
 
     test "#{inspect(ecto_type_module)}: cast a map with atom keys and values" do
@@ -177,7 +178,8 @@ defmodule Money.Ecto.Test do
     test "#{inspect(ecto_type_module)}: cast a map with atom keys and invalid currency" do
       assert unquote(ecto_type_module).cast(%{currency: "AAA", amount: 100}) ==
                {:error,
-                exception: Money.UnknownCurrencyError, message: "The currency :AAA is not known."}
+                exception: Money.UnknownCurrencyError,
+                message: "The currency \"AAA\" is not known."}
     end
 
     test "#{inspect(ecto_type_module)}: cast a string that includes currency code and amount" do

@@ -21,14 +21,17 @@ defmodule Money.Migration do
   def postgres_money_with_currency_type(repo) do
     query = read_sql_file("get_currency_code_type.sql")
 
+    # Matched as a plain map with a `:rows` key rather than a
+    # `Postgrex.Result` struct so this module compiles without postgrex
+    # loaded (it is a consumer-supplied, dev/test-only dependency here).
     case repo.query!(query, [], log: false) do
-      %Postgrex.Result{rows: [["character varying"]]} ->
+      %{rows: [["character varying"]]} ->
         :varchar
 
-      %Postgrex.Result{rows: [["character(3)"]]} ->
+      %{rows: [["character(3)"]]} ->
         :char_3
 
-      %Postgrex.Result{rows: []} ->
+      %{rows: []} ->
         nil
 
       _other ->
@@ -49,13 +52,12 @@ defmodule Money.Migration do
   end
 
   if Code.ensure_loaded?(Code) && function_exported?(Code, :format_string!, 1) do
-    @spec format_string!(String.t()) :: iodata()
-    @dialyzer {:no_return, format_string!: 1}
+    @spec format_string!(String.t()) :: binary()
     def format_string!(string) do
-      Code.format_string!(string)
+      string |> Code.format_string!() |> IO.iodata_to_binary()
     end
   else
-    @spec format_string!(String.t()) :: iodata()
+    @spec format_string!(String.t()) :: binary()
     def format_string!(string) do
       string
     end

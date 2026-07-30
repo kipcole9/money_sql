@@ -23,8 +23,8 @@ if Code.ensure_loaded?(Ecto.Type) do
     # New for ecto_sql 3.2. Defdelegate produces doc warnings so
     # we delegate in a function.
     def embed_as(term) do
-       Money.Ecto.Composite.Type.embed_as(term)
-     end
+      Money.Ecto.Composite.Type.embed_as(term)
+    end
 
     def embed_as(term, params) do
       Money.Ecto.Composite.Type.embed_as(term, params)
@@ -60,10 +60,9 @@ if Code.ensure_loaded?(Ecto.Type) do
 
     def load(%{"currency" => currency, "amount" => amount}, _loader, params)
         when is_integer(amount) do
-      with {:ok, currency} <- Money.validate_currency(currency) do
-        {:ok, Money.new(currency, amount, params)}
-      else
-        _ -> :error
+      case Money.validate_currency(currency) do
+        {:ok, currency} -> {:ok, Money.new(currency, amount, params)}
+        _error -> :error
       end
     end
 

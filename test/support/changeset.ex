@@ -1,4 +1,6 @@
 defmodule Money.ValidationSupport do
+  @moduledoc false
+
   import Ecto.Changeset
 
   def test_changeset do

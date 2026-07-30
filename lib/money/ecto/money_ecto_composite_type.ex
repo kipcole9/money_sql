@@ -190,27 +190,24 @@ if Code.ensure_loaded?(Ecto.Type) do
 
     def cast(%{"currency" => currency, "amount" => amount}, params)
         when (is_binary(currency) or is_atom(currency)) and is_integer(amount) do
-      with %Money{} = money <- Money.new(currency, amount, params) do
-        {:ok, money}
-      else
+      case Money.new(currency, amount, params) do
+        %Money{} = money -> {:ok, money}
         {:error, {exception, message}} -> {:error, exception: exception, message: message}
       end
     end
 
     def cast(%{"currency" => currency, "amount" => amount}, params)
         when (is_binary(currency) or is_atom(currency)) and is_binary(amount) do
-      with %Money{} = money <- Money.new(currency, amount, params) do
-        {:ok, money}
-      else
+      case Money.new(currency, amount, params) do
+        %Money{} = money -> {:ok, money}
         {:error, {exception, message}} -> {:error, exception: exception, message: message}
       end
     end
 
     def cast(%{"currency" => currency, "amount" => %Decimal{} = amount}, params)
         when is_binary(currency) or is_atom(currency) do
-      with %Money{} = money <- Money.new(currency, amount, params) do
-        {:ok, money}
-      else
+      case Money.new(currency, amount, params) do
+        %Money{} = money -> {:ok, money}
         {:error, {exception, message}} -> {:error, exception: exception, message: message}
       end
     end

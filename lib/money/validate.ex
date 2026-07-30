@@ -48,26 +48,24 @@ defmodule Money.Validate do
   """
   @spec validate_money(Ecto.Changeset.t(), atom, Keyword.t()) :: Ecto.Changeset.t()
   def validate_money(changeset, field, opts) do
-    Ecto.Changeset.validate_change(changeset, field, {:money, opts}, fn
-      field, value ->
-        {message, opts} = Keyword.pop(opts, :message)
-
-        Enum.find_value(opts, [], fn {spec_key, target_value} ->
-          case Map.fetch(@money_validators, spec_key) do
-            {:ok, default_message} ->
-              validate_money(field, value, message || default_message, spec_key, target_value)
-
-            :error ->
-              supported_options = @money_validators |> Map.keys()
-
-              raise ArgumentError, """
-              unknown option #{inspect(spec_key)} given to validate_money/3
-              The supported options are:
-              #{supported_options}
-              """
-          end
-        end)
+    Ecto.Changeset.validate_change(changeset, field, {:money, opts}, fn field, value ->
+      {message, opts} = Keyword.pop(opts, :message)
+      Enum.find_value(opts, [], &apply_money_validator(&1, field, value, message))
     end)
+  end
+
+  defp apply_money_validator({spec_key, target_value}, field, value, message) do
+    case Map.fetch(@money_validators, spec_key) do
+      {:ok, default_message} ->
+        validate_money(field, value, message || default_message, spec_key, target_value)
+
+      :error ->
+        raise ArgumentError, """
+        unknown option #{inspect(spec_key)} given to validate_money/3
+        The supported options are:
+        #{Map.keys(@money_validators)}
+        """
+    end
   end
 
   defp validate_money(field, %Money{} = value, message, spec_key, %Money{} = target_value) do
