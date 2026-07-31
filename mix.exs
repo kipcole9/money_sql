@@ -35,6 +35,17 @@ defmodule Money.Sql.Mixfile do
     ]
   end
 
+  def cli do
+    [
+      preferred_envs: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.html": :test,
+        "coveralls.json": :test
+      ]
+    ]
+  end
+
   defp description do
     "Money functions for the serialization a money data type."
   end
@@ -89,6 +100,7 @@ defmodule Money.Sql.Mixfile do
       {:localize_sql, "~> 1.0"},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
+      {:excoveralls, "~> 0.18", only: :test},
       {:ecto, "~> 3.13"},
       {:ecto_sql, "~> 3.13"},
       {:db_connection, "~> 2.9"},

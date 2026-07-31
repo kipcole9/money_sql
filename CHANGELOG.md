@@ -16,9 +16,15 @@ This is the changelog for Money_SQL v2.1.0 released on July 31st, 2026.
 
 * The bundled `.sql` files that `Money.DDL` used to read are removed, since the SQL is now generated. Editing one had no effect on the emitted migration. `priv/SQL/postgres/get_currency_code_type.sql` remains — `Money.Migration` still reads it to detect whether an existing `money_with_currency` type uses `varchar` or `char(3)`.
 
+* A GitHub Actions workflow runs the test suite against PostgreSQL across Elixir 1.17–1.20 and OTP 26–29, with formatting, Credo, coverage, dialyzer and documentation checks on the canonical entry. `config/test.exs` now reads its database settings from the libpq environment variables, so the same configuration serves CI and local development.
+
 ### Fixed
 
 * The generated unary `-` operator now names `money_negate`, the function it defines; it previously named `money_neg`, so the migration failed. No mix task emitted it, so it was dormant.
+
+* `test_coverage` named ExCoveralls without depending on it, so `mix test --cover` failed. `excoveralls` is now a test dependency and coverage is enforced at 90%.
+
+* The two doctests in `Money.DDL` never compiled — their escapes were interpreted by the surrounding heredoc, producing invalid syntax. They now use `~S` heredocs and run.
 
 * The `sum`, `min` and `max` combine functions no longer reference an undeclared variable in their currency-mismatch branch, which would raise inside a parallel aggregate rather than reporting the mismatch.
 

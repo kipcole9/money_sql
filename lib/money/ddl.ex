@@ -266,7 +266,7 @@ defmodule Money.DDL do
     DDL.drop_operator(@money_spec, :negate)
   end
 
-  @doc """
+  @doc ~S"""
   Returns a string that will Ecto `execute` each SQL
   command.
 
@@ -289,7 +289,7 @@ defmodule Money.DDL do
     |> Enum.map_join("\n", &execute(&1, append))
   end
 
-  @doc """
+  @doc ~S"""
   Returns a string that will Ecto `execute` a single SQL
   command.
 

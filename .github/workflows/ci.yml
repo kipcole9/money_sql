@@ -1,0 +1,149 @@
+name: Elixir CI
+
+# Runs when changes are pushed to `main` or to a PR branch that targets
+# `main`.
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+env:
+  MIX_ENV: test
+  # Consumed by config/test.exs, which follows the libpq environment
+  # variables so the same configuration works locally and here.
+  PGHOST: localhost
+  PGUSER: postgres
+  PGPASSWORD: postgres
+  PGDATABASE: money_test
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Test on OTP ${{matrix.otp}} / Elixir ${{matrix.elixir}}
+
+    # The test suite runs against a real PostgreSQL server: the `test`
+    # alias drops, creates and migrates the database, and the migrations
+    # install the `money_with_currency` composite type and its
+    # aggregates.
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    strategy:
+      # Run every matrix entry to completion. A failure (or flake) in one
+      # toolchain must not cancel the others, otherwise it masks their result.
+      fail-fast: false
+      matrix:
+        include:
+          - otp: "26.2"
+            elixir: "1.17.2-otp-26"
+          - otp: "27.2.4"
+            elixir: "1.17.2-otp-27"
+          - otp: "27.2.4"
+            elixir: "1.18.4-otp-27"
+          - otp: "28.3.1"
+            elixir: "1.18.4-otp-28"
+          - otp: "27.2.4"
+            elixir: "1.19.5-otp-27"
+          - otp: "28.3.1"
+            elixir: "1.19.5-otp-28"
+          - otp: "27.2.4"
+            elixir: "1.20.2-otp-27"
+          - otp: "28.3.1"
+            elixir: "1.20.2-otp-28"
+          - otp: "29.0.1"
+            elixir: "1.20.2-otp-29"
+            lint: true
+
+    steps:
+      - name: Set up Elixir
+        uses: erlef/setup-beam@v1
+        with:
+          otp-version: ${{matrix.otp}}
+          elixir-version: ${{matrix.elixir}}
+
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      # The cache key carries both OTP and Elixir. Without them every
+      # matrix entry shares one cache and BEAMs built by one toolchain
+      # get restored into another, which fails at load time rather than
+      # at compile time.
+      - name: Cache deps
+        id: cache-deps
+        uses: actions/cache@v5
+        env:
+          cache-name: cache-elixir-deps
+        with:
+          path: deps
+          key: ${{ runner.os }}-otp${{ matrix.otp }}-elixir${{ matrix.elixir }}-mix-${{ env.cache-name }}-${{ hashFiles('**/mix.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-otp${{ matrix.otp }}-elixir${{ matrix.elixir }}-mix-${{ env.cache-name }}-
+
+      - name: Cache compiled build
+        id: cache-build
+        uses: actions/cache@v5
+        env:
+          cache-name: cache-compiled-build
+        with:
+          path: _build
+          key: ${{ runner.os }}-otp${{ matrix.otp }}-elixir${{ matrix.elixir }}-mix-${{ env.cache-name }}-${{ hashFiles('**/mix.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-otp${{ matrix.otp }}-elixir${{ matrix.elixir }}-mix-${{ env.cache-name }}-
+
+      - name: Install dependencies
+        run: mix deps.get
+
+      - name: Compiles without warnings
+        run: mix compile --warnings-as-errors
+
+      # Formatting rules can shift between Elixir minor versions, so the
+      # check is pinned to the canonical (lint) entry.
+      - name: Check formatting
+        if: ${{ matrix.lint }}
+        run: mix format --check-formatted
+
+      # Run on every entry except the canonical one, where the suite runs
+      # under coverage instead.
+      - name: Run tests
+        if: ${{ !matrix.lint }}
+        run: mix test
+
+      - name: Run Credo
+        if: ${{ matrix.lint }}
+        run: mix credo --strict
+
+      # Also runs the full suite, which is why the plain `mix test` step
+      # is skipped on this entry. The minimum is set in coveralls.json.
+      - name: Run tests with coverage
+        if: ${{ matrix.lint }}
+        run: mix coveralls
+
+      # Forced to MIX_ENV=dev because dialyxir is declared `only: :dev`
+      # and the rest of this workflow runs under MIX_ENV=test.
+      - name: Run dialyzer
+        if: ${{ matrix.lint }}
+        env:
+          MIX_ENV: dev
+        run: mix dialyzer
+
+      # `mix docs` exits 0 even when it emits warnings, so the flag is
+      # what makes a broken reference fail the build.
+      - name: Check docs
+        if: ${{ matrix.lint }}
+        env:
+          MIX_ENV: release
+        run: mix docs --warnings-as-errors
