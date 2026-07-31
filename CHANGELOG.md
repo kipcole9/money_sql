@@ -18,6 +18,8 @@ This is the changelog for Money_SQL v2.1.0 released on July 31st, 2026.
 
 * A GitHub Actions workflow runs the test suite against PostgreSQL across Elixir 1.17–1.20 and OTP 26–29, with formatting, Credo, coverage, dialyzer and documentation checks on the canonical entry. `config/test.exs` now reads its database settings from the libpq environment variables, so the same configuration serves CI and local development.
 
+* `Money.SQL.JSON` adapts the Erlang `:json` module to the interface Postgrex expects of a `:json_library`, so `config :postgrex, :json_library, Money.SQL.JSON` works on every supported Elixir and OTP version. The previously suggested `JSON` module requires Elixir 1.18, which this library does not: it supports 1.17.
+
 ### Fixed
 
 * The generated unary `-` operator now names `money_negate`, the function it defines; it previously named `money_neg`, so the migration failed. No mix task emitted it, so it was dormant.

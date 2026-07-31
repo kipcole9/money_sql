@@ -12,7 +12,7 @@ Money_SQL implements a set of functions to store and retrieve data structured as
 
 > #### Postgrex JSON library {: .info}
 >
-> `ex_money_sql` no longer declares `jason` as a dependency. Postgrex defaults to `Jason` for encoding `json`/`jsonb` columns, so configure your preferred JSON library explicitly, for example `config :postgrex, :json_library, JSON` (requires Elixir 1.18+). Postgrex captures this setting at compile time, so after changing it run `mix deps.compile postgrex --force` once.
+> `ex_money_sql` no longer declares `jason` as a dependency. Postgrex defaults to `Jason` for encoding `json`/`jsonb` columns, so configure a JSON library explicitly. `Money.SQL.JSON` is provided for this and works on every supported Elixir and OTP version: `config :postgrex, :json_library, Money.SQL.JSON`. It uses the Erlang `:json` module, which is built into OTP 27 and later; on OTP 26 add [json_polyfill](https://hex.pm/packages/json_polyfill). Elixir 1.18's built-in `JSON` module and `Jason` also work. Postgrex captures this setting at compile time, so after changing it run `mix deps.compile postgrex --force` once.
 
 > #### Embedded Schema Configuration from ex_money_sql 1.9.2 {: .warning}
 >

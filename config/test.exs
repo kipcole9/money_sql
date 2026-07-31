@@ -27,6 +27,10 @@ config :localize,
   default_locale: :en,
   allow_runtime_locale_download: true
 
-config :postgrex, :json_library, JSON
+# Postgrex needs a JSON library for the `jsonb` column that
+# `Money.Ecto.Map.Type` uses. `Money.SQL.JSON` adapts the Erlang `:json`
+# module, which is built in from OTP 27 and supplied by `json_polyfill`
+# on OTP 26, so this works on every supported Elixir and OTP version.
+config :postgrex, :json_library, Money.SQL.JSON
 
 config :logger, level: :error
