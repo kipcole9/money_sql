@@ -1,1 +1,0 @@
-CREATE TYPE public.money_with_currency AS (currency_code varchar, amount numeric);

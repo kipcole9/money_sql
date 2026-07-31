@@ -27,12 +27,12 @@ Money_SQL implements a set of functions to store and retrieve data structured as
 ```elixir
 def deps do
   [
-    {:ex_money_sql, "~> 1.0"},
+    {:ex_money_sql, "~> 2.1"},
     ...
   ]
 end
 ```
-Note that `ex_money_sql` is supported on Elixir 1.11 and later only.
+Note that `ex_money_sql` is supported on Elixir 1.17 and later only.
 
 ## Serializing to a Postgres database with Ecto
 

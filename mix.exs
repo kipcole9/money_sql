@@ -1,7 +1,7 @@
 defmodule Money.Sql.Mixfile do
   use Mix.Project
 
-  @version "2.0.1"
+  @version "2.1.0"
   @source_url "https://github.com/ex-money/money_sql"
 
   def project do
@@ -85,13 +85,8 @@ defmodule Money.Sql.Mixfile do
 
   defp deps do
     [
-      # ex_money and localize_sql are referenced by path during the localize
-      # 1.0 migration: the published ex_money 6.0 still caps localize at 0.x,
-      # and localize_sql is not yet published. Switch both to hex requirements
-      # (`{:ex_money, "~> 6.2"}`, `{:localize_sql, "~> 1.0"}`) once ex_money 6.2
-      # and localize_sql are on hex against localize 1.0.
-      {:ex_money, path: "../money"},
-      {:localize_sql, path: "../../localize/localize_ecto"},
+      {:ex_money, "~> 6.2"},
+      {:localize_sql, "~> 1.0"},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:ecto, "~> 3.13"},

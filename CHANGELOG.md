@@ -2,6 +2,32 @@
 
 **Note** That `money_sql` is supported on Elixir 1.17 and later only.
 
+## Money_SQL v2.1.0
+
+This is the changelog for Money_SQL v2.1.0 released on July 31st, 2026.
+
+### Changed
+
+* `Money.DDL` now generates its SQL from `Localize.Ecto.TaggedDecimal.DDL` in [localize_sql](https://hex.pm/packages/localize_sql) instead of reading bundled `.sql` files. A money amount is a tagged decimal — a currency code paired with an amount — so it shares the composite type, aggregate and operator machinery with units rather than defining its own.
+
+* The public API is unchanged, as are the `money_with_currency` type, every generated function name and the SQLSTATE (`22033`) raised on a currency mismatch, so an existing database needs no migration.
+
+* Requires `ex_money ~> 6.2` (raised from `~> 6.0`) and the new `localize_sql ~> 1.0`. `postgrex` is now a declared dev and test dependency rather than an undeclared transitive one.
+
+* The bundled `.sql` files that `Money.DDL` used to read are removed, since the SQL is now generated. Editing one had no effect on the emitted migration. `priv/SQL/postgres/get_currency_code_type.sql` remains — `Money.Migration` still reads it to detect whether an existing `money_with_currency` type uses `varchar` or `char(3)`.
+
+### Fixed
+
+* The generated unary `-` operator now names `money_negate`, the function it defines; it previously named `money_neg`, so the migration failed. No mix task emitted it, so it was dormant.
+
+* The `sum`, `min` and `max` combine functions no longer reference an undeclared variable in their currency-mismatch branch, which would raise inside a parallel aggregate rather than reporting the mismatch.
+
+* `min` and `max` are created with `CREATE OR REPLACE AGGREGATE`, so re-running the migration succeeds as it already did for `sum`.
+
+* The generated infix `-` operator no longer declares `commutator = -`; subtraction is not commutative.
+
+* `Money.Migration` matches the query result structurally rather than as a `Postgrex.Result` struct, so the module compiles when `postgrex` is not loaded.
+
 ## Money_SQL v2.0.0
 
 This is the changelog for Money_SQL v2.0.0 released on April 24th, 2026.
